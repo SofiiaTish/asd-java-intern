@@ -2,7 +2,7 @@
 name: Feature
 about: Create a feature
 title: "[FEATURE]"
-labels: ''
+labels: 'feature'
 assignees: stishchenko
 
 ---
