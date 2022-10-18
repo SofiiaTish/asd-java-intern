@@ -3,7 +3,7 @@ name: Feature
 about: Create a feature
 title: "[FEATURE]"
 labels: ''
-assignees: SofiiaTish
+assignees: stishchenko
 
 ---
 
