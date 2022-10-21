@@ -48,10 +48,9 @@ public class ProductServiceImpl implements IsProductService {
 	public Map<ProductState, Integer> calculateProductCountByState(List<IsProduct> productList) throws WrongProductException {
 		if (productList == null) {
 			Map<ProductState, Integer> map = new HashMap<>();
-			map.put(ProductState.Created, 0);
-			map.put(ProductState.Final, 0);
-			map.put(ProductState.Suspended, 0);
-			map.put(ProductState.Deprecated, 0);
+			for (ProductState ps : ProductState.values()) {
+				map.put(ps, 0);
+			}
 			return map;
 		}
 		if (productList.contains(null)) {
