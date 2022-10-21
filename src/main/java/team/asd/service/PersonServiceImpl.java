@@ -26,8 +26,7 @@ public class PersonServiceImpl implements IsPersonService {
 			return personList;
 		}
 		return personList.stream()
-				.filter(p -> p != null && p.getName() != null && p.getName()
-						.startsWith(prefix))
+				.filter(p -> p != null && StringUtils.startsWith(p.getName(), prefix))
 				.collect(Collectors.toList());
 	}
 
@@ -39,7 +38,6 @@ public class PersonServiceImpl implements IsPersonService {
 		}
 		return personList.stream()
 				.filter(filterPersonsByAge())
-				.sorted(Comparator.comparing(IsPerson::getAge))
 				.collect(Collectors.groupingBy(IsPerson::getAge));
 	}
 
@@ -55,10 +53,7 @@ public class PersonServiceImpl implements IsPersonService {
 		if (personList.isEmpty()) {
 			return 0D;
 		}
-		return personList.stream()
-				.mapToInt(IsPerson::getAge)
-				.summaryStatistics()
-				.getAverage();
+		return personList.stream().collect(Collectors.averagingInt(IsPerson::getAge));
 	}
 
 	@Override
