@@ -21,19 +21,15 @@ public class ProductServiceImpl implements IsProductService {
 		if (CollectionUtils.isEmpty(productList)) {
 			return Collections.emptyList();
 		}
-		List<String> productNames = new ArrayList<>();
-		for (IsProduct p : productList) {
-			if (p == null) {
-				throw new WrongProductException("Product is null");
-			}
-			productNames.add(p.getName());
-		}
-		return productNames;
+		checkListContainsNull(productList);
+		return productList.stream()
+				.map(IsProduct::getName)
+				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<IsProduct> defineProductsWithCreatedState(List<IsProduct> productList) {
-		if (productList == null) {
+		if (CollectionUtils.isEmpty(productList)) {
 			return Collections.emptyList();
 		}
 		return productList.stream()
@@ -45,16 +41,14 @@ public class ProductServiceImpl implements IsProductService {
 	@Override
 	@NonNull
 	public Map<ProductState, Integer> calculateProductCountByState(List<IsProduct> productList) throws WrongProductException {
-		if (productList == null) {
+		if (CollectionUtils.isEmpty(productList)) {
 			Map<ProductState, Integer> map = new HashMap<>();
 			for (ProductState ps : ProductState.values()) {
 				map.put(ps, 0);
 			}
 			return map;
 		}
-		if (productList.contains(null)) {
-			throw new WrongProductException("Null product in list");
-		}
+		checkListContainsNull(productList);
 		Map<ProductState, Integer> productMap = productList.stream()
 				.collect(Collectors.groupingBy(IsProduct::getState, Collectors.reducing(0, e -> 1, Integer::sum)));
 		if (productMap.keySet()
@@ -68,10 +62,18 @@ public class ProductServiceImpl implements IsProductService {
 		return productMap;
 	}
 
+	private void checkListContainsNull(List<IsProduct> list) throws WrongProductException {
+		if (CollectionUtils.isNotEmpty(list)) {
+			if (list.contains(null)) {
+				throw new WrongProductException("Null product in list");
+			}
+		}
+	}
+
 	@Override
 	@NonNull
 	public List<IsProduct> filterProductsByProvidedObject(List<IsProduct> productList, IsProduct product) throws WrongProductException {
-		if (productList == null) {
+		if (CollectionUtils.isEmpty(productList)) {
 			return Collections.emptyList();
 		}
 		if (product == null) {
