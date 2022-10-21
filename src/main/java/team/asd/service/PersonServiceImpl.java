@@ -2,6 +2,7 @@ package team.asd.service;
 
 import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import team.asd.entities.IsPerson;
 
 import java.util.Collections;
@@ -9,6 +10,7 @@ import java.util.Comparator;
 import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,7 +22,7 @@ public class PersonServiceImpl implements IsPersonService {
 		if (CollectionUtils.isEmpty(personList)) {
 			return Collections.emptyList();
 		}
-		if (prefix == null || prefix.equals("")) {
+		if (StringUtils.isEmpty(prefix)) {
 			return personList;
 		}
 		return personList.stream()
@@ -35,17 +37,21 @@ public class PersonServiceImpl implements IsPersonService {
 		if (personList == null) {
 			return Collections.emptyMap();
 		}
-		return checkAge(personList).sorted(Comparator.comparing(IsPerson::getAge))
+		return personList.stream()
+				.filter(filterPersonsByAge())
+				.sorted(Comparator.comparing(IsPerson::getAge))
 				.collect(Collectors.groupingBy(IsPerson::getAge));
 	}
 
 	@Override
 	@NonNull
 	public Double calculateAverageAge(List<IsPerson> personList) {
-		if (personList == null) {
+		if (CollectionUtils.isEmpty(personList)) {
 			return 0D;
 		}
-		personList = checkAge(personList).collect(Collectors.toList());
+		personList = personList.stream()
+				.filter(filterPersonsByAge())
+				.collect(Collectors.toList());
 		if (personList.isEmpty()) {
 			return 0D;
 		}
@@ -61,12 +67,13 @@ public class PersonServiceImpl implements IsPersonService {
 		if (personList == null) {
 			return new IntSummaryStatistics();
 		}
-		return checkAge(personList).mapToInt(IsPerson::getAge)
+		return personList.stream()
+				.filter(filterPersonsByAge())
+				.mapToInt(IsPerson::getAge)
 				.summaryStatistics();
 	}
 
-	private Stream<IsPerson> checkAge(List<IsPerson> list) {
-		return list.stream()
-				.filter(p -> p != null && p.getAge() != null && p.getAge() >= 0);
+	private Predicate<IsPerson> filterPersonsByAge() {
+		return person -> person != null && person.getAge() != null && person.getAge() >= 0;
 	}
 }
