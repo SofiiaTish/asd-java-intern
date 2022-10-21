@@ -15,7 +15,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ProductServiceImpl implements IsProductService {
-
 	@Override
 	@NonNull
 	public List<String> defineProductNames(List<IsProduct> productList) throws WrongProductException {
