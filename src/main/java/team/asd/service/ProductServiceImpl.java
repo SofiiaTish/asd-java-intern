@@ -57,8 +57,17 @@ public class ProductServiceImpl implements IsProductService {
 		if (productList.contains(null)) {
 			throw new WrongProductException("Null product in list");
 		}
-		return productList.stream()
+		Map<ProductState, Integer> productMap = productList.stream()
 				.collect(Collectors.groupingBy(IsProduct::getState, Collectors.reducing(0, e -> 1, Integer::sum)));
+		if (productMap.keySet()
+				.size() < ProductState.values().length) {
+			for (ProductState ps : ProductState.values()) {
+				if (!productMap.containsKey(ps)) {
+					productMap.put(ps, 0);
+				}
+			}
+		}
+		return productMap;
 	}
 
 	@Override
@@ -69,6 +78,9 @@ public class ProductServiceImpl implements IsProductService {
 		}
 		if (product == null) {
 			throw new WrongProductException("Product is null");
+		}
+		if (product.getName() == null && product.getState() == null) {
+			return productList;
 		}
 		if (product.getName() == null) {
 			return productList.stream()
