@@ -10,6 +10,7 @@ import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PersonServiceImpl implements IsPersonService {
 
@@ -34,9 +35,7 @@ public class PersonServiceImpl implements IsPersonService {
 		if (personList == null) {
 			return Collections.emptyMap();
 		}
-		return personList.stream()
-				.filter(p -> p != null && p.getAge() != null && p.getAge() >= 0)
-				.sorted(Comparator.comparing(IsPerson::getAge))
+		return checkAge(personList).sorted(Comparator.comparing(IsPerson::getAge))
 				.collect(Collectors.groupingBy(IsPerson::getAge));
 	}
 
@@ -46,9 +45,7 @@ public class PersonServiceImpl implements IsPersonService {
 		if (personList == null) {
 			return 0D;
 		}
-		personList = personList.stream()
-				.filter(p -> p != null && p.getAge() != null && p.getAge() >= 0)
-				.collect(Collectors.toList());
+		personList = checkAge(personList).collect(Collectors.toList());
 		if (personList.isEmpty()) {
 			return 0D;
 		}
@@ -64,9 +61,12 @@ public class PersonServiceImpl implements IsPersonService {
 		if (personList == null) {
 			return new IntSummaryStatistics();
 		}
-		return personList.stream()
-				.filter(p -> p != null && p.getAge() != null && p.getAge() >= 0)
-				.mapToInt(IsPerson::getAge)
+		return checkAge(personList).mapToInt(IsPerson::getAge)
 				.summaryStatistics();
+	}
+
+	private Stream<IsPerson> checkAge(List<IsPerson> list) {
+		return list.stream()
+				.filter(p -> p != null && p.getAge() != null && p.getAge() >= 0);
 	}
 }
