@@ -6,9 +6,9 @@ import team.asd.constants.ProductState;
 import team.asd.entities.IsProduct;
 import team.asd.exceptions.WrongProductException;
 
-import java.util.ArrayList;
+import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,32 +42,26 @@ public class ProductServiceImpl implements IsProductService {
 	@NonNull
 	public Map<ProductState, Integer> calculateProductCountByState(List<IsProduct> productList) throws WrongProductException {
 		if (CollectionUtils.isEmpty(productList)) {
-			Map<ProductState, Integer> map = new HashMap<>();
-			for (ProductState ps : ProductState.values()) {
-				map.put(ps, 0);
-			}
-			return map;
+			return Arrays.stream(ProductState.values())
+					.map(e -> new AbstractMap.SimpleEntry<>(e, 0))
+					.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 		}
 		checkListContainsNull(productList);
-		Map<ProductState, Integer> productMap = productList.stream()
-				.collect(Collectors.groupingBy(IsProduct::getState, Collectors.reducing(0, e -> 1, Integer::sum)));
-		if (productMap.keySet()
-				.size() < ProductState.values().length) {
-			for (ProductState ps : ProductState.values()) {
-				if (!productMap.containsKey(ps)) {
-					productMap.put(ps, 0);
-				}
-			}
-		}
-		return productMap;
+		return Arrays.stream(ProductState.values())
+				.map(e -> new AbstractMap.SimpleEntry<>(e, countProductsWithState(e, productList)))
+				.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 	}
 
 	private void checkListContainsNull(List<IsProduct> list) throws WrongProductException {
-		if (CollectionUtils.isNotEmpty(list)) {
-			if (list.contains(null)) {
-				throw new WrongProductException("Null product in list");
-			}
+		if (CollectionUtils.isNotEmpty(list) && list.contains(null)) {
+			throw new WrongProductException("Null product in list");
 		}
+	}
+
+	private Integer countProductsWithState(ProductState ps, List<IsProduct> list) {
+		return (int) list.stream()
+				.filter(p -> p.getState() == ps)
+				.count();
 	}
 
 	@Override
@@ -82,20 +76,10 @@ public class ProductServiceImpl implements IsProductService {
 		if (product.getName() == null && product.getState() == null) {
 			return productList;
 		}
-		if (product.getName() == null) {
-			return productList.stream()
-					.filter(p -> p.getState() == product.getState())
-					.collect(Collectors.toList());
-		}
-		if (product.getState() == null) {
-			return productList.stream()
-					.filter(p -> p.getName()
-							.equals(product.getName()))
-					.collect(Collectors.toList());
-		}
 		return productList.stream()
-				.filter(p -> p.getName()
-						.equals(product.getName()) && p.getState() == product.getState())
+				.filter(p -> (product.getName() == null && p.getState() == product.getState()) || (product.getState() == null && p.getName()
+						.equals(product.getName())) || (p.getName()
+						.equals(product.getName()) && p.getState() == product.getState()))
 				.collect(Collectors.toList());
 	}
 }
