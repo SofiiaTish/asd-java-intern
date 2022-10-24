@@ -41,11 +41,6 @@ public class ProductServiceImpl implements IsProductService {
 	@Override
 	@NonNull
 	public Map<ProductState, Integer> calculateProductCountByState(List<IsProduct> productList) throws WrongProductException {
-		if (CollectionUtils.isEmpty(productList)) {
-			return Arrays.stream(ProductState.values())
-					.map(e -> new AbstractMap.SimpleEntry<>(e, 0))
-					.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-		}
 		checkListContainsNull(productList);
 		return Arrays.stream(ProductState.values())
 				.map(e -> new AbstractMap.SimpleEntry<>(e, countProductsWithState(e, productList)))
@@ -59,9 +54,11 @@ public class ProductServiceImpl implements IsProductService {
 	}
 
 	private Integer countProductsWithState(ProductState ps, List<IsProduct> list) {
-		return (int) list.stream()
-				.filter(p -> p.getState() == ps)
-				.count();
+		if (CollectionUtils.isNotEmpty(list))
+			return (int) list.stream()
+					.filter(p -> p.getState() == ps)
+					.count();
+		return 0;
 	}
 
 	@Override
