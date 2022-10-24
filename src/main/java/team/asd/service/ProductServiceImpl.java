@@ -74,9 +74,8 @@ public class ProductServiceImpl implements IsProductService {
 			return productList;
 		}
 		return productList.stream()
-				.filter(p -> (product.getName() == null && p.getState() == product.getState()) || (product.getState() == null && p.getName()
-						.equals(product.getName())) || (p.getName()
-						.equals(product.getName()) && p.getState() == product.getState()))
+				.filter(p -> product.getState() == null || p.getState() == product.getState())
+				.filter(p -> product.getName() == null || p.getName().equals(product.getName()))
 				.collect(Collectors.toList());
 	}
 }
