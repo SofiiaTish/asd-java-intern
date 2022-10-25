@@ -51,18 +51,14 @@ public class PriceServiceImpl implements IsPriceService {
 			throw new WrongPriceException("Null price or date");
 		}
 
-		for (int i = 0; i < prices.size() - 1; i++) {
-			for (int j = i + 1; j < prices.size(); j++) {
-				IsPrice p1 = prices.get(i);
-				IsPrice p2 = prices.get(j);
-				if ((p2.getFromDate()
-						.isAfter(p1.getFromDate()) && p2.getFromDate()
-						.isBefore(p1.getToDate())) || (p2.getToDate()
-						.isAfter(p1.getFromDate()) && p2.getToDate()
-						.isBefore(p1.getToDate()))) {
-					throw new WrongPriceException("Dates collides");
-				}
-			}
+		if (prices.stream()
+				.anyMatch(price -> prices.stream()
+						.anyMatch(nextPrice -> (nextPrice.getFromDate()
+								.isAfter(price.getFromDate()) && nextPrice.getFromDate()
+								.isBefore(price.getToDate())) || (nextPrice.getToDate()
+								.isAfter(price.getFromDate()) && nextPrice.getToDate()
+								.isBefore(price.getToDate()))))) {
+			throw new WrongPriceException("Dates collides");
 		}
 
 		return getAverageData(prices, true).divide(getAverageData(prices, false), RoundingMode.HALF_DOWN);
