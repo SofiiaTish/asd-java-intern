@@ -3,6 +3,7 @@ package team.asd.service;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,7 +28,6 @@ public class CollectionServiceImpl implements IsCollectionService {
 		if (CollectionUtils.isEmpty(firstSet) || CollectionUtils.isEmpty(secondSet)) {
 			return Collections.emptySet();
 		}
-		boolean is = firstSet.retainAll(secondSet);
-		return firstSet;
+		return new HashSet<>(CollectionUtils.intersection(firstSet, secondSet));
 	}
 }
