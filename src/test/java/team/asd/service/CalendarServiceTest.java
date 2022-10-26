@@ -72,6 +72,7 @@ class CalendarServiceTest {
 
 		long secondsInDay = 60 * 60 * 24;
 		assertEquals(3 * secondsInDay, calendarService.defineCountInRange(LocalDate.now(), LocalDate.now().plusDays(3), ChronoUnit.SECONDS));
+		assertEquals(2 * secondsInDay / 60, calendarService.defineCountInRange(LocalDate.now(), LocalDate.now().plusDays(2), ChronoUnit.MINUTES));
 		assertEquals(1L, calendarService.defineCountInRange(LocalDate.now(), LocalDate.now().plusDays(7), ChronoUnit.WEEKS));
 		assertEquals(7L, calendarService.defineCountInRange(LocalDate.now(), LocalDate.now().plusDays(7), ChronoUnit.DAYS));
 	}
@@ -104,15 +105,15 @@ class CalendarServiceTest {
 	@MethodSource("defineServices")
 	void testReformatToLocalDate(IsCalendarService calendarService) {
 		assertThrows(DateTimeException.class, () -> calendarService.reformatToLocalDate(""));
-		calendarService.reformatToLocalDate("1st Jan 1000");
+		assertEquals(LocalDate.of(1000, 1, 1), calendarService.reformatToLocalDate("1st Jan 1000"));
 		assertThrows(DateTimeException.class, () -> calendarService.reformatToLocalDate("1st Jan 999"));
-		calendarService.reformatToLocalDate("2ft Jan 1999");
+		assertEquals(LocalDate.of(1999, 1, 2), calendarService.reformatToLocalDate("2ft Jan 1999"));
 		assertThrows(DateTimeException.class, () -> calendarService.reformatToLocalDate("38th Jan 2000"));
 		assertThrows(DateTimeException.class, () -> calendarService.reformatToLocalDate("1st Red 2000"));
-		calendarService.reformatToLocalDate("8th Dec 3000");
+		assertEquals(LocalDate.of(3000, 12, 8), calendarService.reformatToLocalDate("8th Dec 3000"));
 		assertThrows(DateTimeException.class, () -> calendarService.reformatToLocalDate("8th Dec 3001"));
 		assertThrows(DateTimeException.class, () -> calendarService.reformatToLocalDate("Apr 5th 2020"));
 		assertThrows(DateTimeException.class, () -> calendarService.reformatToLocalDate("10th May 2020T"));
-		calendarService.reformatToLocalDate("10th May 2020");
+		assertEquals(LocalDate.of(2020, 5, 10), calendarService.reformatToLocalDate("10th May 2020"));
 	}
 }
