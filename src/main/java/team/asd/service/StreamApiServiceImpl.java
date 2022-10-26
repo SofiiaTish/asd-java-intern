@@ -112,12 +112,8 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 		if (lists.length == 0) {
 			return Collections.emptyList();
 		}
-		if (lists.length == 1) {
-			return lists[0];
-		}
 		return Stream.of(lists)
-				.flatMap(List::stream)
-				.distinct()
+				.flatMap(Collection::stream)
 				.collect(Collectors.toList());
 	}
 
