@@ -100,7 +100,8 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 		}
 		List<LocalDate> partList = listOfDates.stream()
 				.filter(Objects::nonNull)
-				.dropWhile(current -> current.isBefore(date))
+				.sorted()
+				.filter(current -> current.isAfter(date) || current.isEqual(date))
 				.collect(Collectors.toList());
 		partList.removeIf(d -> partList.indexOf(d) > 0 && partList.indexOf(d) < daysToSkip + 1);
 		return partList.stream();
