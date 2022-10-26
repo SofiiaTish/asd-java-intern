@@ -13,7 +13,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class CalendarServiceImpl implements IsCalendarService {
 
@@ -61,7 +65,9 @@ public class CalendarServiceImpl implements IsCalendarService {
 			return date.getDayOfWeek()
 					.toString();
 		case WEEK_NUMBER:
-			return String.valueOf(date.get(ChronoField.ALIGNED_WEEK_OF_MONTH));
+			return String.valueOf((int) Math.ceil((date.get(ChronoField.DAY_OF_YEAR) + LocalDate.ofYearDay(date.getYear(), 1)
+					.getDayOfWeek()
+					.getValue() - 1) / 7.0));
 		case MONTH:
 			return date.getMonth()
 					.toString();
@@ -77,29 +83,20 @@ public class CalendarServiceImpl implements IsCalendarService {
 			throw new DateTimeException("Wrong date");
 		}
 		String[] dateParts = dateString.split(" ");
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dMMMyyyy");
-		//0
-		dateParts[0] = dateParts[0].matches("\\d+[A-Za-z]+") ? dateParts[0].replace("[A-Za-z]+", "") : null;
-		int day;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yyyy", Locale.US);
+		dateParts[0] = dateParts[0].matches("\\d+\\D{2}") ? dateParts[0].replaceAll("\\D{2}", "") : null;
+		int year = dateParts[2].matches("\\d+") ? Integer.parseInt(dateParts[2]) : -1;
+		int day = -1;
 		if (dateParts[0] != null) {
 			day = Integer.parseInt(dateParts[0]);
-			if (day < 1 || day > 31) {
-				throw new DateTimeException("Wrong date");
-			}
 		}
-		//1
-		if (Arrays.stream(Month.values())
+		if ((day < 1 || day > 31) || (Arrays.stream(Month.values())
 				.noneMatch(month -> month.toString()
 						.substring(0, 3)
-						.equalsIgnoreCase(dateParts[1]))) {
+						.equalsIgnoreCase(dateParts[1]))) || (year < 1000 || year > 3000)) {
 			throw new DateTimeException("Wrong date");
 		}
-		//2
-		int year = dateParts[2].matches("\\d+") ? Integer.parseInt(dateParts[2]) : -1;
-		if (year < 1000 || year > 3000) {
-			throw new DateTimeException("Wrong date");
-		}
-		dateString = String.join("", dateParts);
+		dateString = String.join("-", dateParts);
 		return LocalDate.parse(dateString, formatter);
 	}
 
