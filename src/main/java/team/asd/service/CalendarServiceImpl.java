@@ -36,13 +36,11 @@ public class CalendarServiceImpl implements IsCalendarService {
 		if (StringUtils.isEmpty(stringDate)) {
 			return null;
 		}
-		LocalDate localDate;
 		try {
-			localDate = LocalDate.parse(stringDate, formatter);
+			return LocalDate.parse(stringDate, formatter);
 		} catch (DateTimeParseException e) {
 			return null;
 		}
-		return localDate;
 	}
 
 	@Override
