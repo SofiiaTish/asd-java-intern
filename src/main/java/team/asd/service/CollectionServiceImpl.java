@@ -19,8 +19,7 @@ public class CollectionServiceImpl implements IsCollectionService {
 
 	@Override
 	public List<Object> immutableList(Object... objects) {
-		return Stream.of(objects)
-				.collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+		return List.of(objects);
 	}
 
 	@Override
