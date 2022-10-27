@@ -83,6 +83,9 @@ public class CalendarServiceImpl implements IsCalendarService {
 			throw new DateTimeException("Wrong date");
 		}
 		String[] dateParts = dateString.split(" ");
+		if (dateParts.length < 3) {
+			throw new DateTimeException("Wrong date");
+		}
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yyyy", Locale.US);
 		dateParts[0] = dateParts[0].matches("\\d+\\D{2}") ? dateParts[0].replaceAll("\\D{2}", "") : null;
 		int year = dateParts[2].matches("\\d+") ? Integer.parseInt(dateParts[2]) : -1;
