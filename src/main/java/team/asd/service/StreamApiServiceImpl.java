@@ -2,6 +2,7 @@ package team.asd.service;
 
 import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -106,11 +107,9 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 	}
 
 	private boolean dateFilter(LocalDate current, LocalDate date, Integer skipper) {
-		if (current != null && date != null && skipper != null) {
-			if (current.isAfter(date) && skipper > 0) {
-				skipper--;
-				return false;
-			}
+		if (ObjectUtils.allNotNull(current, date, skipper) && (current.isAfter(date) && skipper > 0)) {
+			skipper--;
+			return false;
 		}
 		return true;
 	}
