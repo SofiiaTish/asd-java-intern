@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -53,8 +54,17 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 		return stringList.stream()
 				.filter(Objects::nonNull)
 				.filter(str -> str.matches("-?[0-9]+"))
-				.map(Integer::valueOf)
+				.map(this::checkStringNumber)
+				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
+	}
+
+	private Integer checkStringNumber(String string) {
+		try {
+			return Integer.valueOf(string);
+		} catch (NumberFormatException e) {
+			return null;
+		}
 	}
 
 	@Override
