@@ -51,8 +51,6 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 			return Collections.emptyList();
 		}
 		return stringList.stream()
-				.filter(Objects::nonNull)
-				.filter(str -> str.matches("-?[0-9]+"))
 				.map(this::checkStringNumber)
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
@@ -111,7 +109,10 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 		return listOfDates.stream()
 				.filter(Objects::nonNull)
 				.sorted()
-				.filter(current -> current.isAfter(date) || current.isEqual(date))
+				//.filter(current -> current.isAfter(date) || current.isEqual(date))
+				.skip(listOfDates.stream()
+						.filter(curr -> curr != null && curr.isBefore(date))
+						.count())
 				.filter(curr -> dateFilter(curr, date, daysToSkip));
 	}
 
