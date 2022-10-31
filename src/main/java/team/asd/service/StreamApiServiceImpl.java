@@ -106,22 +106,13 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 		if (CollectionUtils.isEmpty(listOfDates) || date == null || daysToSkip == null || daysToSkip < 0) {
 			return Stream.empty();
 		}
-		return listOfDates.stream()
+		listOfDates = listOfDates.stream()
 				.filter(Objects::nonNull)
 				.sorted()
-				//.filter(current -> current.isAfter(date) || current.isEqual(date))
-				.skip(listOfDates.stream()
-						.filter(curr -> curr != null && curr.isBefore(date))
-						.count())
-				.filter(curr -> dateFilter(curr, date, daysToSkip));
-	}
-
-	private boolean dateFilter(LocalDate current, LocalDate date, Integer skipper) {
-		if (ObjectUtils.allNotNull(current, date, skipper) && (current.isAfter(date) && skipper > 0)) {
-			skipper--;
-			return false;
-		}
-		return true;
+				.filter(current -> current.isAfter(date))
+				.skip(daysToSkip)
+				.collect(Collectors.toList());
+		return Stream.concat(Stream.of(date), listOfDates.stream());
 	}
 
 	@Override
