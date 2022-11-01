@@ -22,7 +22,7 @@ public class CollectionServiceTest {
 	private static final List<Object> listWIthDifferentObject = List.of("A", 1, 0.9, "CCC", "C", "AA");
 
 	private static Stream<IsCollectionService> defineServices() {
-		Reflections reflections = new Reflections("team.asd.service");
+		Reflections reflections = new Reflections("team.asd.tutorials.service");
 		Set<Class<? extends IsCollectionService>> classes = reflections.getSubTypesOf(serviceClass);
 		ServicesScannerUtils<IsCollectionService> servicesScanner = new ServicesScannerUtils<>();
 		return classes.stream().map(servicesScanner::defineServiceImplementations);

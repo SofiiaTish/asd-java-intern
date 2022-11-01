@@ -37,7 +37,7 @@ public class PersonServiceTest {
 	}
 
 	private static Stream<IsPersonService> defineServices() {
-		Reflections reflections = new Reflections("team.asd.service");
+		Reflections reflections = new Reflections("team.asd.tutorials.service");
 		Set<Class<? extends IsPersonService>> classes = reflections.getSubTypesOf(IsPersonService.class);
 		ServicesScannerUtils<IsPersonService> servicesScanner = new ServicesScannerUtils<>();
 		return classes.stream().map(servicesScanner::defineServiceImplementations);

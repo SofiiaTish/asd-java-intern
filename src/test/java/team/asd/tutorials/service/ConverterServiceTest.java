@@ -23,7 +23,7 @@ public class ConverterServiceTest {
 	private static final String STRING_VALUE = "19748";
 
 	private static Stream<IsConverterService> defineServices() {
-		Reflections reflections = new Reflections("team.asd.service");
+		Reflections reflections = new Reflections("team.asd.tutorials.service");
 		Set<Class<? extends IsConverterService>> classes = reflections.getSubTypesOf(serviceClass);
 		ServicesScannerUtils<IsConverterService> servicesScanner = new ServicesScannerUtils<>();
 		return classes.stream().map(servicesScanner::defineServiceImplementations);

@@ -32,7 +32,7 @@ public class StreamApiServiceTest {
 	private static final Random random = new Random();
 
 	private static Stream<IsStreamApiService> defineStreamApiServices() {
-		Reflections reflections = new Reflections("team.asd.service");
+		Reflections reflections = new Reflections("team.asd.tutorials.service");
 		Set<Class<? extends IsStreamApiService>> classes = reflections.getSubTypesOf(IsStreamApiService.class);
 		ServicesScannerUtils<IsStreamApiService> servicesScanner = new ServicesScannerUtils<>();
 		return classes.stream().map(servicesScanner::defineServiceImplementations);
