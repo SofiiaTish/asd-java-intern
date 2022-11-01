@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ProductServiceTest {
 
 	private static Stream<IsProductService> defineProductServices() {
-		Reflections reflections = new Reflections("team.asd.service");
+		Reflections reflections = new Reflections("team.asd.tutorials.service");
 		Set<Class<? extends IsProductService>> classes = reflections.getSubTypesOf(IsProductService.class);
 		ServicesScannerUtils<IsProductService> servicesScanner = new ServicesScannerUtils<>();
 		return classes.stream().map(servicesScanner::defineServiceImplementations);

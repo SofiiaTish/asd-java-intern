@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class PriceServiceTest {
 
 	private static Stream<IsPriceService> definePriceServices() {
-		Reflections reflections = new Reflections("team.asd.service");
+		Reflections reflections = new Reflections("team.asd.tutorials.service");
 		Set<Class<? extends IsPriceService>> classes = reflections.getSubTypesOf(IsPriceService.class);
 		ServicesScannerUtils<IsPriceService> servicesScanner = new ServicesScannerUtils<>();
 		return classes.stream()

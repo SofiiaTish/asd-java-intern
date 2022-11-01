@@ -26,7 +26,7 @@ class CalendarServiceTest {
 	private static final Class<IsCalendarService> serviceClass = IsCalendarService.class;
 
 	private static Stream<IsCalendarService> defineServices() {
-		Reflections reflections = new Reflections("team.asd.service");
+		Reflections reflections = new Reflections("team.asd.tutorials.service");
 		Set<Class<? extends IsCalendarService>> classes = reflections.getSubTypesOf(serviceClass);
 		ServicesScannerUtils<IsCalendarService> servicesScanner = new ServicesScannerUtils<>();
 		return classes.stream().map(servicesScanner::defineServiceImplementations);
