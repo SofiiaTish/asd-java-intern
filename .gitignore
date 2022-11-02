@@ -25,6 +25,8 @@ dist/
 target/
 dist/
 .mvn/
+mvnw
+mvnw.cmd
 
 # JetBrains IDE
 .idea/
