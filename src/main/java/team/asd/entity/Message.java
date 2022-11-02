@@ -1,4 +1,4 @@
-package team.asd;
+package team.asd.entity;
 
 import java.time.LocalDate;
 

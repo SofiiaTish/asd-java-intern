@@ -1,6 +1,7 @@
-package team.asd;
+package team.asd.controller;
 
 import org.springframework.web.bind.annotation.*;
+import team.asd.entity.Message;
 
 import java.time.LocalDate;
 
