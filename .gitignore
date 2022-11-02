@@ -24,6 +24,9 @@ dist/
 # Maven
 target/
 dist/
+.mvn/
+mvnw
+mvnw.cmd
 
 # JetBrains IDE
 .idea/
@@ -49,4 +52,8 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
+
+#Initializer
+mvnw
+mvnw.cmd
 
