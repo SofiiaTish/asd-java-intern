@@ -5,7 +5,11 @@ import team.asd.entity.Product;
 
 public class ProductService {
 
-    private ProductDao productDao;
+    private final ProductDao productDao;
+
+    public ProductService(ProductDao productDao) {
+        this.productDao = productDao;
+    }
 
     public Product readById(Integer id) {
         return productDao.findById(id);
