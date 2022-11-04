@@ -2,6 +2,8 @@ package team.asd.entity;
 
 import team.asd.constant.ProductState;
 
+import java.time.LocalDateTime;
+
 public class Product {
 
     private Integer productId;
@@ -13,6 +15,7 @@ public class Product {
     private Double longitude;
     private Double latitude;
     private String physicalAddress;
+    private LocalDateTime version;
 
     public Product() {
     }
@@ -38,6 +41,19 @@ public class Product {
         this.longitude = longitude;
         this.latitude = latitude;
         this.physicalAddress = physicalAddress;
+    }
+
+    public Product(Integer productId, Integer supplierId, String name, ProductState state, String currency, Integer guestsNumber, Double longitude, Double latitude, String physicalAddress, LocalDateTime version) {
+        this.productId = productId;
+        this.supplierId = supplierId;
+        this.name = name;
+        this.state = state;
+        this.currency = currency;
+        this.guestsNumber = guestsNumber;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.physicalAddress = physicalAddress;
+        this.version = version;
     }
 
     public Integer getProductId() {
@@ -110,5 +126,13 @@ public class Product {
 
     public void setPhysicalAddress(String physicalAddress) {
         this.physicalAddress = physicalAddress;
+    }
+
+    public LocalDateTime getVersion() {
+        return version;
+    }
+
+    public void setVersion(LocalDateTime version) {
+        this.version = version;
     }
 }
