@@ -1,10 +1,12 @@
 package team.asd.service;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.stereotype.Service;
 import team.asd.dao.ProductDao;
 import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
 
+@Service
 public class ProductService {
 
     private final ProductDao productDao;
