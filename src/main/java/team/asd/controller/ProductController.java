@@ -1,10 +1,13 @@
 package team.asd.controller;
 
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.asd.dao.ProductDao;
-import team.asd.entity.Product;
+import team.asd.dto.ProductDto;
+import team.asd.exception.ValidationException;
 import team.asd.service.ProductService;
+import team.asd.util.ConverterUtil;
 
 @RestController
 @RequestMapping(path = {"/product"})
@@ -17,22 +20,38 @@ public class ProductController {
     }
 
     @GetMapping(path = {"/{id}"})
-    public Product getProductById(@PathVariable Integer id) {
-        return productService.readById(id);
+    public ResponseEntity<Object> getProductById(@PathVariable Integer id) {
+        try {
+            return new ResponseEntity<>(productService.readById(id), HttpStatus.OK);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(path = {"/"})
-    public Product createProduct(@RequestBody Product product) {
-        return productService.createProduct(product);
+    public ResponseEntity<Object> createProduct(@RequestBody ProductDto productDto) {
+        try {
+            return new ResponseEntity<>(productService.createProduct(ConverterUtil.convertDtoToProduct(productDto)), HttpStatus.OK);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping(path = {"/"})
-    public Product updateProduct(@RequestBody Product product) {
-        return productService.updateProduct(product);
+    public ResponseEntity<Object> updateProduct(@RequestBody ProductDto productDto) {
+        try {
+            return new ResponseEntity<>(productService.updateProduct(ConverterUtil.convertDtoToProduct(productDto)), HttpStatus.OK);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public String deleteProductById(@PathVariable Integer id) {
-        return "Deleting: " + productService.deleteProduct(id);
+    public ResponseEntity<Object> deleteProductById(@PathVariable Integer id) {
+        try {
+            return new ResponseEntity<>(productService.deleteProduct(id), HttpStatus.OK);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

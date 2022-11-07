@@ -8,7 +8,7 @@ import team.asd.entity.Product;
 public class ProductDaoImpl implements ProductDao {
 
     @Override
-    public Product findById(Integer id) {
+    public Product readById(Integer id) {
         return getProduct();
     }
 
@@ -29,7 +29,7 @@ public class ProductDaoImpl implements ProductDao {
 
     private Product getProduct() {
         Product expectedProduct = new Product();
-        expectedProduct.setProductId(1);
+        expectedProduct.setId(1);
         expectedProduct.setSupplierId(4);
         expectedProduct.setName("Expert");
         expectedProduct.setState(ProductState.Created);

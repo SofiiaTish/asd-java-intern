@@ -1,6 +1,7 @@
 package team.asd.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import team.asd.constant.ProductState;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class Product {
 
     private Integer id;

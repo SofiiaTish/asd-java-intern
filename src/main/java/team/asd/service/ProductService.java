@@ -3,8 +3,10 @@ package team.asd.service;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import team.asd.dao.ProductDao;
+import team.asd.dto.ProductDto;
 import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
+import team.asd.util.ConverterUtil;
 
 @Service
 public class ProductService {
@@ -15,19 +17,19 @@ public class ProductService {
         this.productDao = productDao;
     }
 
-    public Product readById(Integer id) {
+    public ProductDto readById(Integer id) {
         validId(id);
-        return productDao.readById(id);
+        return ConverterUtil.convertProductToDto(productDao.readById(id));
     }
 
-    public Product createProduct(Product product) {
+    public ProductDto createProduct(Product product) {
         validProduct(product, false);
-        return productDao.saveProduct(product);
+        return ConverterUtil.convertProductToDto(productDao.saveProduct(product));
     }
 
-    public Product updateProduct(Product product) {
+    public ProductDto updateProduct(Product product) {
         validProduct(product, true);
-        return productDao.updateProduct(product);
+        return ConverterUtil.convertProductToDto(productDao.updateProduct(product));
     }
 
     public Integer deleteProduct(Integer id) {
