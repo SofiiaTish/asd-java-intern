@@ -4,7 +4,7 @@ import team.asd.entity.Product;
 
 public interface ProductDao {
 
-    Product findById(Integer id);
+    Product readById(Integer id);
 
     Product saveProduct(Product product);
 

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import team.asd.constant.ProductState;
 import team.asd.dao.ProductDaoTestImpl;
+import team.asd.data.ProductDataTest;
 import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
 
@@ -12,20 +13,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ProductServiceTest {
 
-    private static ProductDaoTestImpl productDao;
     private static ProductService productService;
     private Product product;
 
     @BeforeAll
     public static void setUpClass() {
-        productDao = new ProductDaoTestImpl();
-        productService = new ProductService(productDao);
+        productService = new ProductService(new ProductDaoTestImpl());
     }
 
     @BeforeEach
     void setUp() {
         product = new Product();
-        product.setProductId(1);
+        product.setId(1);
         product.setSupplierId(1);
         product.setName("Curr");
         product.setState(ProductState.Created);
@@ -37,7 +36,7 @@ class ProductServiceTest {
         Integer searchId = 2;
         assertNull(productService.readById(null));
         assertNull(productService.readById(-1));
-        assertEquals(productDao.getExpectedProduct(), productService.readById(searchId));
+        assertEquals(ProductDataTest.getExpectedProduct(), productService.readById(searchId));
     }
 
     @Test
@@ -54,9 +53,9 @@ class ProductServiceTest {
         product.setState(ProductState.Initial);
         assertEquals(product, productService.updateProduct(product));
         assertNull(productService.updateProduct(null));
-        product.setProductId(null);
+        product.setId(null);
         assertThrows(ValidationException.class, () -> productService.updateProduct(product));
-        product.setProductId(1);
+        product.setId(1);
         product.setName(null);
         assertThrows(ValidationException.class, () -> productService.updateProduct(product));
     }
@@ -65,6 +64,7 @@ class ProductServiceTest {
     void testDeleteProduct() {
         assertNull(productService.deleteProduct(null));
         assertNull(productService.deleteProduct(-1));
-        assertEquals(product.getProductId(), productService.deleteProduct(1));
+        assertEquals(product.getId(), productService.deleteProduct(1));
     }
 }
+
