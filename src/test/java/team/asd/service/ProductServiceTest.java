@@ -34,14 +34,14 @@ class ProductServiceTest {
     @Test
     void testReadById() {
         Integer searchId = 2;
-        assertNull(productService.readById(null));
-        assertNull(productService.readById(-1));
+        assertThrows(ValidationException.class, () -> productService.readById(null));
+        assertThrows(ValidationException.class, () -> productService.readById(-1));
         assertEquals(ProductDataTest.getExpectedProduct(), productService.readById(searchId));
     }
 
     @Test
     void testCreateProduct() {
-        assertNull(productService.createProduct(null));
+        assertThrows(ValidationException.class, () -> productService.createProduct(null));
         assertEquals(product, productService.createProduct(product));
         assertThrows(ValidationException.class, () -> productService.createProduct(new Product()));
         product.setName(null);
@@ -52,7 +52,7 @@ class ProductServiceTest {
     void testUpdateProduct() {
         product.setState(ProductState.Initial);
         assertEquals(product, productService.updateProduct(product));
-        assertNull(productService.updateProduct(null));
+        assertThrows(ValidationException.class, () -> productService.updateProduct(null));
         product.setId(null);
         assertThrows(ValidationException.class, () -> productService.updateProduct(product));
         product.setId(1);
@@ -62,8 +62,8 @@ class ProductServiceTest {
 
     @Test
     void testDeleteProduct() {
-        assertNull(productService.deleteProduct(null));
-        assertNull(productService.deleteProduct(-1));
+        assertThrows(ValidationException.class, () -> productService.deleteProduct(null));
+        assertThrows(ValidationException.class, () -> productService.deleteProduct(-1));
         assertEquals(product.getId(), productService.deleteProduct(1));
     }
 }
