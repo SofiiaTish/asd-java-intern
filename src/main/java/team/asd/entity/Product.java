@@ -1,9 +1,14 @@
 package team.asd.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import team.asd.constant.ProductState;
 
 import java.time.LocalDateTime;
 
+
+@Data
+@AllArgsConstructor
 public class Product {
 
     private Integer productId;
@@ -43,96 +48,5 @@ public class Product {
         this.physicalAddress = physicalAddress;
     }
 
-    public Product(Integer productId, Integer supplierId, String name, ProductState state, String currency, Integer guestsNumber, Double longitude, Double latitude, String physicalAddress, LocalDateTime version) {
-        this.productId = productId;
-        this.supplierId = supplierId;
-        this.name = name;
-        this.state = state;
-        this.currency = currency;
-        this.guestsNumber = guestsNumber;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.physicalAddress = physicalAddress;
-        this.version = version;
-    }
 
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public Integer getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(Integer supplierId) {
-        this.supplierId = supplierId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ProductState getState() {
-        return state;
-    }
-
-    public void setState(ProductState state) {
-        this.state = state;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public Integer getGuestsNumber() {
-        return guestsNumber;
-    }
-
-    public void setGuestsNumber(Integer guestsNumber) {
-        this.guestsNumber = guestsNumber;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getPhysicalAddress() {
-        return physicalAddress;
-    }
-
-    public void setPhysicalAddress(String physicalAddress) {
-        this.physicalAddress = physicalAddress;
-    }
-
-    public LocalDateTime getVersion() {
-        return version;
-    }
-
-    public void setVersion(LocalDateTime version) {
-        this.version = version;
-    }
 }
