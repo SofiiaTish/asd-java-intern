@@ -16,36 +16,39 @@ public class ProductService {
     }
 
     public Product readById(Integer id) {
-        if (id == null || id < 1) {
-            return null;
-        }
-        return productDao.findById(id);
+        validId(id);
+        return productDao.readById(id);
     }
 
     public Product createProduct(Product product) {
-        if (product == null) {
-            return null;
-        }
-        if (ObjectUtils.anyNull(product.getSupplierId(), product.getName(), product.getCurrency())) {
-            throw new ValidationException("Required field is null");
-        }
+        validProduct(product, false);
         return productDao.saveProduct(product);
     }
 
     public Product updateProduct(Product product) {
-        if (product == null) {
-            return null;
-        }
-        if (ObjectUtils.anyNull(product.getProductId(), product.getSupplierId(), product.getName(), product.getCurrency())) {
-            throw new ValidationException("Required field is null");
-        }
+        validProduct(product, true);
         return productDao.updateProduct(product);
     }
 
     public Integer deleteProduct(Integer id) {
-        if (id == null || id < 1) {
-            return null;
-        }
+        validId(id);
         return productDao.deleteProduct(id);
+    }
+
+    public void validId(Integer id) {
+        if (id == null || id < 1) {
+            throw new ValidationException("Id is not valid");
+        }
+    }
+
+    public void validProduct(Product product, boolean updatable) {
+        if (product == null) {
+            throw new ValidationException("Product is null");
+        }
+        if (updatable && ObjectUtils.anyNull(product.getId())) {
+            throw new ValidationException("Id field is null");
+        } else if (ObjectUtils.anyNull(product.getSupplierId(), product.getName(), product.getCurrency())) {
+            throw new ValidationException("Required field is null");
+        }
     }
 }

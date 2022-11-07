@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Product {
 
-    private Integer productId;
+    private Integer id;
     private Integer supplierId; //relation to party record
     private String name;
     private ProductState state;
@@ -36,8 +36,8 @@ public class Product {
         this.physicalAddress = physicalAddress;
     }
 
-    public Product(Integer productId, Integer supplierId, String name, ProductState state, String currency, Integer guestsNumber, Double longitude, Double latitude, String physicalAddress) {
-        this.productId = productId;
+    public Product(Integer id, Integer supplierId, String name, ProductState state, String currency, Integer guestsNumber, Double longitude, Double latitude, String physicalAddress) {
+        this.id = id;
         this.supplierId = supplierId;
         this.name = name;
         this.state = state;
@@ -48,5 +48,5 @@ public class Product {
         this.physicalAddress = physicalAddress;
     }
 
-
 }
+
