@@ -8,6 +8,7 @@ import team.asd.dao.ProductDaoTestImpl;
 import team.asd.data.ProductDataTest;
 import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
+import team.asd.util.ConverterUtil;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,13 +37,13 @@ class ProductServiceTest {
         Integer searchId = 2;
         assertThrows(ValidationException.class, () -> productService.readById(null));
         assertThrows(ValidationException.class, () -> productService.readById(-1));
-        assertEquals(ProductDataTest.getExpectedProduct(), productService.readById(searchId));
+        assertEquals(ConverterUtil.convertProductToDto(ProductDataTest.getExpectedProduct()), productService.readById(searchId));
     }
 
     @Test
     void testCreateProduct() {
         assertThrows(ValidationException.class, () -> productService.createProduct(null));
-        assertEquals(product, productService.createProduct(product));
+        assertEquals(ConverterUtil.convertProductToDto(product), productService.createProduct(product));
         assertThrows(ValidationException.class, () -> productService.createProduct(new Product()));
         product.setName(null);
         assertThrows(ValidationException.class, () -> productService.createProduct(product));
@@ -51,7 +52,7 @@ class ProductServiceTest {
     @Test
     void testUpdateProduct() {
         product.setState(ProductState.Initial);
-        assertEquals(product, productService.updateProduct(product));
+        assertEquals(ConverterUtil.convertProductToDto(product), productService.updateProduct(product));
         assertThrows(ValidationException.class, () -> productService.updateProduct(null));
         product.setId(null);
         assertThrows(ValidationException.class, () -> productService.updateProduct(product));

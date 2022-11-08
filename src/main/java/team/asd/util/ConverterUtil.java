@@ -24,14 +24,14 @@ public class ConverterUtil {
         try {
             product.setState(ProductState.valueOf(productDto.getState()));
         } catch (NullPointerException e3) {
-            e3.printStackTrace();
+            product.setState(null);
         } catch (IllegalArgumentException e1) {
             throw new ValidationException("Invalid state of product");
         }
         try {
             product.setVersion(LocalDateTime.parse(productDto.getVersion()));
         } catch (NullPointerException e3) {
-            e3.printStackTrace();
+            product.setVersion(null);
         } catch (DateTimeParseException e2) {
             throw new ValidationException("Invalid format of version");
         }
