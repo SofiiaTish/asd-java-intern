@@ -1,9 +1,9 @@
 package team.asd.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import team.asd.dao.ProductDao;
 import team.asd.dto.ProductDto;
 import team.asd.exception.ValidationException;
 import team.asd.service.ProductService;
@@ -15,8 +15,8 @@ public class ProductController {
 
     private final ProductService productService;
 
-    public ProductController(ProductDao productDao) {
-        productService = new ProductService(productDao);
+    public ProductController(@Autowired ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping(path = {"/{id}"})

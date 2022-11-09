@@ -1,6 +1,7 @@
 package team.asd.service;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.asd.dao.ProductDao;
 import team.asd.dto.ProductDto;
@@ -13,7 +14,7 @@ public class ProductService {
 
     private final ProductDao productDao;
 
-    public ProductService(ProductDao productDao) {
+    public ProductService(@Autowired ProductDao productDao) {
         this.productDao = productDao;
     }
 
