@@ -18,19 +18,19 @@ public class ProductService {
         this.productDao = productDao;
     }
 
-    public ProductDto readById(Integer id) {
+    public Product readById(Integer id) {
         validId(id);
-        return ConverterUtil.convertProductToDto(productDao.readById(id));
+        return productDao.readById(id);
     }
 
-    public ProductDto createProduct(Product product) {
+    public Product createProduct(Product product) {
         validProduct(product, false);
-        return ConverterUtil.convertProductToDto(productDao.saveProduct(product));
+        return productDao.saveProduct(product);
     }
 
-    public ProductDto updateProduct(Product product) {
+    public Product updateProduct(Product product) {
         validProduct(product, true);
-        return ConverterUtil.convertProductToDto(productDao.updateProduct(product));
+        return productDao.updateProduct(product);
     }
 
     public Integer deleteProduct(Integer id) {
