@@ -5,7 +5,7 @@
 
 <mapper namespace="team.asd.mapper.TestMapper">
     <insert id="insertValue">
-
+        insert into test(value) values(#{value})
     </insert>
 
 </mapper>
