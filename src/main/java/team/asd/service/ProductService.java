@@ -1,15 +1,20 @@
 package team.asd.service;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import team.asd.dao.ProductDao;
+import team.asd.dto.ProductDto;
 import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
+import team.asd.util.ConverterUtil;
 
+@Service
 public class ProductService {
 
     private final ProductDao productDao;
 
-    public ProductService(ProductDao productDao) {
+    public ProductService(@Autowired ProductDao productDao) {
         this.productDao = productDao;
     }
 
