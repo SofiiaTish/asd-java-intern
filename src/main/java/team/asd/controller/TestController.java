@@ -12,7 +12,7 @@ public class TestController {
     private final String message = "Test message from Spring Boot Application!";
 
     /*public TestController(@Autowired TestMapper testMapper){
-        testMapper.insertValue("test again");
+        testMapper.insertValue("test1");
     }*/
 
     @GetMapping("/test/message")
