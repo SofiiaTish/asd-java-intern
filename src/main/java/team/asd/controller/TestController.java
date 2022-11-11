@@ -11,9 +11,9 @@ import java.time.LocalDate;
 public class TestController {
     private final String message = "Test message from Spring Boot Application!";
 
-    /*public TestController(@Autowired TestMapper testMapper){
-        testMapper.insertValue("test1");
-    }*/
+    public TestController(@Autowired TestMapper testMapper){
+        //testMapper.insertValue("test1");
+    }
 
     @GetMapping("/test/message")
     public Message message() {
