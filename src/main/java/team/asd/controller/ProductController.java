@@ -5,9 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.asd.dto.ProductDto;
-import team.asd.exception.ValidationException;
 import team.asd.service.ProductService;
 import team.asd.util.ConverterUtil;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = {"/product"})
@@ -21,37 +22,21 @@ public class ProductController {
 
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<Object> getProductById(@PathVariable Integer id) {
-        try {
-            return new ResponseEntity<>(ConverterUtil.convertProductToDto(productService.readById(id)), HttpStatus.OK);
-        } catch (ValidationException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(ConverterUtil.convertProductToDto(productService.readById(id)), HttpStatus.OK);
     }
 
     @PostMapping(path = {"/"})
-    public ResponseEntity<Object> createProduct(@RequestBody ProductDto productDto) {
-        try {
-            return new ResponseEntity<>(ConverterUtil.convertProductToDto(productService.createProduct(ConverterUtil.convertDtoToProduct(productDto))), HttpStatus.OK);
-        } catch (ValidationException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Object> createProduct(@RequestBody @Valid ProductDto productDto) {
+        return new ResponseEntity<>(ConverterUtil.convertProductToDto(productService.createProduct(ConverterUtil.convertDtoToProduct(productDto))), HttpStatus.OK);
     }
 
     @PutMapping(path = {"/"})
-    public ResponseEntity<Object> updateProduct(@RequestBody ProductDto productDto) {
-        try {
-            return new ResponseEntity<>(ConverterUtil.convertProductToDto(productService.updateProduct(ConverterUtil.convertDtoToProduct(productDto))), HttpStatus.OK);
-        } catch (ValidationException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Object> updateProduct(@RequestBody @Valid ProductDto productDto) {
+        return new ResponseEntity<>(ConverterUtil.convertProductToDto(productService.updateProduct(ConverterUtil.convertDtoToProduct(productDto))), HttpStatus.OK);
     }
 
     @DeleteMapping(path = {"/{id}"})
     public ResponseEntity<Object> deleteProductById(@PathVariable Integer id) {
-        try {
-            return new ResponseEntity<>(productService.deleteProduct(id), HttpStatus.OK);
-        } catch (ValidationException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(productService.deleteProduct(id), HttpStatus.OK);
     }
 }

@@ -4,10 +4,8 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.asd.dao.ProductDao;
-import team.asd.dto.ProductDto;
 import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
-import team.asd.util.ConverterUtil;
 
 @Service
 public class ProductService {
@@ -50,7 +48,7 @@ public class ProductService {
         }
         if (updatable && ObjectUtils.anyNull(product.getId())) {
             throw new ValidationException("Id field is null");
-        } else if (ObjectUtils.anyNull(product.getSupplierId(), product.getName(), product.getCurrency())) {
+        } else if (!updatable && ObjectUtils.anyNull(product.getSupplierId(), product.getName(), product.getCurrency())) {
             throw new ValidationException("Required field is null");
         }
     }
