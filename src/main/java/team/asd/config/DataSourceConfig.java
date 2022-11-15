@@ -15,10 +15,10 @@ import javax.sql.DataSource;
 @MapperScan({"team.asd.mapper"})
 public class DataSourceConfig {
 
-    @Bean
-    @Primary
-    @ConfigurationProperties(prefix = "spring.datasource")
-    public DataSource dataSource() {
-        return DataSourceBuilder.create().driverClassName("com.mysql.cj.jdbc.Driver").build();
-    }
+	@Bean
+	@Primary
+	@ConfigurationProperties(prefix = "spring.datasource")
+	public DataSource dataSource() {
+		return DataSourceBuilder.create().driverClassName("com.mysql.cj.jdbc.Driver").build();
+	}
 }

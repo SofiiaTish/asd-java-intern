@@ -3,21 +3,50 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="team.asd.mapper.ProductMapper">
-    <select id="readProductById" resultType="team.asd.entity.Product">
+
+    <resultMap id="product" type="team.asd.entity.Product">
+        <id property="id" column="id"/>
+        <result property="supplierId" column="supplier_id"/>
+        <result property="name" column="name"/>
+        <result property="state" column="state"/>
+        <result property="currency" column="currency"/>
+        <result property="guestsNumber" column="guests"/>
+        <result property="longitude" column="longitude"/>
+        <result property="latitude" column="latitude"/>
+        <result property="physicalAddress" column="physical_address"/>
+        <result property="version" column="version"/>
+    </resultMap>
+
+    <select id="readProductById" parameterType="java.lang.Integer" resultMap="product">
         select *
         from product
         where id = #{id}
     </select>
 
     <insert id="insertProduct" parameterType="team.asd.entity.Product" useGeneratedKeys="true" keyProperty="id">
-        insert into product values()
+        insert into product (supplier_id, name, state, currency, guests, longitude, latitude, physical_address)
+        values (#{supplierId}, #{name}, #{state}, #{currency}, #{guestsNumber}, longitude = #{longitude},
+                latitude = #{latitude}, #{physicalAddress})
     </insert>
 
-    <update id="updateProduct" parameterType="team.asd.entity.Product">
-        update product set name=#{product.name} where id=#{product.id}
+    <update id="updateProduct" parameterType="team.asd.entity.Product" useGeneratedKeys="true" keyProperty="id">
+        update product
+        <set>
+            <if test="supplierId != null">supplier_id=#{supplierId}</if>
+            <if test="name != null">name=#{name}</if>
+            <if test="state != null">state=#{state}</if>
+            <if test="currency != null">currency=#{currency}</if>
+            <if test="guestsNumber != null">guests=#{guestsNumber}</if>
+            <if test="longitude != null">longitude=#{longitude}</if>
+            <if test="latitude != null">latitude=#{latitude}</if>
+            <if test="physicalAddress != null">physical_address=#{physicalAddress}</if>
+        </set>
+        where id = #{id}
     </update>
 
-    <delete id="deleteProduct">
-
+    <delete id="deleteProduct" parameterType="int">
+        update product
+        set state='Final'
+        where id = #{id}
     </delete>
 </mapper>
