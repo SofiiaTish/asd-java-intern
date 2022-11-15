@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.asd.mapper.ProductMapper">
+    <select id="readProductById" resultType="team.asd.entity.Product">
+        select *
+        from product
+        where id = #{id}
+    </select>
+
+    <insert id="insertProduct" parameterType="team.asd.entity.Product" useGeneratedKeys="true" keyProperty="id">
+        insert into product values()
+    </insert>
+
+    <update id="updateProduct" parameterType="team.asd.entity.Product">
+        update product set name=#{product.name} where id=#{product.id}
+    </update>
+
+    <delete id="deleteProduct">
+
+    </delete>
+</mapper>
