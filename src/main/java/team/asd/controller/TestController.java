@@ -6,10 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 import team.asd.entity.Message;
 import team.asd.mapper.TestMapper;
 
@@ -38,6 +34,7 @@ public class TestController {
 			return new Message(LocalDate.now(), "Error - " + e.getMessage());
 		}
 	}
+
 	@PutMapping("/test/message")
 	public Message messageInsert(@RequestBody String testMessage) {
 		try {
