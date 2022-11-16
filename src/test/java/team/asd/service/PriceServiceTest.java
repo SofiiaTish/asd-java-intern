@@ -5,9 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import team.asd.constant.PriceState;
 import team.asd.dao.PriceDaoTestImpl;
-import team.asd.dao.ProductDaoTestImpl;
 import team.asd.data.PriceDataTest;
 import team.asd.entity.Price;
+import team.asd.exception.ValidationException;
 
 import java.time.Instant;
 import java.util.Date;
@@ -41,18 +41,39 @@ class PriceServiceTest {
 	}
 
 	@Test
-	void readById() {
+	void testReadById() {
+		assertEquals(PriceDataTest.getExpectedPrice(), priceService.readById(1));
+		assertThrows(ValidationException.class, () -> priceService.readById(-1));
+		assertThrows(ValidationException.class, () -> priceService.readById(null));
 	}
 
 	@Test
-	void createPrice() {
+	void testCreatePrice() {
+		assertEquals(price, priceService.createPrice(price));
+		assertThrows(ValidationException.class, () -> priceService.createPrice(null));
+		assertThrows(ValidationException.class, () -> priceService.createPrice(new Price()));
+		price.setName(null);
+		assertThrows(ValidationException.class, () -> priceService.createPrice(price));
 	}
 
 	@Test
-	void updatePrice() {
+	void testUpdatePrice() {
+		price.setState(PriceState.Created);
+		assertEquals(price, priceService.updatePrice(price));
+		price.setValue(null);
+		price.setCurrency(null);
+		assertEquals(price, priceService.updatePrice(price));
+		assertThrows(ValidationException.class, () -> priceService.updatePrice(null));
+		assertThrows(ValidationException.class, () -> priceService.updatePrice(new Price()));
+		price.setId(null);
+		price.setCurrency("hrn");
+		assertThrows(ValidationException.class, () -> priceService.updatePrice(price));
 	}
 
 	@Test
-	void deletePrice() {
+	void testDeletePrice() {
+		assertEquals(1, priceService.deletePrice(1));
+		assertThrows(ValidationException.class, () -> priceService.deletePrice(-1));
+		assertThrows(ValidationException.class, () -> priceService.deletePrice(null));
 	}
 }

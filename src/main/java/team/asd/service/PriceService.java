@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.asd.dao.PriceDao;
 import team.asd.entity.Price;
-import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
 
 @Service
@@ -50,9 +49,9 @@ public class PriceService {
 		if (updatable && ObjectUtils.anyNull(price.getId())) {
 			throw new ValidationException("Id field is null");
 		} else if (!updatable && ObjectUtils.anyNull(
-				price.getEntityType(), price.getEntityId(), price.getName(),
-				price.getFromDate(), price.getToDate(), price.getValue(),
-				price.getCurrency()
+				price.getId(), price.getEntityType(), price.getEntityId(),
+				price.getName(), price.getFromDate(), price.getToDate(),
+				price.getValue(), price.getCurrency()
 		)) {
 			throw new ValidationException("Required field is null");
 		}
