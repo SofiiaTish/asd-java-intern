@@ -58,7 +58,7 @@ class ProductServiceTest {
 		assertThrows(ValidationException.class, () -> productService.updateProduct(product));
 		product.setId(1);
 		product.setName(null);
-		assertThrows(ValidationException.class, () -> productService.updateProduct(product));
+		assertEquals(product, productService.updateProduct(product));
 	}
 
 	@Test

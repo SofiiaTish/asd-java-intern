@@ -17,8 +17,7 @@ public class TestController {
 	private final TestMapper testMapper;
 
 	public TestController(@Autowired TestMapper testMapper) {
-		this.testMapper = testMapper;
-		//testMapper.insertValue("test1");
+		this.testMapper = testMapper;//testMapper.insertValue("test1");
 	}
 
 	@GetMapping("/test/message")
@@ -35,6 +34,7 @@ public class TestController {
 			return new Message(LocalDate.now(), "Error - " + e.getMessage());
 		}
 	}
+
 	@PutMapping("/test/message")
 	public Message messageInsert(@RequestBody String testMessage) {
 		try {

@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import team.asd.constant.ProductState;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -21,7 +21,8 @@ public class Product {
 	private Double longitude;
 	private Double latitude;
 	private String physicalAddress;
-	private LocalDateTime version;
+
+	private Date version;
 
 	public Product() {
 	}

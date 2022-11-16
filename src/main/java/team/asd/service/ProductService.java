@@ -48,7 +48,7 @@ public class ProductService {
 		}
 		if (updatable && ObjectUtils.anyNull(product.getId())) {
 			throw new ValidationException("Id field is null");
-		} else if (ObjectUtils.anyNull(product.getSupplierId(), product.getName(), product.getCurrency())) {
+		} else if (!updatable && ObjectUtils.anyNull(product.getSupplierId(), product.getName(), product.getCurrency())) {
 			throw new ValidationException("Required field is null");
 		}
 	}
