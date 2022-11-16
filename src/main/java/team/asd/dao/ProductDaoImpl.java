@@ -3,14 +3,13 @@ package team.asd.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import team.asd.constant.ProductState;
 import team.asd.entity.Product;
 import team.asd.mapper.ProductMapper;
 
 @Repository
 public class ProductDaoImpl implements ProductDao {
 
-	private ProductMapper productMapper;
+	private final ProductMapper productMapper;
 
 	public ProductDaoImpl(@Autowired ProductMapper productMapper) {
 		this.productMapper = productMapper;
@@ -41,15 +40,5 @@ public class ProductDaoImpl implements ProductDao {
 	public Integer deleteProduct(Integer id) {
 		productMapper.deleteProduct(id);
 		return id;
-	}
-
-	private Product getProduct() {
-		Product expectedProduct = new Product();
-		expectedProduct.setId(1);
-		expectedProduct.setSupplierId(4);
-		expectedProduct.setName("Expert");
-		expectedProduct.setState(ProductState.Created);
-		expectedProduct.setCurrency("USD");
-		return expectedProduct;
 	}
 }

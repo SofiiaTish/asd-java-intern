@@ -4,47 +4,52 @@
 
 <mapper namespace="team.asd.mapper.ProductMapper">
 
-    <resultMap id="product" type="team.asd.entity.Product">
-        <id property="id" column="id"/>
-        <result property="supplierId" column="supplier_id"/>
-        <result property="name" column="name"/>
-        <result property="state" column="state"/>
-        <result property="currency" column="currency"/>
-        <result property="guestsNumber" column="guests"/>
-        <result property="longitude" column="longitude"/>
-        <result property="latitude" column="latitude"/>
-        <result property="physicalAddress" column="physical_address"/>
-        <result property="version" column="version"/>
+    <resultMap id="productMap" type="team.asd.entity.Product">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="supplierId" column="supplier_id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="VARCHAR"
+                typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result property="currency" column="currency" jdbcType="VARCHAR"/>
+        <result property="guestsNumber" column="guests" jdbcType="INTEGER"/>
+        <result property="longitude" column="longitude" jdbcType="DOUBLE"/>
+        <result property="latitude" column="latitude" jdbcType="DOUBLE"/>
+        <result property="physicalAddress" column="physical_address" jdbcType="VARCHAR"/>
+        <result property="version" column="version" jdbcType="TIMESTAMP"
+                typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
     </resultMap>
 
-    <select id="readProductById" parameterType="java.lang.Integer" resultMap="product">
+    <select id="readProductById" parameterType="java.lang.Integer" resultMap="productMap">
         select *
         from product
         where id = #{id}
     </select>
 
     <insert id="insertProduct" parameterType="team.asd.entity.Product" useGeneratedKeys="true" keyProperty="id">
-        insert into product (supplier_id, name, state, currency, guests, longitude, latitude, physical_address)
-        values (#{supplierId}, #{name}, #{state}, #{currency}, #{guestsNumber}, longitude = #{longitude},
-                latitude = #{latitude}, #{physicalAddress})
+        insert into product (supplier_id, name <if test="state != null">, state</if>, currency,
+        <if test="guestsNumber !=null">guests,</if>
+        longitude, latitude, physical_address)
+        values (#{supplierId}, #{name},
+        <if test="state != null">#{state},</if>
+        #{currency}, <if test="guestsNumber !=null">#{guestsNumber},</if> #{longitude},#{latitude}, #{physicalAddress})
     </insert>
 
     <update id="updateProduct" parameterType="team.asd.entity.Product" useGeneratedKeys="true" keyProperty="id">
         update product
         <set>
-            <if test="supplierId != null">supplier_id=#{supplierId}</if>
-            <if test="name != null">name=#{name}</if>
-            <if test="state != null">state=#{state}</if>
-            <if test="currency != null">currency=#{currency}</if>
-            <if test="guestsNumber != null">guests=#{guestsNumber}</if>
-            <if test="longitude != null">longitude=#{longitude}</if>
-            <if test="latitude != null">latitude=#{latitude}</if>
+            <if test="supplierId != null">supplier_id=#{supplierId},</if>
+            <if test="name != null">name=#{name},</if>
+            <if test="state != null">state=#{state},</if>
+            <if test="currency != null">currency=#{currency},</if>
+            <if test="guestsNumber != null">guests=#{guestsNumber},</if>
+            <if test="longitude != null">longitude=#{longitude},</if>
+            <if test="latitude != null">latitude=#{latitude},</if>
             <if test="physicalAddress != null">physical_address=#{physicalAddress}</if>
         </set>
         where id = #{id}
     </update>
 
-    <delete id="deleteProduct" parameterType="int">
+    <delete id="deleteProduct" parameterType="java.lang.Integer">
         update product
         set state='Final'
         where id = #{id}

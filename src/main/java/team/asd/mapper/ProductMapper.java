@@ -7,9 +7,9 @@ import team.asd.entity.Product;
 public interface ProductMapper {
 	Product readProductById(Integer id);
 
-	Product insertProduct(Product product);
+	void insertProduct(Product product);
 
-	Product updateProduct(Product product);
+	void updateProduct(Product product);
 
-	Integer deleteProduct(Integer id);
+	void deleteProduct(Integer id);
 }
