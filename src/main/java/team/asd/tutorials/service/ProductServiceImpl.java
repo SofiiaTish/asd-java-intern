@@ -22,9 +22,7 @@ public class ProductServiceImpl implements IsProductService {
 			return Collections.emptyList();
 		}
 		checkListContainsNull(productList);
-		return productList.stream()
-				.map(IsProduct::getName)
-				.collect(Collectors.toList());
+		return productList.stream().map(IsProduct::getName).collect(Collectors.toList());
 	}
 
 	@Override
@@ -32,18 +30,14 @@ public class ProductServiceImpl implements IsProductService {
 		if (CollectionUtils.isEmpty(productList)) {
 			return Collections.emptyList();
 		}
-		return productList.stream()
-				.filter(Objects::nonNull)
-				.filter(p -> p.getState() == ProductState.Created)
-				.collect(Collectors.toList());
+		return productList.stream().filter(Objects::nonNull).filter(p -> p.getState() == ProductState.Created).collect(Collectors.toList());
 	}
 
 	@Override
 	@NonNull
 	public Map<ProductState, Integer> calculateProductCountByState(List<IsProduct> productList) throws WrongProductException {
 		checkListContainsNull(productList);
-		return Arrays.stream(ProductState.values())
-				.map(e -> new AbstractMap.SimpleEntry<>(e, countProductsWithState(e, productList)))
+		return Arrays.stream(ProductState.values()).map(e -> new AbstractMap.SimpleEntry<>(e, countProductsWithState(e, productList)))
 				.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 	}
 
@@ -55,9 +49,7 @@ public class ProductServiceImpl implements IsProductService {
 
 	private Integer countProductsWithState(ProductState ps, List<IsProduct> list) {
 		if (CollectionUtils.isNotEmpty(list))
-			return (int) list.stream()
-					.filter(p -> p.getState() == ps)
-					.count();
+			return (int) list.stream().filter(p -> p.getState() == ps).count();
 		return 0;
 	}
 
@@ -73,9 +65,7 @@ public class ProductServiceImpl implements IsProductService {
 		if (product.getName() == null && product.getState() == null) {
 			return productList;
 		}
-		return productList.stream()
-				.filter(p -> product.getState() == null || p.getState() == product.getState())
-				.filter(p -> product.getName() == null || p.getName().equals(product.getName()))
-				.collect(Collectors.toList());
+		return productList.stream().filter(p -> product.getState() == null || p.getState() == product.getState())
+				.filter(p -> product.getName() == null || p.getName().equals(product.getName())).collect(Collectors.toList());
 	}
 }

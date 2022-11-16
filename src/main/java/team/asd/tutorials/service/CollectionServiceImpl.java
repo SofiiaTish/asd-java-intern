@@ -13,8 +13,7 @@ public class CollectionServiceImpl implements IsCollectionService {
 
 	@Override
 	public List<Object> unmodifiableList(Object... objects) {
-		return Stream.of(objects)
-				.collect(Collectors.toUnmodifiableList());
+		return Stream.of(objects).collect(Collectors.toUnmodifiableList());
 	}
 
 	@Override

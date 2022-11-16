@@ -7,7 +7,6 @@ import team.asd.constant.ProductState;
 
 import java.time.LocalDateTime;
 
-
 @Data
 @AllArgsConstructor
 @Builder
@@ -27,7 +26,8 @@ public class Product {
 	public Product() {
 	}
 
-	public Product(Integer supplierId, String name, ProductState state, String currency, Integer guestsNumber, Double longitude, Double latitude, String physicalAddress) {
+	public Product(Integer supplierId, String name, ProductState state, String currency, Integer guestsNumber, Double longitude, Double latitude,
+			String physicalAddress) {
 		this.supplierId = supplierId;
 		this.name = name;
 		this.state = state;
@@ -38,7 +38,8 @@ public class Product {
 		this.physicalAddress = physicalAddress;
 	}
 
-	public Product(Integer id, Integer supplierId, String name, ProductState state, String currency, Integer guestsNumber, Double longitude, Double latitude, String physicalAddress) {
+	public Product(Integer id, Integer supplierId, String name, ProductState state, String currency, Integer guestsNumber, Double longitude, Double latitude,
+			String physicalAddress) {
 		this.id = id;
 		this.supplierId = supplierId;
 		this.name = name;

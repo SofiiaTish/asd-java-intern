@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class CollectionServiceTest {
 
 	private static final Class<IsCollectionService> serviceClass = IsCollectionService.class;
-	private static final List<Object> listWIthStrings = List.of("A", "BB", "CCC",  "A");
+	private static final List<Object> listWIthStrings = List.of("A", "BB", "CCC", "A");
 	private static final List<Object> listWIthDifferentObject = List.of("A", 1, 0.9, "CCC", "C", "AA");
 
 	private static Stream<IsCollectionService> defineServices() {

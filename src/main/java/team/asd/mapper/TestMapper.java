@@ -4,5 +4,5 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface TestMapper {
-    void insertValue(String value);
+	void insertValue(String value);
 }
