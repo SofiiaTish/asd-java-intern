@@ -22,8 +22,7 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 		if (CollectionUtils.isEmpty(collection)) {
 			return Stream.empty();
 		}
-		return collection.stream()
-				.filter(Objects::nonNull);
+		return collection.stream().filter(Objects::nonNull);
 	}
 
 	@Override
@@ -38,9 +37,7 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 			end = temp;
 		}
 
-		return IntStream.rangeClosed(start, end)
-				.boxed()
-				.collect(Collectors.toList());
+		return IntStream.rangeClosed(start, end).boxed().collect(Collectors.toList());
 	}
 
 	@Override
@@ -49,10 +46,7 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 		if (CollectionUtils.isEmpty(stringList)) {
 			return Collections.emptyList();
 		}
-		return stringList.stream()
-				.map(this::checkStringNumber)
-				.filter(Objects::nonNull)
-				.collect(Collectors.toList());
+		return stringList.stream().map(this::checkStringNumber).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
 	private Integer checkStringNumber(String string) {
@@ -69,8 +63,7 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 		if (StringUtils.isEmpty(value)) {
 			return IntStream.empty();
 		}
-		return value.chars()
-				.filter(c -> (c >= 'A' && c <= 'z') || (c >= '0' && c <= '9'));
+		return value.chars().filter(c -> (c >= 'A' && c <= 'z') || (c >= '0' && c <= '9'));
 	}
 
 	@Override
@@ -79,13 +72,10 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 		if (values == null) {
 			throw new NullPointerException();
 		}
-		if (CollectionUtils.isEmpty(values) || values.stream()
-				.allMatch(Objects::isNull)) {
+		if (CollectionUtils.isEmpty(values) || values.stream().allMatch(Objects::isNull)) {
 			return BigDecimal.ZERO;
 		}
-		return values.stream()
-				.filter(Objects::nonNull)
-				.reduce(BigDecimal.ZERO, BigDecimal::add);
+		return values.stream().filter(Objects::nonNull).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
 	@Override
@@ -94,9 +84,7 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 		if (CollectionUtils.isEmpty(listOfDates)) {
 			return Stream.empty();
 		}
-		return listOfDates.stream()
-				.filter(Objects::nonNull)
-				.sorted();
+		return listOfDates.stream().filter(Objects::nonNull).sorted();
 	}
 
 	@Override
@@ -105,11 +93,7 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 		if (CollectionUtils.isEmpty(listOfDates) || date == null || daysToSkip == null || daysToSkip < 0) {
 			return Stream.empty();
 		}
-		listOfDates = listOfDates.stream()
-				.filter(Objects::nonNull)
-				.sorted()
-				.filter(current -> current.isAfter(date))
-				.skip(daysToSkip)
+		listOfDates = listOfDates.stream().filter(Objects::nonNull).sorted().filter(current -> current.isAfter(date)).skip(daysToSkip)
 				.collect(Collectors.toList());
 		return Stream.concat(Stream.of(date), listOfDates.stream());
 	}
@@ -120,9 +104,7 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 		if (lists.length == 0) {
 			return Collections.emptyList();
 		}
-		return Stream.of(lists)
-				.flatMap(Collection::stream)
-				.collect(Collectors.toList());
+		return Stream.of(lists).flatMap(Collection::stream).collect(Collectors.toList());
 	}
 
 	@Override
@@ -131,8 +113,6 @@ public class StreamApiServiceImpl implements IsStreamApiService {
 		if (CollectionUtils.isEmpty(listWithDuplicates)) {
 			return Collections.emptyList();
 		}
-		return listWithDuplicates.stream()
-				.distinct()
-				.collect(Collectors.toList());
+		return listWithDuplicates.stream().distinct().collect(Collectors.toList());
 	}
 }

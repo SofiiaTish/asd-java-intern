@@ -17,8 +17,7 @@ public interface IsProductService {
 	 * @return a list of product names
 	 * @throws WrongProductException in case when wrong product was provided
 	 */
-	@NonNull
-	List<String> defineProductNames(List<IsProduct> productList) throws WrongProductException;
+	@NonNull List<String> defineProductNames(List<IsProduct> productList) throws WrongProductException;
 
 	/**
 	 * Filters a list of product items and return a list of Created ones.
@@ -36,8 +35,7 @@ public interface IsProductService {
 	 * @throws WrongProductException in case when wrong product entity was provided
 	 * @see ProductState
 	 */
-	@NonNull
-	Map<ProductState, Integer> calculateProductCountByState(List<IsProduct> productList) throws WrongProductException;
+	@NonNull Map<ProductState, Integer> calculateProductCountByState(List<IsProduct> productList) throws WrongProductException;
 
 	/**
 	 * Filters a list of product items by product name and state that provided in a separate object.
@@ -48,7 +46,6 @@ public interface IsProductService {
 	 * @return list of products that equals to provided product
 	 * @throws WrongProductException is provided object was null
 	 */
-	@NonNull
-	List<IsProduct> filterProductsByProvidedObject(List<IsProduct> productList, IsProduct product) throws WrongProductException;
+	@NonNull List<IsProduct> filterProductsByProvidedObject(List<IsProduct> productList, IsProduct product) throws WrongProductException;
 
 }

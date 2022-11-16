@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Primary;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan({"team.asd"})
-@MapperScan({"team.asd.mapper"})
+@ComponentScan({ "team.asd" })
+@MapperScan({ "team.asd.mapper" })
 public class DataSourceConfig {
 
 	@Bean

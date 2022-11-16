@@ -1,5 +1,5 @@
 package team.asd.constant;
 
 public enum ProductState {
-    Created, Final, Suspended, Initial, Incomplete
+	Created, Final, Suspended, Initial, Incomplete
 }

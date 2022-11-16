@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ErrorInfo {
-    private int statusCode;
-    private String errorMessage;
+	private int statusCode;
+	private String errorMessage;
 }

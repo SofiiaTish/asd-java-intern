@@ -14,11 +14,10 @@ public interface IsPersonService {
 	 * If prefix wasn't provided, return personList without filtering.
 	 *
 	 * @param personList list of persons.
-	 * @param prefix value to find at the start of person name.
+	 * @param prefix     value to find at the start of person name.
 	 * @return list of persons where it's name starts with provided value.
 	 */
-	@NonNull
-	List<IsPerson> collectPersonsWithNameStartsWith(List<IsPerson> personList, String prefix);
+	@NonNull List<IsPerson> collectPersonsWithNameStartsWith(List<IsPerson> personList, String prefix);
 
 	/**
 	 * Groups persons by age. Returns an empty map if no person was provided. Filters out persons with wrong age (negative or null)
@@ -26,8 +25,7 @@ public interface IsPersonService {
 	 * @param personList with person objects.
 	 * @return a map with persons as value and age value as a key.
 	 */
-	@NonNull
-	Map<Integer, List<IsPerson>> collectPersonsByAge(List<IsPerson> personList);
+	@NonNull Map<Integer, List<IsPerson>> collectPersonsByAge(List<IsPerson> personList);
 
 	/**
 	 * Calculates an average age for provided persons.
@@ -35,8 +33,7 @@ public interface IsPersonService {
 	 * @param personList with person objects.
 	 * @return average age amount or zero if no correct person was provided.
 	 */
-	@NonNull
-	Double calculateAverageAge(List<IsPerson> personList);
+	@NonNull Double calculateAverageAge(List<IsPerson> personList);
 
 	/**
 	 * Collect statistic for provided persons list.
@@ -44,7 +41,6 @@ public interface IsPersonService {
 	 * @param personList with person objects.
 	 * @return sum and count statistic for persons list.
 	 */
-	@NonNull
-	IntSummaryStatistics sumAndCountAge(List<IsPerson> personList);
+	@NonNull IntSummaryStatistics sumAndCountAge(List<IsPerson> personList);
 
 }

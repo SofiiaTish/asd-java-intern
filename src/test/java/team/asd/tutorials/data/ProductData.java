@@ -1,6 +1,5 @@
 package team.asd.tutorials.data;
 
-
 import team.asd.tutorials.constants.ProductState;
 import team.asd.tutorials.entities.IsProduct;
 import team.asd.tutorials.entities.TestProduct;
