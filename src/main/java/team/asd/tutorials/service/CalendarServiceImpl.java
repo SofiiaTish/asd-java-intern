@@ -57,15 +57,12 @@ public class CalendarServiceImpl implements IsCalendarService {
 		}
 		switch (dateElement) {
 		case DAY_OF_WEEK:
-			return date.getDayOfWeek()
-					.toString();
+			return date.getDayOfWeek().toString();
 		case WEEK_NUMBER:
-			return String.valueOf((int) Math.ceil((date.get(ChronoField.DAY_OF_YEAR) + LocalDate.ofYearDay(date.getYear(), 1)
-					.getDayOfWeek()
-					.getValue() - 1) / 7.0));
+			return String.valueOf(
+					(int) Math.ceil((date.get(ChronoField.DAY_OF_YEAR) + LocalDate.ofYearDay(date.getYear(), 1).getDayOfWeek().getValue() - 1) / 7.0));
 		case MONTH:
-			return date.getMonth()
-					.toString();
+			return date.getMonth().toString();
 		case IS_LEAP_YEAR:
 			return date.isLeapYear() ? "Yes" : "No";
 		}
@@ -88,10 +85,8 @@ public class CalendarServiceImpl implements IsCalendarService {
 		if (dateParts[0] != null) {
 			day = Integer.parseInt(dateParts[0]);
 		}
-		if ((day < 1 || day > 31) || (Arrays.stream(Month.values())
-				.noneMatch(month -> month.toString()
-						.substring(0, 3)
-						.equalsIgnoreCase(dateParts[1]))) || (year < 1000 || year > 3000)) {
+		if ((day < 1 || day > 31) || (Arrays.stream(Month.values()).noneMatch(month -> month.toString().substring(0, 3).equalsIgnoreCase(dateParts[1]))) || (
+				year < 1000 || year > 3000)) {
 			throw new DateTimeException("Wrong date");
 		}
 		dateString = String.join("-", dateParts);

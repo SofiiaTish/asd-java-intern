@@ -4,11 +4,11 @@ import team.asd.entity.Product;
 
 public interface ProductDao {
 
-    Product readById(Integer id);
+	Product readById(Integer id);
 
-    Product saveProduct(Product product);
+	Product saveProduct(Product product);
 
-    Product updateProduct(Product product);
+	Product updateProduct(Product product);
 
-    Integer deleteProduct(Integer id);
+	Integer deleteProduct(Integer id);
 }
