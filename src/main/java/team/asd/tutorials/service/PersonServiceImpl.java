@@ -23,9 +23,7 @@ public class PersonServiceImpl implements IsPersonService {
 		if (StringUtils.isEmpty(prefix)) {
 			return personList;
 		}
-		return personList.stream()
-				.filter(p -> p != null && StringUtils.startsWith(p.getName(), prefix))
-				.collect(Collectors.toList());
+		return personList.stream().filter(p -> p != null && StringUtils.startsWith(p.getName(), prefix)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -34,9 +32,7 @@ public class PersonServiceImpl implements IsPersonService {
 		if (personList == null) {
 			return Collections.emptyMap();
 		}
-		return personList.stream()
-				.filter(filterPersonsByAge())
-				.collect(Collectors.groupingBy(IsPerson::getAge));
+		return personList.stream().filter(filterPersonsByAge()).collect(Collectors.groupingBy(IsPerson::getAge));
 	}
 
 	@Override
@@ -45,9 +41,7 @@ public class PersonServiceImpl implements IsPersonService {
 		if (CollectionUtils.isEmpty(personList)) {
 			return 0D;
 		}
-		personList = personList.stream()
-				.filter(filterPersonsByAge())
-				.collect(Collectors.toList());
+		personList = personList.stream().filter(filterPersonsByAge()).collect(Collectors.toList());
 		if (personList.isEmpty()) {
 			return 0D;
 		}
@@ -60,10 +54,7 @@ public class PersonServiceImpl implements IsPersonService {
 		if (personList == null) {
 			return new IntSummaryStatistics();
 		}
-		return personList.stream()
-				.filter(filterPersonsByAge())
-				.mapToInt(IsPerson::getAge)
-				.summaryStatistics();
+		return personList.stream().filter(filterPersonsByAge()).mapToInt(IsPerson::getAge).summaryStatistics();
 	}
 
 	private Predicate<IsPerson> filterPersonsByAge() {

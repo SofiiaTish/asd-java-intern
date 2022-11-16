@@ -9,8 +9,8 @@ import team.asd.data.ProductDataTest;
 import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ProductServiceTest {
 

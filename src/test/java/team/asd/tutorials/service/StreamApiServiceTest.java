@@ -159,7 +159,6 @@ public class StreamApiServiceTest {
 		assertTrue(convertedIntegerList.stream().allMatch(Objects::nonNull), "There should not be a null values in result list");
 	}
 
-
 	//IntStream convertStringToLegalChars(String value);
 
 	@ParameterizedTest
@@ -217,8 +216,8 @@ public class StreamApiServiceTest {
 	@ParameterizedTest
 	@MethodSource("defineStreamApiServices")
 	public void testSkipDaysFromSpecifiedDate(IsStreamApiService streamApiService) {
-		List<LocalDate> dates = Arrays
-				.asList(LocalDate.now(), LocalDate.now().plusDays(-10), LocalDate.now().plusDays(-1), null, LocalDate.MAX, LocalDate.now().plusDays(4));
+		List<LocalDate> dates = Arrays.asList(LocalDate.now(), LocalDate.now().plusDays(-10), LocalDate.now().plusDays(-1), null, LocalDate.MAX,
+				LocalDate.now().plusDays(4));
 		assertEquals(0, streamApiService.skipDaysFromSpecifiedDate(null, LocalDate.now(), 1).count());
 		assertEquals(0, streamApiService.skipDaysFromSpecifiedDate(dates, null, 2).count());
 		assertEquals(0, streamApiService.skipDaysFromSpecifiedDate(dates, LocalDate.now(), null).count());
@@ -246,7 +245,7 @@ public class StreamApiServiceTest {
 	@MethodSource("defineStreamApiServices")
 	public void testRemoveDuplicates(IsStreamApiService streamApiService) {
 		String letterA = "A", letterB = "B", group = "ABBA";
-		List<String> listWithDuplicates = Arrays.asList(letterA, letterB, letterA, letterA+letterB+letterB+letterA, group);
+		List<String> listWithDuplicates = Arrays.asList(letterA, letterB, letterA, letterA + letterB + letterB + letterA, group);
 		List<String> listWithoutDuplicates = Arrays.asList(letterA, letterB, group);
 		List<?> resultList = streamApiService.removeDuplicates(listWithDuplicates);
 		assertEquals(listWithoutDuplicates.size(), resultList.size());

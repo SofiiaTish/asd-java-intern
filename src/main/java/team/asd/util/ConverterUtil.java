@@ -8,16 +8,9 @@ import team.asd.exception.ValidationException;
 public class ConverterUtil {
 
 	public static Product convertDtoToProduct(ProductDto productDto) {
-		Product product = Product.builder()
-				.id(productDto.getId())
-				.supplierId(productDto.getSupplierId())
-				.name(productDto.getName())
-				.currency(productDto.getCurrency())
-				.guestsNumber(productDto.getGuestsNumber())
-				.longitude(productDto.getLongitude())
-				.latitude(productDto.getLatitude())
-				.physicalAddress(productDto.getPhysicalAddress())
-				.build();
+		Product product = Product.builder().id(productDto.getId()).supplierId(productDto.getSupplierId()).name(productDto.getName())
+				.currency(productDto.getCurrency()).guestsNumber(productDto.getGuestsNumber()).longitude(productDto.getLongitude())
+				.latitude(productDto.getLatitude()).physicalAddress(productDto.getPhysicalAddress()).build();
 		try {
 			product.setState(ProductState.valueOf(productDto.getState()));
 		} catch (NullPointerException e3) {
@@ -29,16 +22,9 @@ public class ConverterUtil {
 	}
 
 	public static ProductDto convertProductToDto(Product product) {
-		ProductDto productDto = ProductDto.builder()
-				.id(product.getId())
-				.supplierId(product.getSupplierId())
-				.name(product.getName())
-				.currency(product.getCurrency())
-				.guestsNumber(product.getGuestsNumber())
-				.longitude(product.getLongitude())
-				.latitude(product.getLatitude())
-				.physicalAddress(product.getPhysicalAddress())
-				.build();
+		ProductDto productDto = ProductDto.builder().id(product.getId()).supplierId(product.getSupplierId()).name(product.getName())
+				.currency(product.getCurrency()).guestsNumber(product.getGuestsNumber()).longitude(product.getLongitude()).latitude(product.getLatitude())
+				.physicalAddress(product.getPhysicalAddress()).build();
 		try {
 			productDto.setState(product.getState().toString());
 		} catch (NullPointerException e) {

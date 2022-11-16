@@ -32,8 +32,8 @@ public interface IsCalendarService {
 	 * Defines count of {@link ChronoUnit} in provided date range
 	 *
 	 * @param fromDate start of range
-	 * @param toDate end of range
-	 * @param unit to calculate count
+	 * @param toDate   end of range
+	 * @param unit     to calculate count
 	 * @return count of calculated {@link ChronoUnit} in provided range
 	 * @throws WrongArgumentException in case when {@link ChronoUnit} parameter is wrong
 	 */
@@ -46,7 +46,7 @@ public interface IsCalendarService {
 	 * - If {@param dateElement} is MONTH, returns month name
 	 * - If {@param dateElement} is IS_LEAP_YEAR, returns 'Yes' or 'No'
 	 *
-	 * @param date to get info from
+	 * @param date        to get info from
 	 * @param dateElement [DAY_OF_WEEK, WEEK_NUMBER, MONTH, IS_LEAP_YEAR]
 	 * @return date info based on {@param dateElement} parameter
 	 * @throws WrongArgumentException is case when any parameter is wrong or null

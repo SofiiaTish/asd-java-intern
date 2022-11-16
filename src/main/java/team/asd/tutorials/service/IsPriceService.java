@@ -1,6 +1,5 @@
 package team.asd.tutorials.service;
 
-
 import lombok.NonNull;
 import team.asd.tutorials.entities.IsPerDayPrice;
 import team.asd.tutorials.entities.IsPrice;
@@ -18,8 +17,7 @@ public interface IsPriceService {
 	 * @return an average price
 	 * @throws WrongPriceException in case when date of two prices are equals or wrong price item was provided.
 	 */
-	@NonNull
-	BigDecimal defineAverageValueFromPerDayPrice(List<IsPerDayPrice> prices) throws WrongPriceException;
+	@NonNull BigDecimal defineAverageValueFromPerDayPrice(List<IsPerDayPrice> prices) throws WrongPriceException;
 
 	/**
 	 * Defines an average value of provided price list.
@@ -30,7 +28,6 @@ public interface IsPriceService {
 	 * @return an average price per days
 	 * @throws WrongPriceException in case when price dates are collides or wrong price item was provided.
 	 */
-	@NonNull
-	BigDecimal defineAverageValueFromPrices(List<IsPrice> prices) throws WrongPriceException;
+	@NonNull BigDecimal defineAverageValueFromPrices(List<IsPrice> prices) throws WrongPriceException;
 
 }
