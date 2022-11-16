@@ -6,7 +6,6 @@ import lombok.Data;
 import team.asd.constant.ProductState;
 
 import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @Builder
@@ -25,6 +24,31 @@ public class Product {
 	private Date version;
 
 	public Product() {
+	}
+
+	public Product(Integer supplierId, String name, ProductState state, String currency, Integer guestsNumber, Double longitude, Double latitude,
+			String physicalAddress) {
+		this.supplierId = supplierId;
+		this.name = name;
+		this.state = state;
+		this.currency = currency;
+		this.guestsNumber = guestsNumber;
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.physicalAddress = physicalAddress;
+	}
+
+	public Product(Integer id, Integer supplierId, String name, ProductState state, String currency, Integer guestsNumber, Double longitude, Double latitude,
+			String physicalAddress) {
+		this.id = id;
+		this.supplierId = supplierId;
+		this.name = name;
+		this.state = state;
+		this.currency = currency;
+		this.guestsNumber = guestsNumber;
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.physicalAddress = physicalAddress;
 	}
 
 }
