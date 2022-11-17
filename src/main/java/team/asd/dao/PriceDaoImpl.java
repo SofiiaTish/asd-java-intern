@@ -18,17 +18,17 @@ public class PriceDaoImpl implements PriceDao {
 	}
 
 	@Override
-	public Price saveProduct(Price price) {
+	public Price savePrice(Price price) {
 		return expectedPrice;
 	}
 
 	@Override
-	public Price updateProduct(Price price) {
+	public Price updatePrice(Price price) {
 		return expectedPrice;
 	}
 
 	@Override
-	public Integer deleteProduct(Integer id) {
+	public Integer deletePrice(Integer id) {
 		return id;
 	}
 

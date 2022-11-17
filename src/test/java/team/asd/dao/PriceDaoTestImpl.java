@@ -11,17 +11,17 @@ public class PriceDaoTestImpl implements PriceDao {
 	}
 
 	@Override
-	public Price saveProduct(Price price) {
+	public Price savePrice(Price price) {
 		return price;
 	}
 
 	@Override
-	public Price updateProduct(Price price) {
+	public Price updatePrice(Price price) {
 		return price;
 	}
 
 	@Override
-	public Integer deleteProduct(Integer id) {
+	public Integer deletePrice(Integer id) {
 		return id;
 	}
 }

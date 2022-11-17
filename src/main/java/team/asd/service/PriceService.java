@@ -23,17 +23,17 @@ public class PriceService {
 
 	public Price createPrice(Price price) {
 		validPrice(price, false);
-		return priceDao.saveProduct(price);
+		return priceDao.savePrice(price);
 	}
 
 	public Price updatePrice(Price price) {
 		validPrice(price, true);
-		return priceDao.updateProduct(price);
+		return priceDao.updatePrice(price);
 	}
 
 	public Integer deletePrice(Integer id) {
 		validId(id);
-		return priceDao.deleteProduct(id);
+		return priceDao.deletePrice(id);
 	}
 
 	public void validId(Integer id) {
