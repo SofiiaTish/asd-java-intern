@@ -64,9 +64,9 @@ public class ConverterUtil {
 			throw new ValidationException("Invalid date of price");
 		}
 		try {
-			price.setFromDate(format.parse(priceDto.getFromDate()));
+			price.setToDate(format.parse(priceDto.getToDate()));
 		} catch (NullPointerException e3) {
-			price.setFromDate(null);
+			price.setToDate(null);
 		} catch (ParseException e1) {
 			throw new ValidationException("Invalid date of price");
 		}

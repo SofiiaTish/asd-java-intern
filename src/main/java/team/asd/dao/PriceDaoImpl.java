@@ -19,12 +19,12 @@ public class PriceDaoImpl implements PriceDao {
 
 	@Override
 	public Price savePrice(Price price) {
-		return expectedPrice;
+		return price;
 	}
 
 	@Override
 	public Price updatePrice(Price price) {
-		return expectedPrice;
+		return price;
 	}
 
 	@Override

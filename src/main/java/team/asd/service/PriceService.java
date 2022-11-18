@@ -7,6 +7,8 @@ import team.asd.dao.PriceDao;
 import team.asd.entity.Price;
 import team.asd.exception.ValidationException;
 
+import java.util.Date;
+
 @Service
 public class PriceService {
 
@@ -54,6 +56,20 @@ public class PriceService {
 				price.getValue(), price.getCurrency()
 		)) {
 			throw new ValidationException("Required field is null");
+		}
+
+		if (!updatable && !price.getFromDate().before(price.getToDate())) {
+			throw new ValidationException("From_date have to be earlier then To_date");
+		} else if (ObjectUtils.allNotNull(price.getFromDate(), price.getToDate())
+				&& !price.getFromDate().before(price.getToDate())) {
+			throw new ValidationException("From_date have to be earlier then To_date");
+		} else if (updatable && !ObjectUtils.allNull(price.getFromDate(), price.getToDate())
+				&& !price.getFromDate().before(price.getToDate())) {
+			throw new ValidationException("From_date have to be earlier then To_date");
+		} else if (updatable && price.getFromDate() == null && !new Date().before(price.getToDate())) {
+			throw new ValidationException("To_date can not be earlier then current");
+		} else if (updatable && price.getToDate() == null && !price.getFromDate().before(new Date())) {
+			throw new ValidationException("From_date can not be later then current");
 		}
 	}
 
