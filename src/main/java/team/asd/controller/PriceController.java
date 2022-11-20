@@ -23,17 +23,17 @@ public class PriceController {
 	}
 
 	@PostMapping(path = {"/"})
-	public PriceDto createPrPrice(@RequestBody @Valid PriceDto priceDto) {
+	public PriceDto createPrice(@RequestBody @Valid PriceDto priceDto) {
 		return ConverterUtil.convertPriceToDto(priceService.createPrice(ConverterUtil.convertDtoToPrice(priceDto)));
 	}
 
 	@PutMapping(path = {"/"})
-	public PriceDto updatePrPrice(@RequestBody @Valid PriceDto priceDto) {
+	public PriceDto updatePrice(@RequestBody @Valid PriceDto priceDto) {
 		return ConverterUtil.convertPriceToDto(priceService.updatePrice(ConverterUtil.convertDtoToPrice(priceDto)));
 	}
 
 	@DeleteMapping(path = {"/{id}"})
-	public Integer deletePrPriceById(@PathVariable Integer id) {
+	public Integer deletePriceById(@PathVariable Integer id) {
 		return priceService.deletePrice(id);
 	}
 }

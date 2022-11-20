@@ -60,16 +60,14 @@ public class PriceService {
 
 		if (!updatable && !price.getFromDate().before(price.getToDate())) {
 			throw new ValidationException("From_date have to be earlier then To_date");
-		} else if (ObjectUtils.allNotNull(price.getFromDate(), price.getToDate())
-				&& !price.getFromDate().before(price.getToDate())) {
-			throw new ValidationException("From_date have to be earlier then To_date");
-		} else if (updatable && !ObjectUtils.allNull(price.getFromDate(), price.getToDate())
-				&& !price.getFromDate().before(price.getToDate())) {
-			throw new ValidationException("From_date have to be earlier then To_date");
-		} else if (updatable && price.getFromDate() == null && !new Date().before(price.getToDate())) {
-			throw new ValidationException("To_date can not be earlier then current");
-		} else if (updatable && price.getToDate() == null && !price.getFromDate().before(new Date())) {
-			throw new ValidationException("From_date can not be later then current");
+		} else if (!ObjectUtils.allNull(price.getFromDate(), price.getToDate())) {
+			if (price.getFromDate() == null && !new Date().before(price.getToDate())) {
+				throw new ValidationException("To_date can not be earlier then current");
+			} else if (price.getToDate() == null && !price.getFromDate().before(new Date())) {
+				throw new ValidationException("From_date can not be later then current");
+			} else if (!price.getFromDate().before(price.getToDate())) {
+				throw new ValidationException("From_date have to be earlier then To_date");
+			}
 		}
 	}
 

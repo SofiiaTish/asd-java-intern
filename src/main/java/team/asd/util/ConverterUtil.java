@@ -80,8 +80,8 @@ public class ConverterUtil {
 				.entityId(price.getEntityId())
 				.name(price.getName())
 				.value(price.getValue())
-				.fromDate(price.getFromDate().toString())
-				.toDate(price.getToDate().toString())
+				.fromDate(price.getFromDate() != null ? price.getFromDate().toString() : null)
+				.toDate(price.getToDate() != null ? price.getToDate().toString() : null)
 				.currency(price.getCurrency())
 				.build();
 		try {
