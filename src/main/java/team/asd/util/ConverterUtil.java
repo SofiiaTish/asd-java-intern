@@ -1,9 +1,13 @@
 package team.asd.util;
 
+import team.asd.constant.FeeState;
+import team.asd.constant.FeeType;
 import team.asd.constant.PriceState;
 import team.asd.constant.ProductState;
+import team.asd.dto.FeeDto;
 import team.asd.dto.PriceDto;
 import team.asd.dto.ProductDto;
+import team.asd.entity.Fee;
 import team.asd.entity.Price;
 import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
@@ -90,5 +94,59 @@ public class ConverterUtil {
 			priceDto.setState(null);
 		}
 		return priceDto;
+	}
+
+	public static Fee convertDtoToFee(FeeDto feeDto) {
+		Fee fee = Fee.builder()
+				.id(feeDto.getId())
+				.feeType(feeDto.getFeeType() == null ? null : FeeType.values()[feeDto.getFeeType()])
+				.productId(feeDto.getProductId())
+				.name(feeDto.getName())
+				.taxType(feeDto.getTaxType())
+				.unit(feeDto.getUnit())
+				.value(feeDto.getValue())
+				.valueType(feeDto.getValueType())
+				.currency(feeDto.getCurrency())
+				.build();
+		try {
+			fee.setState(FeeState.valueOf(feeDto.getState()));
+		} catch (NullPointerException e) {
+			fee.setState(null);
+		} catch (IllegalArgumentException e) {
+			throw new ValidationException("Invalid state of fee");
+		}
+		try {
+			fee.setFromDate(format.parse(feeDto.getFromDate()));
+		} catch (NullPointerException e) {
+			fee.setFromDate(null);
+		} catch (ParseException e) {
+			throw new ValidationException("Invalid from_date of fee");
+		}
+		try {
+			fee.setToDate(format.parse(feeDto.getToDate()));
+		} catch (NullPointerException e) {
+			fee.setToDate(null);
+		} catch (ParseException e) {
+			throw new ValidationException("Invalid to_date of fee");
+		}
+		return fee;
+	}
+
+	public static FeeDto convertFeeToDto(Fee fee) {
+		FeeDto feeDto = FeeDto.builder()
+				.id(fee.getId())
+				.feeType(fee.getFeeType() != null ? fee.getFeeType().ordinal() : null)
+				.productId(fee.getProductId())
+				.name(fee.getName())
+				.state(fee.getState() != null ? fee.getState().toString() : null)
+				.fromDate(fee.getFromDate() != null ? fee.getFromDate().toString() : null)
+				.toDate(fee.getToDate() != null ? fee.getToDate().toString() : null)
+				.taxType(fee.getTaxType())
+				.unit(fee.getUnit())
+				.value(fee.getValue())
+				.valueType(fee.getValueType())
+				.currency(fee.getCurrency())
+				.build();
+		return feeDto;
 	}
 }
