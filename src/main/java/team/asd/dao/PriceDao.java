@@ -6,9 +6,9 @@ public interface PriceDao {
 
 	Price readById(Integer id);
 
-	Price savePrice(Price price);
+	void savePrice(Price price);
 
-	Price updatePrice(Price price);
+	void updatePrice(Price price);
 
-	Integer deletePrice(Integer id);
+	void deletePrice(Integer id);
 }

@@ -49,7 +49,6 @@ class PriceServiceTest {
 
 	@Test
 	void testCreatePrice() {
-		assertEquals(price, priceService.createPrice(price));
 		assertThrows(ValidationException.class, () -> priceService.createPrice(null));
 		assertThrows(ValidationException.class, () -> priceService.createPrice(new Price()));
 		price.setName(null);
@@ -58,11 +57,6 @@ class PriceServiceTest {
 
 	@Test
 	void testUpdatePrice() {
-		price.setState(PriceState.Created);
-		assertEquals(price, priceService.updatePrice(price));
-		price.setValue(null);
-		price.setCurrency(null);
-		assertEquals(price, priceService.updatePrice(price));
 		assertThrows(ValidationException.class, () -> priceService.updatePrice(null));
 		assertThrows(ValidationException.class, () -> priceService.updatePrice(new Price()));
 		price.setId(null);
@@ -72,7 +66,6 @@ class PriceServiceTest {
 
 	@Test
 	void testDeletePrice() {
-		assertEquals(1, priceService.deletePrice(1));
 		assertThrows(ValidationException.class, () -> priceService.deletePrice(-1));
 		assertThrows(ValidationException.class, () -> priceService.deletePrice(null));
 	}
