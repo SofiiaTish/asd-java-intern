@@ -12,16 +12,16 @@ public class ProductDaoTestImpl implements ProductDao {
 
 	@Override
 	public Product saveProduct(Product product) {
-		return product;
+		return null;
 	}
 
 	@Override
 	public Product updateProduct(Product product) {
-		return product;
+		return null;
 	}
 
 	@Override
 	public Integer deleteProduct(Integer id) {
-		return id;
+		return null;
 	}
 }

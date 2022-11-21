@@ -23,17 +23,19 @@ public class ProductService {
 
 	public Product createProduct(Product product) {
 		validProduct(product, false);
-		return productDao.saveProduct(product);
+		productDao.saveProduct(product);
+		return productDao.readById(product.getId());
 	}
 
 	public Product updateProduct(Product product) {
 		validProduct(product, true);
-		return productDao.updateProduct(product);
+		productDao.updateProduct(product);
+		return productDao.readById(product.getId());
 	}
 
-	public Integer deleteProduct(Integer id) {
+	public void deleteProduct(Integer id) {
 		validId(id);
-		return productDao.deleteProduct(id);
+		productDao.deleteProduct(id);
 	}
 
 	public void validId(Integer id) {

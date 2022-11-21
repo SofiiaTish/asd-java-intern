@@ -33,8 +33,8 @@ public class PriceController {
 	}
 
 	@DeleteMapping(path = {"/{id}"})
-	public Integer deletePriceById(@PathVariable Integer id) {
-		return priceService.deletePrice(id);
+	public void deletePriceById(@PathVariable Integer id) {
+		priceService.deletePrice(id);
 	}
 }
 

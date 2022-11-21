@@ -31,6 +31,6 @@ public class AppExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorInfo catchUnexpectedException(Exception e) {
 		System.out.println(e.toString());
-		return new ErrorInfo(HttpStatus.BAD_REQUEST.value(), "Unexpected error ");
+		return new ErrorInfo(HttpStatus.BAD_REQUEST.value(), "Unexpected error");
 	}
 }
