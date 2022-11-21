@@ -23,22 +23,19 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	@Transactional
-	public Product saveProduct(Product product) {
+	public void saveProduct(Product product) {
 		productMapper.insertProduct(product);
-		return productMapper.readProductById(product.getId());
 	}
 
 	@Override
 	@Transactional
-	public Product updateProduct(Product product) {
+	public void updateProduct(Product product) {
 		productMapper.updateProduct(product);
-		return productMapper.readProductById(product.getId());
 	}
 
 	@Override
 	@Transactional
-	public Integer deleteProduct(Integer id) {
+	public void deleteProduct(Integer id) {
 		productMapper.deleteProduct(id);
-		return id;
 	}
 }

@@ -6,9 +6,9 @@ public interface ProductDao {
 
 	Product readById(Integer id);
 
-	Product saveProduct(Product product);
+	void saveProduct(Product product);
 
-	Product updateProduct(Product product);
+	void updateProduct(Product product);
 
-	Integer deleteProduct(Integer id);
+	void deleteProduct(Integer id);
 }
