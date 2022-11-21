@@ -1,39 +1,41 @@
 package team.asd.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import team.asd.constant.ProductState;
+import org.springframework.transaction.annotation.Transactional;
 import team.asd.entity.Product;
+import team.asd.mapper.ProductMapper;
 
 @Repository
 public class ProductDaoImpl implements ProductDao {
 
+	private final ProductMapper productMapper;
+
+	public ProductDaoImpl(@Autowired ProductMapper productMapper) {
+		this.productMapper = productMapper;
+	}
+
 	@Override
+	@Transactional
 	public Product readById(Integer id) {
-		return getProduct();
+		return productMapper.readProductById(id);
 	}
 
 	@Override
-	public Product saveProduct(Product product) {
-		return product;
+	@Transactional
+	public void saveProduct(Product product) {
+		productMapper.insertProduct(product);
 	}
 
 	@Override
-	public Product updateProduct(Product product) {
-		return product;
+	@Transactional
+	public void updateProduct(Product product) {
+		productMapper.updateProduct(product);
 	}
 
 	@Override
-	public Integer deleteProduct(Integer id) {
-		return id;
-	}
-
-	private Product getProduct() {
-		Product expectedProduct = new Product();
-		expectedProduct.setId(1);
-		expectedProduct.setSupplierId(4);
-		expectedProduct.setName("Expert");
-		expectedProduct.setState(ProductState.Created);
-		expectedProduct.setCurrency("USD");
-		return expectedProduct;
+	@Transactional
+	public void deleteProduct(Integer id) {
+		productMapper.deleteProduct(id);
 	}
 }
