@@ -20,7 +20,7 @@
     </resultMap>
 
     <select id="readProductById" parameterType="java.lang.Integer" resultMap="productMap">
-        select *
+        select id, supplier_id, name, state, currency, guests, longitude, latitude, physical_address, version
         from product
         where id = #{id}
     </select>
