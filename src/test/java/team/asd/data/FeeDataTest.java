@@ -1,7 +1,6 @@
 package team.asd.data;
 
-import team.asd.constant.FeeState;
-import team.asd.constant.FeeType;
+import team.asd.constant.*;
 import team.asd.entity.Fee;
 
 import java.time.Instant;
@@ -20,10 +19,10 @@ public class FeeDataTest {
 				.state(FeeState.Initial)
 				.fromDate(Date.from(Instant.now()))
 				.toDate(Date.from(Instant.parse("2022-12-15T10:15:30Z")))
-				.taxType(2)
-				.unit(3)
+				.taxType(TaxType.Taxable)
+				.unit(Unit.Per_Day)
 				.value(34.56)
-				.valueType(1)
+				.valueType(ValueType.Flat)
 				.currency("usd")
 				.build();
 

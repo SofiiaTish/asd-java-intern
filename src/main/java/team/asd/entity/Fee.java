@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import team.asd.constant.FeeState;
-import team.asd.constant.FeeType;
+import team.asd.constant.*;
 
 import java.util.Date;
 
@@ -29,15 +28,16 @@ public class Fee {
 
 	private Date toDate;
 
-	private Integer taxType;
+	private TaxType taxType;
 
-	private Integer unit;
+	private Unit unit;
 
 	private Double value;
 
-	private Integer valueType;
+	private ValueType valueType;
 
 	private String currency;
 
 	private Date version;
+
 }

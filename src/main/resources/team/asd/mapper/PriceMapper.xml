@@ -11,9 +11,9 @@
 		<result property="name" column="name" jdbcType="VARCHAR"/>
 		<result property="state" column="state" jdbcType="VARCHAR"
 				typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
-		<result property="fromDate" column="from_date" jdbcType="TIMESTAMP"
+		<result property="fromDate" column="from_date" jdbcType="DATE"
 				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
-		<result property="toDate" column="to_date" jdbcType="TIMESTAMP"
+		<result property="toDate" column="to_date" jdbcType="DATE"
 				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
 		<result property="value" column="value" jdbcType="DOUBLE"/>
 		<result property="currency" column="currency" jdbcType="VARCHAR"/>

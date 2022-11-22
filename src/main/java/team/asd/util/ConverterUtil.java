@@ -1,9 +1,6 @@
 package team.asd.util;
 
-import team.asd.constant.FeeState;
-import team.asd.constant.FeeType;
-import team.asd.constant.PriceState;
-import team.asd.constant.ProductState;
+import team.asd.constant.*;
 import team.asd.dto.FeeDto;
 import team.asd.dto.PriceDto;
 import team.asd.dto.ProductDto;
@@ -99,13 +96,13 @@ public class ConverterUtil {
 	public static Fee convertDtoToFee(FeeDto feeDto) {
 		Fee fee = Fee.builder()
 				.id(feeDto.getId())
-				.feeType(feeDto.getFeeType() == null ? null : FeeType.values()[feeDto.getFeeType()])
+				.feeType(feeDto.getFeeType() == null ? null : FeeType.valueOf(feeDto.getFeeType()))
 				.productId(feeDto.getProductId())
 				.name(feeDto.getName())
-				.taxType(feeDto.getTaxType())
-				.unit(feeDto.getUnit())
+				.taxType(feeDto.getTaxType() == null ? null : TaxType.valueOf(feeDto.getTaxType()))
+				.unit(feeDto.getUnit() == null ? null : Unit.valueOf(feeDto.getUnit()))
 				.value(feeDto.getValue())
-				.valueType(feeDto.getValueType())
+				.valueType(feeDto.getValueType() == null ? null : ValueType.valueOf(feeDto.getValueType()))
 				.currency(feeDto.getCurrency())
 				.build();
 		try {
@@ -135,16 +132,16 @@ public class ConverterUtil {
 	public static FeeDto convertFeeToDto(Fee fee) {
 		FeeDto feeDto = FeeDto.builder()
 				.id(fee.getId())
-				.feeType(fee.getFeeType() != null ? fee.getFeeType().ordinal() : null)
+				.feeType(fee.getFeeType() != null ? fee.getFeeType().toString() : null)
 				.productId(fee.getProductId())
 				.name(fee.getName())
 				.state(fee.getState() != null ? fee.getState().toString() : null)
 				.fromDate(fee.getFromDate() != null ? fee.getFromDate().toString() : null)
 				.toDate(fee.getToDate() != null ? fee.getToDate().toString() : null)
-				.taxType(fee.getTaxType())
-				.unit(fee.getUnit())
+				.taxType(fee.getTaxType().toString())
+				.unit(fee.getUnit() != null ? fee.getUnit().toString() : null)
 				.value(fee.getValue())
-				.valueType(fee.getValueType())
+				.valueType(fee.getValueType() != null ? fee.getValueType().toString() : null)
 				.currency(fee.getCurrency())
 				.build();
 		return feeDto;

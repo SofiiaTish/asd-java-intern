@@ -15,9 +15,9 @@ public class FeeDto {
 	@JsonProperty("id")
 	private Integer id;
 
-	@Max(2)
+	@Size(max = 15, message = "Fee type can`t have length over 15 symbols")
 	@JsonProperty("fee_type")
-	private Integer feeType;
+	private String feeType;
 
 	@Positive(message = "Id can`t be less then 1")
 	@JsonProperty("product_id")
@@ -39,23 +39,20 @@ public class FeeDto {
 	@JsonProperty("to_date")
 	private String toDate;
 
-	@Min(1)
-	@Max(2)
+	@Size(max = 15, message = "Tax type can`t have length over 15 symbols")
 	@JsonProperty("tax_type")
-	private Integer taxType;
+	private String taxType;
 
-	@Min(1)
-	@Max(6)
+	@Size(max = 15, message = "Unit can`t have length over 15 symbols")
 	@JsonProperty("unit")
-	private Integer unit;
+	private String unit;
 
 	@JsonProperty("value")
 	private Double value;
 
-	@Min(1)
-	@Max(2)
+	@Size(max = 15, message = "Value type can`t have length over 15 symbols")
 	@JsonProperty("value_type")
-	private Integer valueType;
+	private String valueType;
 
 	@Size(max = 3, message = "Fee currency can`t have length over 3 symbols")
 	@JsonProperty("currency")
