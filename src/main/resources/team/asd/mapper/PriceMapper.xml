@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.asd.mapper.PriceMapper">
+
+	<resultMap id="priceMap" type="team.asd.entity.Price">
+		<id property="id" column="id" jdbcType="INTEGER"/>
+		<result property="entityType" column="entity_type" jdbcType="VARCHAR"/>
+		<result property="entityId" column="entity_id" jdbcType="INTEGER"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="state" column="state" jdbcType="VARCHAR"
+				typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+		<result property="fromDate" column="from_date" jdbcType="TIMESTAMP"
+				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+		<result property="toDate" column="to_date" jdbcType="TIMESTAMP"
+				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+		<result property="value" column="value" jdbcType="DOUBLE"/>
+		<result property="currency" column="currency" jdbcType="VARCHAR"/>
+		<result property="version" column="version" jdbcType="TIMESTAMP"
+				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+	</resultMap>
+
+	<select id="readPriceById" parameterType="java.lang.Integer" resultMap="priceMap">
+		select id,
+			   entity_type,
+			   entity_id,
+			   name,
+			   state,
+			   from_date,
+			   to_date,
+			   value,
+			   currency,
+			   version
+		from price
+		where id = #{id}
+	</select>
+
+	<insert id="insertPrice" parameterType="team.asd.entity.Price" useGeneratedKeys="true" keyProperty="id">
+		insert into price(entity_type, entity_id, name,
+		<if test="state != null">state,</if>
+		from_date, to_date, value, currency)
+		values(#{entityType}, #{entityId}, #{name},
+		<if test="state != null">#{state},</if>
+		#{fromDate}, #{toDate}, #{value}, #{currency})
+	</insert>
+
+	<update id="updatePrice" parameterType="team.asd.entity.Price" useGeneratedKeys="true" keyProperty="id">
+		update price
+		<set>
+			<if test="entityType != null">entity_type=#{entityType},</if>
+			<if test="entityId != null">entity_id=#{entityId},</if>
+			<if test="name != null">name=#{name},</if>
+			<if test="state != null">state=#{state},</if>
+			<if test="fromDate != null">from_date=#{fromDate},</if>
+			<if test="toDate != null">to_date=#{toDate},</if>
+			<if test="value != null">value=#{value},</if>
+			<if test="currency != null">currency=#{currency}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="deletePrice" parameterType="java.lang.Integer">
+		update price
+		set state='Final'
+		where id = #{id}
+	</delete>
+</mapper>

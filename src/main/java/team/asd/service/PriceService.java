@@ -53,7 +53,7 @@ public class PriceService {
 		if (updatable && ObjectUtils.anyNull(price.getId())) {
 			throw new ValidationException("Id field is null");
 		} else if (!updatable && ObjectUtils.anyNull(
-				price.getId(), price.getEntityType(), price.getEntityId(),
+				price.getEntityType(), price.getEntityId(),
 				price.getName(), price.getFromDate(), price.getToDate(),
 				price.getValue(), price.getCurrency()
 		)) {
