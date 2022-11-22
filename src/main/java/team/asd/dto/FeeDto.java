@@ -3,9 +3,7 @@ package team.asd.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Data
 @NoArgsConstructor
@@ -17,7 +15,7 @@ public class FeeDto {
 	@JsonProperty("id")
 	private Integer id;
 
-	@Size(max = 2)
+	@Max(2)
 	@JsonProperty("fee_type")
 	private Integer feeType;
 
@@ -41,18 +39,21 @@ public class FeeDto {
 	@JsonProperty("to_date")
 	private String toDate;
 
-	@Size(min = 1, max = 2)
+	@Min(1)
+	@Max(2)
 	@JsonProperty("tax_type")
 	private Integer taxType;
 
-	@Size(min = 1, max = 6)
+	@Min(1)
+	@Max(6)
 	@JsonProperty("unit")
 	private Integer unit;
 
 	@JsonProperty("value")
 	private Double value;
 
-	@Size(min = 1, max = 2)
+	@Min(1)
+	@Max(2)
 	@JsonProperty("value_type")
 	private Integer valueType;
 
