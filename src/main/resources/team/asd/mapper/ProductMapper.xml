@@ -8,8 +8,7 @@
 		<id property="id" column="id" jdbcType="INTEGER"/>
 		<result property="supplierId" column="supplier_id" jdbcType="INTEGER"/>
 		<result property="name" column="name" jdbcType="VARCHAR"/>
-		<result property="state" column="state" jdbcType="VARCHAR"
-				typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+		<result property="state" column="state" jdbcType="VARCHAR" javaType="team.asd.constant.ProductState"/>
 		<result property="currency" column="currency" jdbcType="VARCHAR"/>
 		<result property="guestsNumber" column="guests" jdbcType="INTEGER"/>
 		<result property="longitude" column="longitude" jdbcType="DOUBLE"/>
