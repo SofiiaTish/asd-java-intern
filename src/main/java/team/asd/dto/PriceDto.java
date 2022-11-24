@@ -17,38 +17,38 @@ import javax.validation.constraints.Size;
 @Builder
 public class PriceDto {
 
-	@Positive(message = "Id can`t be less then 1")
+	@Positive(message = "{id.positive}")
 	@JsonProperty("id")
 	private Integer id;
 
-	@Size(max = 15, message = "Price entity can`t have length over 15 symbols")
+	@Size(max = 15, message = "{entity.length}")
 	@JsonProperty("entity_type")
 	private String entityType;
 
-	@Positive(message = "Id can`t be less then 1")
+	@Positive(message = "{id.positive}")
 	@JsonProperty("entity_id")
 	private Integer entityId;
 
-	@Size(max = 45, message = "Price name can`t have length over 45 symbols")
+	@Size(max = 45, message = "{name.length}")
 	@JsonProperty("name")
 	private String name;
 
-	@Size(max = 15, message = "Price state can`t have length over 15 symbols")
+	@Size(max = 15, message = "{state.length}")
 	@JsonProperty("state")
 	private String state;
 
-	@Pattern(regexp = "[0-9]{4}-[0-2]{2}-[0-9]{2}", message = "Incorrect format of date")
+	@Pattern(regexp = "[0-9]{4}-[0-2]{2}-[0-9]{2}", message = "{date.format}")
 	@JsonProperty("from_date")
 	private String fromDate;
 
-	@Pattern(regexp = "[0-9]{4}-[0-2]{2}-[0-9]{2}", message = "Incorrect format of date")
+	@Pattern(regexp = "[0-9]{4}-[0-2]{2}-[0-9]{2}", message = "{date.format}")
 	@JsonProperty("to_date")
 	private String toDate;
 
 	@JsonProperty("value")
 	private Double value;
 
-	@Size(max = 3, message = "Price currency can`t have length over 3 symbols")
+	@Size(max = 3, message = "{currency.length}")
 	@JsonProperty("currency")
 	private String currency;
 }
