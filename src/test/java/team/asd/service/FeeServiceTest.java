@@ -68,7 +68,7 @@ class FeeServiceTest {
 	@Test
 	void testUpdateFeeWithNullToDate(){
 		fee.setToDate(null);
-		fee.setFromDate(Date.from(Instant.parse("2022-12-15T10:15:30Z")));
+		fee.setFromDate(Date.from(Instant.parse("2022-10-15T10:15:30Z")));
 		assertThrows(ValidationException.class, () -> feeService.updateFee(fee));
 	}
 

@@ -24,10 +24,12 @@ public class ValidationUtil {
 				throw new ValidationException("To_date can not be earlier then current");
 			} else if (toDate == null && !new Date().before(fromDate)) {
 				throw new ValidationException("From_date can not be later then current");
-			} else if (!new Date().before(toDate) || !new Date().before(fromDate)) {
-				throw new ValidationException("Dates can not be earlier then current");
-			} else if (!fromDate.before(toDate)) {
-				throw new ValidationException("From_date have to be earlier then To_date");
+			} else if (!ObjectUtils.anyNull(fromDate, toDate)) {
+				if (!new Date().before(toDate) || !new Date().before(fromDate)) {
+					throw new ValidationException("Dates can not be earlier then current");
+				} else if (!fromDate.before(toDate)) {
+					throw new ValidationException("From_date have to be earlier then To_date");
+				}
 			}
 		}
 	}

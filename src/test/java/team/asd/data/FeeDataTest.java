@@ -17,7 +17,7 @@ public class FeeDataTest {
 				.productId(2)
 				.name("Test")
 				.state(FeeState.Initial)
-				.fromDate(Date.from(Instant.now()))
+				.fromDate(Date.from(Instant.parse("2022-12-10T10:15:30Z")))
 				.toDate(Date.from(Instant.parse("2022-12-15T10:15:30Z")))
 				.taxType(TaxType.Taxable)
 				.unit(Unit.Per_Day)
