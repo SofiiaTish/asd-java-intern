@@ -7,8 +7,8 @@ import java.util.Date;
 
 public class ValidationUtil {
 	public static void validId(Integer id) {
-		if (id == null) {
-			throw new ValidationException("Incorrect Id: null");
+		if (id == null || id < 1) {
+			throw new ValidationException("Incorrect Id: null or not positive");
 		}
 	}
 
