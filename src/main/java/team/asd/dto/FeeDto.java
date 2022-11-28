@@ -1,35 +1,29 @@
 package team.asd.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
-
+import javax.validation.constraints.*;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class PriceDto {
+public class FeeDto {
 
 	@Positive(message = "{id.positive}")
 	@JsonProperty("id")
 	private Integer id;
 
-	@Size(max = 15, message = "{entity.length}")
-	@JsonProperty("entity_type")
-	private String entityType;
+	@Size(max = 15, message = "{type.length}")
+	@JsonProperty("fee_type")
+	private String feeType;
 
 	@Positive(message = "{id.positive}")
-	@JsonProperty("entity_id")
-	private Integer entityId;
+	@JsonProperty("product_id")
+	private Integer productId;
 
-	@Size(max = 45, message = "{name.length}")
+	@Size(max = 15, message = "{name.length}")
 	@JsonProperty("name")
 	private String name;
 
@@ -45,8 +39,20 @@ public class PriceDto {
 	@JsonProperty("to_date")
 	private String toDate;
 
+	@Size(max = 15, message = "{type.length}")
+	@JsonProperty("tax_type")
+	private String taxType;
+
+	@Size(max = 15, message = "{unit.length}")
+	@JsonProperty("unit")
+	private String unit;
+
 	@JsonProperty("value")
 	private Double value;
+
+	@Size(max = 15, message = "{type.length}")
+	@JsonProperty("value_type")
+	private String valueType;
 
 	@Size(max = 3, message = "{currency.length}")
 	@JsonProperty("currency")

@@ -15,27 +15,27 @@ import javax.validation.constraints.Size;
 @Builder
 public class ProductDto {
 
-	@Positive(message = "Id can`t be less then 1")
+	@Positive(message = "{id.positive}")
 	@JsonProperty("id")
 	private Integer id;
 
-	@Positive(message = "Id can`t be less then 1")
+	@Positive(message = "{id.positive}")
 	@JsonProperty("supplier_id")
 	private Integer supplierId; //relation to party record
 
-	@Size(max = 45, message = "Product name can`t have length over 45 symbols")
+	@Size(max = 45, message = "{name.length}")
 	@JsonProperty("name")
 	private String name;
 
-	@Size(max = 15, message = "Product state can`t have length over 15 symbols")
+	@Size(max = 15, message = "{state.length}")
 	@JsonProperty("state")
 	private String state;
 
-	@Size(max = 3, message = "Product currency can`t have length over 3 symbols")
+	@Size(max = 3, message = "{currency.length}")
 	@JsonProperty("currency")
 	private String currency;
 
-	@Positive(message = "Number of guests have to be less then 0")
+	@Positive(message = "{guests.number}")
 	@JsonProperty("guests_number")
 	private Integer guestsNumber;
 
@@ -45,7 +45,7 @@ public class ProductDto {
 	@JsonProperty("latitude")
 	private Double latitude;
 
-	@Size(max = 255, message = "Address can`t have length over 255 symbols")
+	@Size(max = 255, message = "{address.length}")
 	@JsonProperty("physical_address")
 	private String physicalAddress;
 

@@ -11,7 +11,7 @@ public class PriceDataTest {
 
 	public static Price getExpectedPrice() {
 		if (expectedPrice == null) {
-			Price.builder()
+			expectedPrice = Price.builder()
 					.id(1)
 					.entityType("Product")
 					.entityId(4)
