@@ -1,10 +1,12 @@
 package team.asd.service;
 
-import lombok.SneakyThrows;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.powermock.reflect.Whitebox;
 import team.asd.constant.ProductState;
@@ -23,12 +25,22 @@ class ProductServiceMockitoTest {
 	private ProductDao productDao;
 
 	private static Product product;
+	private AutoCloseable mockClosable;
 
 	@BeforeEach
 	void setUp() {
 		product = null;
-		MockitoAnnotations.openMocks(this);
+		mockClosable = MockitoAnnotations.openMocks(this);
 		productService = new ProductService(productDao);
+	}
+
+	@AfterEach
+	void tearDown() {
+		try {
+			mockClosable.close();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Test
@@ -40,7 +52,6 @@ class ProductServiceMockitoTest {
 		assertEquals(1, product.getId());
 	}
 
-	@SneakyThrows
 	@Test
 	void testCreateProduct() {
 		Exception e = assertThrows(ValidationException.class, () -> Whitebox.invokeMethod(productService, "validProduct", product, false));
@@ -75,7 +86,6 @@ class ProductServiceMockitoTest {
 
 		productService.updateProduct(Product.builder()
 				.id(1).supplierId(1).name("Mock").state(ProductState.Created).currency("usd").build());
-
 		assertNotNull(productService.readById(1));
 
 		Mockito.verify(productDao).updateProduct(Mockito.any());

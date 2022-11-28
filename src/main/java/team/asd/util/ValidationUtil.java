@@ -23,7 +23,7 @@ public class ValidationUtil {
 			if (fromDate == null && !new Date().before(toDate)) {
 				throw new ValidationException("To_date can not be earlier then current");
 			} else if (toDate == null && !new Date().before(fromDate)) {
-				throw new ValidationException("From_date can not be later then current");
+				throw new ValidationException("From_date can not be earlier then current");
 			} else if (!ObjectUtils.anyNull(fromDate, toDate)) {
 				if (!new Date().before(toDate) || !new Date().before(fromDate)) {
 					throw new ValidationException("Dates can not be earlier then current");
