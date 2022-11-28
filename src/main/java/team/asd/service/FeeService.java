@@ -37,7 +37,7 @@ public class FeeService {
 		feeDao.deleteFee(id);
 	}
 
-	public void validFee(Fee fee, boolean updatable) {
+	private void validFee(Fee fee, boolean updatable) {
 		if (fee == null) {
 			throw new ValidationException("Fee is null");
 		}
