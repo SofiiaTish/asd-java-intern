@@ -15,6 +15,7 @@ import team.asd.entity.Product;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -24,8 +25,11 @@ class ProductServiceMockitoTest {
 	@Mock
 	private ProductDao productDao;
 
+	private static Product product;
+
 	@BeforeEach
 	void setUp() {
+		product = null;
 		MockitoAnnotations.openMocks(this);
 		productService = new ProductService(productDao);
 	}
@@ -41,18 +45,21 @@ class ProductServiceMockitoTest {
 
 	@Test
 	void testCreateProduct() {
-		final Product[] product = new Product[1];
 		Mockito.doAnswer(invocation -> {
-			product[0] = Product.builder().id(1).build();
+			product = Product.builder().id(1).build();
 			return null;
 		}).when(productDao).saveProduct(Mockito.any(Product.class));
-		Mockito.when(productDao.readById(1)).thenReturn(product[0]);
+		Mockito.when(productDao.readById(1)).thenAnswer(invocation -> product);
 
-		//Mockito.verify(productDao).saveProduct(Mockito.any());
-		//Mockito.verify(productDao).readById(Mockito.anyInt());
+		assertNull(productService.readById(1));
 
-		assertNotNull(productService.createProduct(Product.builder()
-				.id(1).supplierId(1).name("Mock").state(ProductState.Created).currency("usd").build()));
+		productService.createProduct(Product.builder()
+				.id(1).supplierId(1).name("Mock").state(ProductState.Created).currency("usd").build());
+
+		assertNotNull(productService.readById(1));
+
+		Mockito.verify(productDao).saveProduct(Mockito.any());
+		Mockito.verify(productDao, Mockito.times(2)).readById(Mockito.anyInt());
 	}
 
 	@Test
