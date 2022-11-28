@@ -48,6 +48,9 @@ class ProductServiceMockitoTest {
 		}).when(productDao).saveProduct(Mockito.any(Product.class));
 		Mockito.when(productDao.readById(1)).thenReturn(product[0]);
 
+		//Mockito.verify(productDao).saveProduct(Mockito.any());
+		//Mockito.verify(productDao).readById(Mockito.anyInt());
+
 		assertNotNull(productService.createProduct(Product.builder()
 				.id(1).supplierId(1).name("Mock").state(ProductState.Created).currency("usd").build()));
 	}
