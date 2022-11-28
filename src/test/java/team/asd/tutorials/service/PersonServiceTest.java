@@ -26,9 +26,8 @@ public class PersonServiceTest {
 	private static final Double AVERAGE_AGE = 30D; // 150 / 5
 
 	private static List<IsPerson> definePersonList() {
-		return Arrays
-				.asList(new TestPerson("No1 Test", 1), new TestPerson("NO age", null), null, new TestPerson(null, null), new TestPerson("Newbie", 0), new TestPerson("NOT Old Man", 99),
-						new TestPerson("Marty McFly", -4), new TestPerson("Student Guy", 20), new TestPerson("Agent Smith", 30));
+		return Arrays.asList(new TestPerson("No1 Test", 1), new TestPerson("NO age", null), null, new TestPerson(null, null), new TestPerson("Newbie", 0),
+				new TestPerson("NOT Old Man", 99), new TestPerson("Marty McFly", -4), new TestPerson("Student Guy", 20), new TestPerson("Agent Smith", 30));
 	}
 
 	private static List<IsPerson> definePersonListWithNewbies() {

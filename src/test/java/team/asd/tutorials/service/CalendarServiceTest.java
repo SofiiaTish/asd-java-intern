@@ -77,7 +77,6 @@ class CalendarServiceTest {
 		assertEquals(7L, calendarService.defineCountInRange(LocalDate.now(), LocalDate.now().plusDays(7), ChronoUnit.DAYS));
 	}
 
-
 	@ParameterizedTest
 	@MethodSource("defineServices")
 	void testGetInfo(IsCalendarService calendarService) {
@@ -99,7 +98,6 @@ class CalendarServiceTest {
 		assertTrue(calendarService.getInfo(LocalDate.of(2000, 1, 3), DateElement.DAY_OF_WEEK).toLowerCase().startsWith("mon"));
 		assertTrue(calendarService.getInfo(LocalDate.of(2004, 1, 31), DateElement.DAY_OF_WEEK).toLowerCase().startsWith("sat"));
 	}
-
 
 	@ParameterizedTest
 	@MethodSource("defineServices")

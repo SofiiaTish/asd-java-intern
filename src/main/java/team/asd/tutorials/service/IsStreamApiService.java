@@ -17,8 +17,7 @@ public interface IsStreamApiService {
 	 * @param collection with items
 	 * @return stream with non-null items
 	 */
-	@NonNull
-	Stream<?> getNonNullStreamItems(Collection<?> collection);
+	@NonNull Stream<?> getNonNullStreamItems(Collection<?> collection);
 
 	/**
 	 * Defines a list with integer values for provided range.
@@ -28,8 +27,7 @@ public interface IsStreamApiService {
 	 * @param end   last range number (included)
 	 * @return a list with integers range
 	 */
-	@NonNull
-	List<Integer> defineListFromRange(Integer start, Integer end) throws NumberFormatException;
+	@NonNull List<Integer> defineListFromRange(Integer start, Integer end) throws NumberFormatException;
 
 	/**
 	 * Converts list of string values into list of integers using Java Stream API. If provided list is empty of null, empty list should be returned.
@@ -37,8 +35,7 @@ public interface IsStreamApiService {
 	 * @param stringList list of Strings
 	 * @return list of converted non-null values
 	 */
-	@NonNull
-	List<Integer> convertStringListToIntegerList(List<String> stringList);
+	@NonNull List<Integer> convertStringListToIntegerList(List<String> stringList);
 
 	/**
 	 * Converts String value into char list, ignored all non-alphabets and non-numbers.
@@ -46,8 +43,7 @@ public interface IsStreamApiService {
 	 * @param value string
 	 * @return IntStream of chars with alphabets and numbers
 	 */
-	@NonNull
-	IntStream convertStringToLegalChars(String value);
+	@NonNull IntStream convertStringToLegalChars(String value);
 
 	/**
 	 * Sum all numbers that provided in the list.
@@ -56,8 +52,7 @@ public interface IsStreamApiService {
 	 * @return a sum of all numbers
 	 * @throws NullPointerException in the case when null argument was provided
 	 */
-	@NonNull
-	BigDecimal sumAllValues(List<BigDecimal> values);
+	@NonNull BigDecimal sumAllValues(List<BigDecimal> values);
 
 	/**
 	 * Sort a provided list of dates with ascending order and returns a stream.
@@ -65,8 +60,7 @@ public interface IsStreamApiService {
 	 * @param listOfDates need to sort
 	 * @return stream of dates, sorted in ascending order without null values
 	 */
-	@NonNull
-	Stream<LocalDate> sortLocalDateList(List<LocalDate> listOfDates);
+	@NonNull Stream<LocalDate> sortLocalDateList(List<LocalDate> listOfDates);
 
 	/**
 	 * Method will sort a provided list of dates. Then will try to find a parameter date in this list.
@@ -78,8 +72,7 @@ public interface IsStreamApiService {
 	 * @param daysToSkip  number of dates that we will filter out if provided date will be found
 	 * @return stream of dates
 	 */
-	@NonNull
-	Stream<LocalDate> skipDaysFromSpecifiedDate(List<LocalDate> listOfDates, LocalDate date, Integer daysToSkip);
+	@NonNull Stream<LocalDate> skipDaysFromSpecifiedDate(List<LocalDate> listOfDates, LocalDate date, Integer daysToSkip);
 
 	/**
 	 * Collect all provided lists into one that contains all the objects in the same iteration order
@@ -87,8 +80,7 @@ public interface IsStreamApiService {
 	 * @param lists of the same objects
 	 * @return list with all items
 	 */
-	@NonNull
-	List<? extends Object> collectLists(List<? extends Object> ... lists);
+	@NonNull List<? extends Object> collectLists(List<? extends Object>... lists);
 
 	/**
 	 * Return elements without duplicates. Not modifies the provided list
@@ -96,6 +88,5 @@ public interface IsStreamApiService {
 	 * @param listWithDuplicates list with elements
 	 * @return list without duplicates
 	 */
-	@NonNull
-	List<? extends Object> removeDuplicates(List<? extends Object> listWithDuplicates);
+	@NonNull List<? extends Object> removeDuplicates(List<? extends Object> listWithDuplicates);
 }

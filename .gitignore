@@ -53,3 +53,7 @@ Thumbs.db
 *.mov
 *.wmv
 
+#Initializer
+mvnw
+mvnw.cmd
+
