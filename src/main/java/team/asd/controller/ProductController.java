@@ -1,22 +1,17 @@
 package team.asd.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team.asd.dto.ProductDto;
 import team.asd.service.ProductService;
 import team.asd.util.ConverterUtil;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(path = { "/product" })
+@RequestMapping(path = {"/product"})
 public class ProductController {
 
 	private final ProductService productService;
@@ -25,22 +20,35 @@ public class ProductController {
 		this.productService = productService;
 	}
 
-	@GetMapping(path = { "/{id}" })
+	@GetMapping(path = {"/{id}"})
 	public ProductDto getProductById(@PathVariable Integer id) {
 		return ConverterUtil.convertProductToDto(productService.readById(id));
 	}
 
-	@PostMapping(path = { "/" })
+	@GetMapping(path = {"/products"})
+	public List<ProductDto> getProductsBySupplierIdNameState(
+			@RequestParam(required = false) Integer supplierId,
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) String state) {
+		return productService.readByParams(supplierId, name, state).stream().map(ConverterUtil::convertProductToDto).collect(Collectors.toList());
+	}
+
+	@PostMapping(path = {"/"})
 	public ProductDto createProduct(@RequestBody @Valid ProductDto productDto) {
 		return ConverterUtil.convertProductToDto(productService.createProduct(ConverterUtil.convertDtoToProduct(productDto)));
 	}
 
-	@PutMapping(path = { "/" })
+	@PostMapping(path = {"/"})
+	public void storeProducts(@RequestBody List<ProductDto> productDtoList) {
+		productService.createProducts(productDtoList.stream().map(ConverterUtil::convertDtoToProduct).collect(Collectors.toList()));
+	}
+
+	@PutMapping(path = {"/"})
 	public ProductDto updateProduct(@RequestBody @Valid ProductDto productDto) {
 		return ConverterUtil.convertProductToDto(productService.updateProduct(ConverterUtil.convertDtoToProduct(productDto)));
 	}
 
-	@DeleteMapping(path = { "/{id}" })
+	@DeleteMapping(path = {"/{id}"})
 	public void deleteProductById(@PathVariable Integer id) {
 		productService.deleteProduct(id);
 	}

@@ -7,6 +7,8 @@ import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
 import team.asd.util.ValidationUtil;
 
+import java.util.List;
+
 @Service
 public class ProductService {
 
@@ -21,10 +23,21 @@ public class ProductService {
 		return productDao.readById(id);
 	}
 
+	public List<Product> readByParams(Integer supplierId, String name, String state) {
+		if (supplierId < 1) {
+			throw new ValidationException("Incorrect Id: not positive");
+		}
+		return productDao.readProductsByParams(supplierId, name, state);
+	}
+
 	public Product createProduct(Product product) {
 		validProduct(product, false);
 		productDao.saveProduct(product);
 		return productDao.readById(product.getId());
+	}
+
+	public void createProducts(List<Product> products) {
+		productDao.saveProducts(products);
 	}
 
 	public Product updateProduct(Product product) {

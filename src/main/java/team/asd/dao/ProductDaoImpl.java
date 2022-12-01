@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import team.asd.entity.Product;
 import team.asd.mapper.ProductMapper;
 
+import java.util.List;
+
 @Repository
 public class ProductDaoImpl implements ProductDao {
 
@@ -23,8 +25,20 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	@Transactional
+	public List<Product> readProductsByParams(Integer supplierId, String name, String state) {
+		return productMapper.readProductsByParams(supplierId, name, state);
+	}
+
+	@Override
+	@Transactional
 	public void saveProduct(Product product) {
 		productMapper.insertProduct(product);
+	}
+
+	@Override
+	@Transactional
+	public void saveProducts(List<Product> products) {
+
 	}
 
 	@Override
