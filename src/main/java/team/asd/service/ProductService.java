@@ -1,5 +1,6 @@
 package team.asd.service;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.asd.dao.ProductDao;
@@ -8,6 +9,7 @@ import team.asd.exception.ValidationException;
 import team.asd.util.ValidationUtil;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ProductService {
@@ -24,7 +26,7 @@ public class ProductService {
 	}
 
 	public List<Product> readByParams(Integer supplierId, String name, String state) {
-		if (supplierId < 1) {
+		if (supplierId != null && supplierId < 1) {
 			throw new ValidationException("Incorrect Id: not positive");
 		}
 		return productDao.readProductsByParams(supplierId, name, state);
@@ -37,6 +39,8 @@ public class ProductService {
 	}
 
 	public void createProducts(List<Product> products) {
+		CollectionUtils.filter(products, Objects::nonNull);
+		products.forEach(product -> ValidationUtil.validFields(product.getSupplierId(), product.getName(), product.getCurrency()));
 		productDao.saveProducts(products);
 	}
 

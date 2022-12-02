@@ -14,7 +14,7 @@ public class ConverterUtil {
 	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
 	public static Product convertDtoToProduct(ProductDto productDto) {
-		return Product.builder()
+		return productDto == null ? null : Product.builder()
 				.id(productDto.getId())
 				.supplierId(productDto.getSupplierId())
 				.name(productDto.getName())

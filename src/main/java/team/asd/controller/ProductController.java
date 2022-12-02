@@ -1,8 +1,10 @@
 package team.asd.controller;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team.asd.dto.ProductDto;
+import team.asd.exception.ValidationException;
 import team.asd.service.ProductService;
 import team.asd.util.ConverterUtil;
 
@@ -38,9 +40,13 @@ public class ProductController {
 		return ConverterUtil.convertProductToDto(productService.createProduct(ConverterUtil.convertDtoToProduct(productDto)));
 	}
 
-	@PostMapping(path = {"/"})
+	@PostMapping(path = {"/products"})
 	public void storeProducts(@RequestBody List<ProductDto> productDtoList) {
-		productService.createProducts(productDtoList.stream().map(ConverterUtil::convertDtoToProduct).collect(Collectors.toList()));
+		if (CollectionUtils.isEmpty(productDtoList)) {
+			throw new ValidationException("List of products is empty");
+		} else {
+			productService.createProducts(productDtoList.stream().map(ConverterUtil::convertDtoToProduct).collect(Collectors.toList()));
+		}
 	}
 
 	@PutMapping(path = {"/"})

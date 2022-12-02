@@ -38,7 +38,8 @@ public class ProductDaoImpl implements ProductDao {
 	@Override
 	@Transactional
 	public void saveProducts(List<Product> products) {
-
+		productMapper.insertProducts(products);
+		System.out.println(products.get(0).getId());
 	}
 
 	@Override

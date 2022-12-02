@@ -50,15 +50,14 @@
 	</insert>
 
 	<insert id="insertProducts" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
-		insert into product (supplier_id, name <if test="state != null">, state</if>, currency,
-		<if test="guestsNumber !=null">guests,</if>
-		longitude, latitude, physical_address)
+		insert into product (supplier_id, name, state, currency,
+		guests, longitude, latitude, physical_address)
 		values
 		<foreach collection="list" item="element" index="index" open="(" separator="),(" close=")">
 			#{element.supplierId}, #{element.name},
-			<if test="state != null">#{element.state},</if>
+			#{element.state},
 			#{element.currency},
-			<if test="guestsNumber !=null">#{element.guestsNumber},</if>
+			#{element.guestsNumber},
 			#{element.longitude},#{element.latitude},#{element.physicalAddress}
 		</foreach>
 	</insert>
