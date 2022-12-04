@@ -8,6 +8,7 @@ import team.asd.entity.Fee;
 import team.asd.exception.ValidationException;
 import team.asd.util.ValidationUtil;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,6 +30,11 @@ public class FeeService {
 			throw new ValidationException("Incorrect product Id: not positive");
 		}
 		return feeDao.readFeesByParams(feeType, productId, state);
+	}
+
+	public List<Fee> readByDateRange(Date fromDate, Date toDate) {
+		ValidationUtil.validDateRange(fromDate, toDate);
+		return feeDao.readFeesByDateRange(fromDate, toDate);
 	}
 
 	public Fee createFee(Fee fee) {

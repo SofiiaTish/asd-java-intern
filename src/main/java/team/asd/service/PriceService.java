@@ -8,6 +8,7 @@ import team.asd.entity.Price;
 import team.asd.exception.ValidationException;
 import team.asd.util.ValidationUtil;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,6 +31,11 @@ public class PriceService {
 			throw new ValidationException("Incorrect entity Id: not positive");
 		}
 		return priceDao.readPricesByParams(entityType, entityId, state);
+	}
+
+	public List<Price> readByDateRange(Date fromDate, Date toDate) {
+		ValidationUtil.validDateRange(fromDate, toDate);
+		return priceDao.readPricesByDateRange(fromDate, toDate);
 	}
 
 	public Price createPrice(Price price) {

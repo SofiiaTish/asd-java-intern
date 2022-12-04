@@ -33,4 +33,13 @@ public class ValidationUtil {
 			}
 		}
 	}
+
+	public static void validDateRange(Date fromDate, Date toDate) {
+		if (ObjectUtils.anyNull(fromDate, toDate)) {
+			throw new ValidationException("Date is null");
+		}
+		if (!fromDate.before(toDate)) {
+			throw new ValidationException("From_date have to be earlier then To_date");
+		}
+	}
 }

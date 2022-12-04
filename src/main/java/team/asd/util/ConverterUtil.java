@@ -9,6 +9,7 @@ import team.asd.exception.ValidationException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ConverterUtil {
 	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -120,5 +121,13 @@ public class ConverterUtil {
 				.currency(fee.getCurrency())
 				.build();
 
+	}
+
+	public static Date convertStringToDate(String date) {
+		try {
+			return date == null ? null : format.parse(date);
+		} catch (ParseException e) {
+			throw new ValidationException("Invalid date of price");
+		}
 	}
 }

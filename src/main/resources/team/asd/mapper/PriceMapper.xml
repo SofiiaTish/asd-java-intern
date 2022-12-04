@@ -42,6 +42,15 @@
 		</where>
 	</select>
 
+	<select id="readPricesByDateRange" parameterType="map" resultMap="priceMap">
+		select
+		<include refid="columns"/>
+		from price
+		where
+		(from_date <![CDATA[>=]]> #{fromDate} and from_date <![CDATA[<]]> #{toDate})
+		and (to_date <![CDATA[<=]]> #{toDate} and to_date <![CDATA[>]]> #{fromDate})
+	</select>
+
 	<insert id="insertPrice" parameterType="team.asd.entity.Price" useGeneratedKeys="true" keyProperty="id">
 		insert into price(entity_type, entity_id, name,
 		<if test="state != null">state,</if>

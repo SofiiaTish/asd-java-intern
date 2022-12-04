@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.asd.entity.Fee;
 import team.asd.mapper.FeeMapper;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -28,6 +29,12 @@ public class FeeDaoImpl implements FeeDao {
 	@Transactional
 	public List<Fee> readFeesByParams(String feeType, Integer productId, String state) {
 		return feeMapper.readFeesByParams(feeType, productId, state);
+	}
+
+	@Override
+	@Transactional
+	public List<Fee> readFeesByDateRange(Date fromDate, Date toDate) {
+		return feeMapper.readFeesByDateRange(fromDate, toDate);
 	}
 
 	@Override

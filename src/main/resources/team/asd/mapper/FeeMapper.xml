@@ -49,6 +49,15 @@
 		</where>
 	</select>
 
+	<select id="readFeesByDateRange" parameterType="map" resultMap="feeMap">
+		select
+		<include refid="columns"/>
+		from fee
+		where
+		(from_date <![CDATA[>=]]> #{fromDate} and from_date <![CDATA[<]]> #{toDate})
+		and (to_date <![CDATA[<=]]> #{toDate} and to_date <![CDATA[>]]> #{fromDate})
+	</select>
+
 	<insert id="insertFee" parameterType="team.asd.entity.Fee" useGeneratedKeys="true" keyProperty="id">
 		insert into fee(fee_type, product_id, name,
 						state, from_date, to_date, tax_type,

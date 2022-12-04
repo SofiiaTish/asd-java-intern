@@ -10,6 +10,7 @@ import team.asd.service.PriceService;
 import team.asd.util.ConverterUtil;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,11 +30,19 @@ public class PriceController {
 	}
 
 	@GetMapping(path = {"/prices"})
-	public List<PriceDto> getPriceByEntityTypeEntityIdState(
+	public List<PriceDto> getPricesByEntityTypeEntityIdState(
 			@RequestParam(required = false) String entityType,
-			Integer entityId,
+			@RequestParam Integer entityId,
 			@RequestParam(required = false) String state) {
 		return priceService.readByParams(entityType, entityId, state).stream().map(ConverterUtil::convertPriceToDto).collect(Collectors.toList());
+	}
+
+	@GetMapping(path = {"/prices/date-range"})
+	public List<PriceDto> getPricesByDateRange(
+			@RequestParam @Pattern(regexp = "[0-9]{4}-[0-2]{2}-[0-9]{2}", message = "{date.format}") String fromDate,
+			@RequestParam @Pattern(regexp = "[0-9]{4}-[0-2]{2}-[0-9]{2}", message = "{date.format}") String toDate) {
+		return priceService.readByDateRange(ConverterUtil.convertStringToDate(fromDate), ConverterUtil.convertStringToDate(toDate))
+				.stream().map(ConverterUtil::convertPriceToDto).collect(Collectors.toList());
 	}
 
 	@PostMapping(path = {"/"})

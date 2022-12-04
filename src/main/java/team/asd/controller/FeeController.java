@@ -10,6 +10,7 @@ import team.asd.service.FeeService;
 import team.asd.util.ConverterUtil;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,9 +32,17 @@ public class FeeController {
 	@GetMapping(path = {"/fees"})
 	public List<FeeDto> getFeeByFeeTypeProductIdState(
 			@RequestParam(required = false) String feeType,
-			Integer productId,
+			@RequestParam Integer productId,
 			@RequestParam(required = false) String state) {
 		return feeService.readByParams(feeType, productId, state).stream().map(ConverterUtil::convertFeeToDto).collect(Collectors.toList());
+	}
+
+	@GetMapping(path = {"/fees/date-range"})
+	public List<FeeDto> getFeesByDateRange(
+			@RequestParam @Pattern(regexp = "[0-9]{4}-[0-2]{2}-[0-9]{2}", message = "{date.format}") String fromDate,
+			@RequestParam @Pattern(regexp = "[0-9]{4}-[0-2]{2}-[0-9]{2}", message = "{date.format}") String toDate) {
+		return feeService.readByDateRange(ConverterUtil.convertStringToDate(fromDate), ConverterUtil.convertStringToDate(toDate))
+				.stream().map(ConverterUtil::convertFeeToDto).collect(Collectors.toList());
 	}
 
 	@PostMapping(path = {"/"})

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.asd.entity.Price;
 import team.asd.mapper.PriceMapper;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -28,6 +29,11 @@ public class PriceDaoImpl implements PriceDao {
 	@Transactional
 	public List<Price> readPricesByParams(String entityType, Integer entityId, String state) {
 		return priceMapper.readPricesByParams(entityType, entityId, state);
+	}
+
+	@Override
+	public List<Price> readPricesByDateRange(Date fromDate, Date toDate) {
+		return priceMapper.readPricesByDateRange(fromDate, toDate);
 	}
 
 	@Override
