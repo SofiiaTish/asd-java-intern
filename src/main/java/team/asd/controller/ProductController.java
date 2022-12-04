@@ -2,6 +2,7 @@ package team.asd.controller;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import team.asd.dto.ProductDto;
 import team.asd.exception.ValidationException;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = {"/product"})
+@Validated
 public class ProductController {
 
 	private final ProductService productService;
@@ -41,7 +43,7 @@ public class ProductController {
 	}
 
 	@PostMapping(path = {"/products"})
-	public void storeProducts(@RequestBody List<ProductDto> productDtoList) {
+	public void storeProducts(@RequestBody List<@Valid ProductDto> productDtoList) {
 		if (CollectionUtils.isEmpty(productDtoList)) {
 			throw new ValidationException("List of products is empty");
 		} else {

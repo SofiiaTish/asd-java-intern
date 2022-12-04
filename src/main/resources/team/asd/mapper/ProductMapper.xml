@@ -55,9 +55,23 @@
 		values
 		<foreach collection="list" item="element" index="index" open="(" separator="),(" close=")">
 			#{element.supplierId}, #{element.name},
-			#{element.state},
+			<choose>
+				<when test="element.state != null">
+					#{element.state},
+				</when>
+				<otherwise>
+					'Created',
+				</otherwise>
+			</choose>
 			#{element.currency},
-			#{element.guestsNumber},
+			<choose>
+				<when test="element.guestsNumber != null">
+					#{element.guestsNumber},
+				</when>
+				<otherwise>
+					1,
+				</otherwise>
+			</choose>
 			#{element.longitude},#{element.latitude},#{element.physicalAddress}
 		</foreach>
 	</insert>
