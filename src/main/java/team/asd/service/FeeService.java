@@ -1,11 +1,15 @@
 package team.asd.service;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.asd.dao.FeeDao;
 import team.asd.entity.Fee;
 import team.asd.exception.ValidationException;
 import team.asd.util.ValidationUtil;
+
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class FeeService {
@@ -20,10 +24,29 @@ public class FeeService {
 		return feeDao.readById(id);
 	}
 
+	public List<Fee> readByParams(String feeType, Integer productId, String state) {
+		if (productId != null && productId < 1) {
+			throw new ValidationException("Incorrect product Id: not positive");
+		}
+		return feeDao.readFeesByParams(feeType, productId, state);
+	}
+
 	public Fee createFee(Fee fee) {
 		validFee(fee, false);
 		feeDao.saveFee(fee);
 		return feeDao.readById(fee.getId());
+	}
+
+	public void createFees(List<Fee> fees) {
+		CollectionUtils.filter(fees, Objects::nonNull);
+		fees.forEach(fee -> {
+			ValidationUtil.validFields(fee.getFeeType(), fee.getProductId(), fee.getState(),
+					fee.getFromDate(), fee.getToDate(), fee.getTaxType(),
+					fee.getUnit(), fee.getValue(), fee.getValueType(),
+					fee.getCurrency());
+			ValidationUtil.validDates(fee.getFromDate(), fee.getToDate());
+		});
+		feeDao.saveFees(fees);
 	}
 
 	public Fee updateFee(Fee fee) {
