@@ -3,6 +3,8 @@ package team.asd.dao;
 import team.asd.data.PriceDataTest;
 import team.asd.entity.Price;
 
+import java.util.List;
+
 public class PriceDaoTestImpl implements PriceDao {
 
 	@Override
@@ -11,7 +13,17 @@ public class PriceDaoTestImpl implements PriceDao {
 	}
 
 	@Override
+	public List<Price> readPricesByParams(String entityType, Integer entityId, String state) {
+		return null;
+	}
+
+	@Override
 	public void savePrice(Price price) {
+	}
+
+	@Override
+	public void savePrices(List<Price> prices) {
+
 	}
 
 	@Override

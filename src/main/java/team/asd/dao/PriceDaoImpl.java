@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import team.asd.entity.Price;
 import team.asd.mapper.PriceMapper;
 
+import java.util.List;
+
 
 @Repository
 public class PriceDaoImpl implements PriceDao {
@@ -24,8 +26,20 @@ public class PriceDaoImpl implements PriceDao {
 
 	@Override
 	@Transactional
+	public List<Price> readPricesByParams(String entityType, Integer entityId, String state) {
+		return priceMapper.readPricesByParams(entityType, entityId, state);
+	}
+
+	@Override
+	@Transactional
 	public void savePrice(Price price) {
 		priceMapper.insertPrice(price);
+	}
+
+	@Override
+	@Transactional
+	public void savePrices(List<Price> prices) {
+		priceMapper.insertPrices(prices);
 	}
 
 	@Override

@@ -65,7 +65,7 @@ public class ConverterUtil {
 	}
 
 	public static PriceDto convertPriceToDto(Price price) {
-		return PriceDto.builder()
+		return price == null ? null : PriceDto.builder()
 				.id(price.getId())
 				.entityType(price.getEntityType())
 				.entityId(price.getEntityId())
