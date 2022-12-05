@@ -13,8 +13,8 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan({ "team.asd" })
-@MapperScan({ "team.asd.mapper" })
+@ComponentScan({"team.asd"})
+@MapperScan({"team.asd.mapper"})
 public class DataSourceConfig {
 
 	@Bean
