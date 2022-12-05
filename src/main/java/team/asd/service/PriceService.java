@@ -38,7 +38,7 @@ public class PriceService {
 		priceDao.deletePrice(id);
 	}
 
-	public void validPrice(Price price, boolean updatable) {
+	private void validPrice(Price price, boolean updatable) {
 		if (price == null) {
 			throw new ValidationException("Price is null");
 		}

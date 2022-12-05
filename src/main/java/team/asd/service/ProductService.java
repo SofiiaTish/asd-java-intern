@@ -38,7 +38,7 @@ public class ProductService {
 		productDao.deleteProduct(id);
 	}
 
-	public void validProduct(Product product, boolean updatable) {
+	private void validProduct(Product product, boolean updatable) {
 		if (product == null) {
 			throw new ValidationException("Product is null");
 		}
