@@ -77,13 +77,13 @@
 		unit, value, value_type, currency)
 		values
 		<foreach collection="list" item="element" index="index" open="(" separator="),(" close=")">
-			#{feeType, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
-			#{productId}, #{name}, #{state}, #{fromDate}, #{toDate},
-			#{taxType, typeHandler=team.asd.handler.TaxTypeEnumTypeHandler},
-			#{unit, typeHandler=team.asd.handler.UnitEnumTypeHandler},
-			#{value},
-			#{valueType, typeHandler=team.asd.handler.ValueTypeEnumTypeHandler},
-			#{currency}
+			#{element.feeType, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			#{element.productId}, #{element.name}, #{element.state}, #{element.fromDate}, #{element.toDate},
+			#{element.taxType, typeHandler=team.asd.handler.TaxTypeEnumTypeHandler},
+			#{element.unit, typeHandler=team.asd.handler.UnitEnumTypeHandler},
+			#{element.value},
+			#{element.valueType, typeHandler=team.asd.handler.ValueTypeEnumTypeHandler},
+			#{element.currency}
 		</foreach>
 	</insert>
 

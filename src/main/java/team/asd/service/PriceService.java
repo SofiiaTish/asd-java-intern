@@ -46,12 +46,7 @@ public class PriceService {
 
 	public void createPrices(List<Price> prices) {
 		CollectionUtils.filter(prices, Objects::nonNull);
-		prices.forEach(price -> {
-			ValidationUtil.validFields(price.getEntityType(), price.getEntityId(),
-					price.getName(), price.getFromDate(), price.getToDate(),
-					price.getValue(), price.getCurrency());
-			ValidationUtil.validDates(price.getFromDate(), price.getToDate());
-		});
+		prices.forEach(price -> validPrice(price, false));
 		priceDao.savePrices(prices);
 	}
 

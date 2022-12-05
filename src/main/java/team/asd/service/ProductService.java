@@ -40,7 +40,7 @@ public class ProductService {
 
 	public void createProducts(List<Product> products) {
 		CollectionUtils.filter(products, Objects::nonNull);
-		products.forEach(product -> ValidationUtil.validFields(product.getSupplierId(), product.getName(), product.getCurrency()));
+		products.forEach(product -> validProduct(product, false));
 		productDao.saveProducts(products);
 	}
 

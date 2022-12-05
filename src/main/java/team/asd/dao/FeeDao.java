@@ -9,7 +9,7 @@ public interface FeeDao {
 
 	Fee readById(Integer id);
 
-	List<Fee> readFeesByParams(String feeType, Integer productId, String state);
+	List<Fee> readFeesByParams(Integer feeType, Integer productId, String state);
 
 	List<Fee> readFeesByDateRange(Date fromDate, Date toDate);
 

@@ -25,7 +25,7 @@ public class FeeService {
 		return feeDao.readById(id);
 	}
 
-	public List<Fee> readByParams(String feeType, Integer productId, String state) {
+	public List<Fee> readByParams(Integer feeType, Integer productId, String state) {
 		if (productId != null && productId < 1) {
 			throw new ValidationException("Incorrect product Id: not positive");
 		}
@@ -45,13 +45,7 @@ public class FeeService {
 
 	public void createFees(List<Fee> fees) {
 		CollectionUtils.filter(fees, Objects::nonNull);
-		fees.forEach(fee -> {
-			ValidationUtil.validFields(fee.getFeeType(), fee.getProductId(), fee.getState(),
-					fee.getFromDate(), fee.getToDate(), fee.getTaxType(),
-					fee.getUnit(), fee.getValue(), fee.getValueType(),
-					fee.getCurrency());
-			ValidationUtil.validDates(fee.getFromDate(), fee.getToDate());
-		});
+		fees.forEach(fee -> validFee(fee, false));
 		feeDao.saveFees(fees);
 	}
 

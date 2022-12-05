@@ -27,7 +27,7 @@ public class FeeDaoImpl implements FeeDao {
 
 	@Override
 	@Transactional
-	public List<Fee> readFeesByParams(String feeType, Integer productId, String state) {
+	public List<Fee> readFeesByParams(Integer feeType, Integer productId, String state) {
 		return feeMapper.readFeesByParams(feeType, productId, state);
 	}
 

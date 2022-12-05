@@ -21,14 +21,12 @@ public class ValidationUtil {
 	public static void validDates(Date fromDate, Date toDate) {
 		if (!ObjectUtils.allNull(fromDate, toDate)) {
 			if (fromDate == null && !new Date().before(toDate)) {
-				throw new ValidationException("To_date can not be earlier then current");
+				throw new ValidationException("To_date can not be earlier than current");
 			} else if (toDate == null && !new Date().before(fromDate)) {
-				throw new ValidationException("From_date can not be earlier then current");
+				throw new ValidationException("From_date can not be earlier than current");
 			} else if (!ObjectUtils.anyNull(fromDate, toDate)) {
-				if (!new Date().before(toDate) || !new Date().before(fromDate)) {
-					throw new ValidationException("Dates can not be earlier then current");
-				} else if (!fromDate.before(toDate)) {
-					throw new ValidationException("From_date have to be earlier then To_date");
+				if (!fromDate.before(toDate)) {
+					throw new ValidationException("From_date have to be earlier than To_date");
 				}
 			}
 		}

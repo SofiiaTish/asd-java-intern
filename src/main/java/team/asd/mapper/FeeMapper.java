@@ -12,7 +12,7 @@ public interface FeeMapper {
 
 	Fee readFeeById(Integer id);
 
-	List<Fee> readFeesByParams(@Param("feeType") String feeType, @Param("productId") Integer productId, @Param("state") String state);
+	List<Fee> readFeesByParams(@Param("feeType") Integer feeType, @Param("productId") Integer productId, @Param("state") String state);
 
 	List<Fee> readFeesByDateRange(@Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
 

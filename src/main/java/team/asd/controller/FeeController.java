@@ -31,7 +31,7 @@ public class FeeController {
 
 	@GetMapping(path = {"/fees"})
 	public List<FeeDto> getFeeByFeeTypeProductIdState(
-			@RequestParam(required = false) String feeType,
+			@RequestParam(required = false) Integer feeType,
 			@RequestParam Integer productId,
 			@RequestParam(required = false) String state) {
 		return feeService.readByParams(feeType, productId, state).stream().map(ConverterUtil::convertFeeToDto).collect(Collectors.toList());

@@ -43,7 +43,7 @@ public class ConverterUtil {
 	}
 
 	public static Price convertDtoToPrice(PriceDto priceDto) {
-		Price price = Price.builder()
+		Price price = priceDto == null ? null : Price.builder()
 				.id(priceDto.getId())
 				.entityType(priceDto.getEntityType())
 				.entityId(priceDto.getEntityId())
@@ -52,21 +52,23 @@ public class ConverterUtil {
 				.value(priceDto.getValue())
 				.currency(priceDto.getCurrency())
 				.build();
-		try {
-			price.setFromDate(priceDto.getFromDate() == null ? null : format.parse(priceDto.getFromDate()));
-		} catch (ParseException e) {
-			throw new ValidationException("Invalid date of price");
-		}
-		try {
-			price.setToDate(priceDto.getToDate() == null ? null : format.parse(priceDto.getToDate()));
-		} catch (ParseException e1) {
-			throw new ValidationException("Invalid date of price");
+		if (price != null) {
+			try {
+				price.setFromDate(priceDto.getFromDate() == null ? null : format.parse(priceDto.getFromDate()));
+			} catch (ParseException e) {
+				throw new ValidationException("Invalid date of price");
+			}
+			try {
+				price.setToDate(priceDto.getToDate() == null ? null : format.parse(priceDto.getToDate()));
+			} catch (ParseException e1) {
+				throw new ValidationException("Invalid date of price");
+			}
 		}
 		return price;
 	}
 
 	public static PriceDto convertPriceToDto(Price price) {
-		return price == null ? null : PriceDto.builder()
+		return PriceDto.builder()
 				.id(price.getId())
 				.entityType(price.getEntityType())
 				.entityId(price.getEntityId())
@@ -80,7 +82,7 @@ public class ConverterUtil {
 	}
 
 	public static Fee convertDtoToFee(FeeDto feeDto) {
-		Fee fee = Fee.builder()
+		Fee fee = feeDto == null ? null : Fee.builder()
 				.id(feeDto.getId())
 				.feeType(feeDto.getFeeType() == null ? null : FeeType.valueOf(feeDto.getFeeType()))
 				.productId(feeDto.getProductId())
@@ -92,15 +94,17 @@ public class ConverterUtil {
 				.valueType(feeDto.getValueType() == null ? null : ValueType.valueOf(feeDto.getValueType()))
 				.currency(feeDto.getCurrency())
 				.build();
-		try {
-			fee.setFromDate(feeDto.getFromDate() == null ? null : format.parse(feeDto.getFromDate()));
-		} catch (ParseException e) {
-			throw new ValidationException("Invalid from_date of fee");
-		}
-		try {
-			fee.setToDate(feeDto.getToDate() == null ? null : format.parse(feeDto.getToDate()));
-		} catch (ParseException e) {
-			throw new ValidationException("Invalid to_date of fee");
+		if (fee != null) {
+			try {
+				fee.setFromDate(feeDto.getFromDate() == null ? null : format.parse(feeDto.getFromDate()));
+			} catch (ParseException e) {
+				throw new ValidationException("Invalid from_date of fee");
+			}
+			try {
+				fee.setToDate(feeDto.getToDate() == null ? null : format.parse(feeDto.getToDate()));
+			} catch (ParseException e) {
+				throw new ValidationException("Invalid to_date of fee");
+			}
 		}
 		return fee;
 	}

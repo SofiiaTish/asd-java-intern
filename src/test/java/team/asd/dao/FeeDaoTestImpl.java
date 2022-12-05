@@ -14,7 +14,7 @@ public class FeeDaoTestImpl implements FeeDao {
 	}
 
 	@Override
-	public List<Fee> readFeesByParams(String feeType, Integer productId, String state) {
+	public List<Fee> readFeesByParams(Integer feeType, Integer productId, String state) {
 		return null;
 	}
 
