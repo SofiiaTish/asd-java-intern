@@ -1,6 +1,7 @@
 package team.asd.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ApiModel(value = "ProductModel", description = "Model consists of fields that match to table. Model is used for sending data to ProductApi.")
 public class ProductDto {
 
 	@ApiModelProperty(value = "The id of product", example = "4")
