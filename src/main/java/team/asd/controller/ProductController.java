@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @Validated
 @ApiOperation("Product Api")
 public class ProductController {
-
 	private final ProductService productService;
 
 	public ProductController(@Autowired ProductService productService) {
@@ -35,14 +34,14 @@ public class ProductController {
 			@ApiResponse(code = 404, message = "Custom message about error reasons or unknown error")
 	})
 	@GetMapping(path = {"/{id}"})
-	public ProductDto getProductById(@PathVariable @ApiParam(value = "Product Id", example = "4", required = true) Integer id) {
+	public ProductDto getProductById(@PathVariable @ApiParam(value = "Product Id", example = "4") Integer id) {
 		return ConverterUtil.convertProductToDto(productService.readById(id));
 	}
 
-	@ApiOperation(value = "Get product by supplier id, name and state in different combination",
+	@ApiOperation(value = "Get products by supplier id, name and state in different combination",
 			notes = "Can require supplier id, name and state as request parameters. Return list of products that match to parameters as JSON objects. If all parameters are absent all products will be in list.")
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Products exists in database"),
+			@ApiResponse(code = 200, message = "Products exists in table"),
 			@ApiResponse(code = 404, message = "Custom message about error reasons or unknown error")
 	})
 	@GetMapping(path = {"/products"})
