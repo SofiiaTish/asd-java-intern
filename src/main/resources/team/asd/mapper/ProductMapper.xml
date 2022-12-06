@@ -18,19 +18,26 @@
 				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
 	</resultMap>
 
+	<sql id="columns">
+		id, supplier_id, name, state, currency, guests, longitude, latitude, physical_address, version
+	</sql>
+
 	<select id="readProductById" parameterType="java.lang.Integer" resultMap="productMap">
-		select id,
-			   supplier_id,
-			   name,
-			   state,
-			   currency,
-			   guests,
-			   longitude,
-			   latitude,
-			   physical_address,
-			   version
+		select
+		<include refid="columns"/>
 		from product
 		where id = #{id}
+	</select>
+
+	<select id="readProductsByParams" parameterType="map" resultMap="productMap">
+		select
+		<include refid="columns"/>
+		from product
+		<where>
+			<if test="supplierId != null">supplier_id = #{supplierId}</if>
+			<if test="name != null">and name = #{name}</if>
+			<if test="state != null">and state = #{state}</if>
+		</where>
 	</select>
 
 	<insert id="insertProduct" parameterType="team.asd.entity.Product" useGeneratedKeys="true" keyProperty="id">
@@ -40,6 +47,33 @@
 		values (#{supplierId}, #{name},
 		<if test="state != null">#{state},</if>
 		#{currency}, <if test="guestsNumber !=null">#{guestsNumber},</if> #{longitude},#{latitude}, #{physicalAddress})
+	</insert>
+
+	<insert id="insertProducts" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into product (supplier_id, name, state, currency,
+		guests, longitude, latitude, physical_address)
+		values
+		<foreach collection="list" item="element" index="index" open="(" separator="),(" close=")">
+			#{element.supplierId}, #{element.name},
+			<choose>
+				<when test="element.state != null">
+					#{element.state},
+				</when>
+				<otherwise>
+					'Created',
+				</otherwise>
+			</choose>
+			#{element.currency},
+			<choose>
+				<when test="element.guestsNumber != null">
+					#{element.guestsNumber},
+				</when>
+				<otherwise>
+					1,
+				</otherwise>
+			</choose>
+			#{element.longitude},#{element.latitude},#{element.physicalAddress}
+		</foreach>
 	</insert>
 
 	<update id="updateProduct" parameterType="team.asd.entity.Product" useGeneratedKeys="true" keyProperty="id">

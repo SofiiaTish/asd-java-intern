@@ -27,22 +27,35 @@
 				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
 	</resultMap>
 
+	<sql id="columns">
+		id, fee_type, product_id, name, state, from_date, to_date, tax_type, unit, value, value_type, currency, version
+	</sql>
+
 	<select id="readFeeById" parameterType="java.lang.Integer" resultMap="feeMap">
-		select id,
-			   fee_type,
-			   product_id,
-			   name,
-			   state,
-			   from_date,
-			   to_date,
-			   tax_type,
-			   unit,
-			   value,
-			   value_type,
-			   currency,
-			   version
+		select
+		<include refid="columns"/>
 		from fee
 		where id = #{id}
+	</select>
+
+	<select id="readFeesByParams" parameterType="map" resultMap="feeMap">
+		select
+		<include refid="columns"/>
+		from fee
+		<where>
+			<if test="feeType != null">fee_type = #{feeType}</if>
+			<if test="productId != null">and product_id = #{productId}</if>
+			<if test="state != null">and state = #{state}</if>
+		</where>
+	</select>
+
+	<select id="readFeesByDateRange" parameterType="map" resultMap="feeMap">
+		select
+		<include refid="columns"/>
+		from fee
+		where
+		(from_date <![CDATA[>=]]> #{fromDate} and from_date <![CDATA[<]]> #{toDate})
+		and (to_date <![CDATA[<=]]> #{toDate} and to_date <![CDATA[>]]> #{fromDate})
 	</select>
 
 	<insert id="insertFee" parameterType="team.asd.entity.Fee" useGeneratedKeys="true" keyProperty="id">
@@ -56,6 +69,22 @@
 				#{value},
 				#{valueType, typeHandler=team.asd.handler.ValueTypeEnumTypeHandler},
 				#{currency})
+	</insert>
+
+	<insert id="insertFees" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into fee(fee_type, product_id, name,
+		state, from_date, to_date, tax_type,
+		unit, value, value_type, currency)
+		values
+		<foreach collection="list" item="element" index="index" open="(" separator="),(" close=")">
+			#{element.feeType, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			#{element.productId}, #{element.name}, #{element.state}, #{element.fromDate}, #{element.toDate},
+			#{element.taxType, typeHandler=team.asd.handler.TaxTypeEnumTypeHandler},
+			#{element.unit, typeHandler=team.asd.handler.UnitEnumTypeHandler},
+			#{element.value},
+			#{element.valueType, typeHandler=team.asd.handler.ValueTypeEnumTypeHandler},
+			#{element.currency}
+		</foreach>
 	</insert>
 
 	<update id="updateFee" parameterType="team.asd.entity.Fee" useGeneratedKeys="true" keyProperty="id">

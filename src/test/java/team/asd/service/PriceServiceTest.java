@@ -139,7 +139,7 @@ class PriceServiceTest {
 		Mockito.verify(mockPriceDao, Mockito.atLeast(2)).readById(Mockito.anyInt());
 
 		Exception e = assertThrows(ValidationException.class, () -> Whitebox.invokeMethod(mockPriceService, "validPrice", mockPrice, true));
-		assertEquals("From_date can not be earlier then current", e.getMessage());
+		assertEquals("From_date can not be earlier than current", e.getMessage());
 	}
 
 	@Test

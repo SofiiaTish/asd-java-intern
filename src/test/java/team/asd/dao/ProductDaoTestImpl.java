@@ -3,6 +3,8 @@ package team.asd.dao;
 import team.asd.data.ProductDataTest;
 import team.asd.entity.Product;
 
+import java.util.List;
+
 public class ProductDaoTestImpl implements ProductDao {
 
 	@Override
@@ -11,7 +13,17 @@ public class ProductDaoTestImpl implements ProductDao {
 	}
 
 	@Override
+	public List<Product> readProductsByParams(Integer supplierId, String name, String state) {
+		return null;
+	}
+
+	@Override
 	public void saveProduct(Product product) {
+	}
+
+	@Override
+	public void saveProducts(List<Product> products) {
+
 	}
 
 	@Override

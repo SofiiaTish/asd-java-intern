@@ -1,11 +1,16 @@
 package team.asd.service;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.asd.dao.PriceDao;
 import team.asd.entity.Price;
 import team.asd.exception.ValidationException;
 import team.asd.util.ValidationUtil;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PriceService {
@@ -21,10 +26,28 @@ public class PriceService {
 		return priceDao.readById(id);
 	}
 
+	public List<Price> readByParams(String entityType, Integer entityId, String state) {
+		if (entityId != null && entityId < 1) {
+			throw new ValidationException("Incorrect entity Id: not positive");
+		}
+		return priceDao.readPricesByParams(entityType, entityId, state);
+	}
+
+	public List<Price> readByDateRange(Date fromDate, Date toDate) {
+		ValidationUtil.validDateRange(fromDate, toDate);
+		return priceDao.readPricesByDateRange(fromDate, toDate);
+	}
+
 	public Price createPrice(Price price) {
 		validPrice(price, false);
 		priceDao.savePrice(price);
 		return priceDao.readById(price.getId());
+	}
+
+	public void createPrices(List<Price> prices) {
+		CollectionUtils.filter(prices, Objects::nonNull);
+		prices.forEach(price -> validPrice(price, false));
+		priceDao.savePrices(prices);
 	}
 
 	public Price updatePrice(Price price) {

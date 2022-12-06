@@ -1,15 +1,22 @@
 package team.asd.controller;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import team.asd.dto.FeeDto;
+import team.asd.exception.ValidationException;
 import team.asd.service.FeeService;
 import team.asd.util.ConverterUtil;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = {"/fee"})
+@Validated
 public class FeeController {
 	private final FeeService feeService;
 
@@ -22,9 +29,34 @@ public class FeeController {
 		return ConverterUtil.convertFeeToDto(feeService.readById(id));
 	}
 
+	@GetMapping(path = {"/fees"})
+	public List<FeeDto> getFeeByFeeTypeProductIdState(
+			@RequestParam(required = false) Integer feeType,
+			@RequestParam Integer productId,
+			@RequestParam(required = false) String state) {
+		return feeService.readByParams(feeType, productId, state).stream().map(ConverterUtil::convertFeeToDto).collect(Collectors.toList());
+	}
+
+	@GetMapping(path = {"/fees/date-range"})
+	public List<FeeDto> getFeesByDateRange(
+			@RequestParam @Pattern(regexp = "[0-9]{4}-[0-2]{2}-[0-9]{2}", message = "{date.format}") String fromDate,
+			@RequestParam @Pattern(regexp = "[0-9]{4}-[0-2]{2}-[0-9]{2}", message = "{date.format}") String toDate) {
+		return feeService.readByDateRange(ConverterUtil.convertStringToDate(fromDate), ConverterUtil.convertStringToDate(toDate))
+				.stream().map(ConverterUtil::convertFeeToDto).collect(Collectors.toList());
+	}
+
 	@PostMapping(path = {"/"})
 	public FeeDto createPrice(@RequestBody @Valid FeeDto feeDto) {
 		return ConverterUtil.convertFeeToDto(feeService.createFee(ConverterUtil.convertDtoToFee(feeDto)));
+	}
+
+	@PostMapping(path = {"/fees"})
+	public void storePrice(@RequestBody List<@Valid FeeDto> feeDtoList) {
+		if (CollectionUtils.isEmpty(feeDtoList)) {
+			throw new ValidationException("List of fees is empty");
+		} else {
+			feeService.createFees(feeDtoList.stream().map(ConverterUtil::convertDtoToFee).collect(Collectors.toList()));
+		}
 	}
 
 	@PutMapping(path = {"/"})

@@ -20,19 +20,35 @@
 				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
 	</resultMap>
 
+	<sql id="columns">
+		id, entity_type, entity_id, name, state, from_date, to_date, value, currency, version
+	</sql>
+
 	<select id="readPriceById" parameterType="java.lang.Integer" resultMap="priceMap">
-		select id,
-			   entity_type,
-			   entity_id,
-			   name,
-			   state,
-			   from_date,
-			   to_date,
-			   value,
-			   currency,
-			   version
+		select
+		<include refid="columns"/>
 		from price
 		where id = #{id}
+	</select>
+
+	<select id="readPricesByParams" parameterType="map" resultMap="priceMap">
+		select
+		<include refid="columns"/>
+		from price
+		<where>
+			<if test="entityType != null">entity_type = #{entityType}</if>
+			<if test="entityId != null">and entity_id = #{entityId}</if>
+			<if test="state != null">and state = #{state}</if>
+		</where>
+	</select>
+
+	<select id="readPricesByDateRange" parameterType="map" resultMap="priceMap">
+		select
+		<include refid="columns"/>
+		from price
+		where
+		(from_date <![CDATA[>=]]> #{fromDate} and from_date <![CDATA[<]]> #{toDate})
+		and (to_date <![CDATA[<=]]> #{toDate} and to_date <![CDATA[>]]> #{fromDate})
 	</select>
 
 	<insert id="insertPrice" parameterType="team.asd.entity.Price" useGeneratedKeys="true" keyProperty="id">
@@ -42,6 +58,23 @@
 		values(#{entityType}, #{entityId}, #{name},
 		<if test="state != null">#{state},</if>
 		#{fromDate}, #{toDate}, #{value}, #{currency})
+	</insert>
+
+	<insert id="insertPrices" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into price(entity_type, entity_id, name, state, from_date, to_date, value, currency)
+		values
+		<foreach collection="list" item="element" index="index" open="(" separator="),(" close=")">
+			#{element.entityType}, #{element.entityId}, #{element.name},
+			<choose>
+				<when test="element.state != null">
+					#{element.state},
+				</when>
+				<otherwise>
+					'Initial',
+				</otherwise>
+			</choose>
+			#{element.fromDate}, #{element.toDate}, #{element.value}, #{element.currency}
+		</foreach>
 	</insert>
 
 	<update id="updatePrice" parameterType="team.asd.entity.Price" useGeneratedKeys="true" keyProperty="id">
