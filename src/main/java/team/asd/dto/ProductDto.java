@@ -23,7 +23,7 @@ public class ProductDto {
 	@JsonProperty("id")
 	private Integer id;
 
-	@ApiModelProperty(value = "The name of product", example = "2")
+	@ApiModelProperty(value = "The supplier id of product", example = "2")
 	@Positive(message = "{id.positive}")
 	@JsonProperty("supplier_id")
 	private Integer supplierId; //relation to party record
