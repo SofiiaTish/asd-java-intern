@@ -69,6 +69,11 @@ public class PriceController {
 				.stream().map(ConverterUtil::convertPriceToDto).collect(Collectors.toList());
 	}
 
+	@GetMapping(path = {"/prices-product/{mask}"})
+	public List<PriceDto> getPriceWithProductMask(@PathVariable String mask) {
+		return priceService.readPricesByProductMask(mask).stream().map(ConverterUtil::convertPriceToDto).collect(Collectors.toList());
+	}
+
 	@ApiOperation(value = "Add new price to table", notes = "Require JSON object with Price fields. Return created price as JSON object")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Successful creation"),

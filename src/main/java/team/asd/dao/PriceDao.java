@@ -13,6 +13,8 @@ public interface PriceDao {
 
 	List<Price> readPricesByDateRange(Date fromDate, Date toDate);
 
+	List<Price> readPricesByProductMask(String mask);
+
 	void savePrice(Price price);
 
 	void savePrices(List<Price> prices);
