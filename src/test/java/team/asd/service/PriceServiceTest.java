@@ -8,17 +8,21 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.powermock.reflect.Whitebox;
 import team.asd.constant.PriceState;
 import team.asd.dao.PriceDao;
+import team.asd.dao.PriceDaoImpl;
 import team.asd.dao.PriceDaoTestImpl;
 import team.asd.data.PriceDataTest;
 import team.asd.entity.Price;
 import team.asd.exception.ValidationException;
+import team.asd.mapper.PriceMapper;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,10 +33,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class PriceServiceTest {
 	private static PriceService priceService;
 
+	private PriceService spiedPriceService;
 	private PriceService mockPriceService;
 
 	@Mock
 	private PriceDao mockPriceDao;
+
+	@Spy
+	private PriceMapper spiedPriceMapper;
 
 	private static Price price;
 	private static Price mockPrice;
@@ -60,6 +68,8 @@ class PriceServiceTest {
 		mockPrice = null;
 		mockClosable = MockitoAnnotations.openMocks(this);
 		mockPriceService = new PriceService(mockPriceDao);
+		PriceDaoImpl spiedPriceDao = new PriceDaoImpl(spiedPriceMapper);
+		spiedPriceService = new PriceService(spiedPriceDao);
 	}
 
 	@AfterEach
@@ -82,6 +92,13 @@ class PriceServiceTest {
 		Price price = mockPriceService.readById(1);
 		assertNotNull(price);
 		assertEquals(1, price.getId());
+	}
+
+	@Test
+	void testGetByMask() {
+		assertThrows(ValidationException.class, () -> spiedPriceService.readPricesByProductMask(null));
+		List<Price> list = spiedPriceService.readPricesByProductMask("ame");
+		assertEquals(0, list.size());
 	}
 
 	@Test
