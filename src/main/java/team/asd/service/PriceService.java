@@ -38,6 +38,13 @@ public class PriceService {
 		return priceDao.readPricesByDateRange(fromDate, toDate);
 	}
 
+	public List<Price> readPricesByProductMask(String mask) {
+		if (mask == null) {
+			throw new ValidationException("Null product name mask");
+		}
+		return priceDao.readPricesByProductMask(mask);
+	}
+
 	public Price createPrice(Price price) {
 		validPrice(price, false);
 		priceDao.savePrice(price);

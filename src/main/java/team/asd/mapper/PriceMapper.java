@@ -15,6 +15,8 @@ public interface PriceMapper {
 
 	List<Price> readPricesByDateRange(@Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
 
+	List<Price> readPricesWithProductMask(String mask);
+
 	void insertPrice(Price price);
 
 	void insertPrices(List<Price> prices);

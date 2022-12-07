@@ -24,6 +24,11 @@ public class FeeDaoTestImpl implements FeeDao {
 	}
 
 	@Override
+	public List<Fee> readFeesByValueProductSupplierId(Integer minValue, Integer supplierId) {
+		return null;
+	}
+
+	@Override
 	public void saveFee(Fee fee) {
 	}
 

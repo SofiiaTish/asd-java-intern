@@ -24,6 +24,11 @@ public class PriceDaoTestImpl implements PriceDao {
 	}
 
 	@Override
+	public List<Price> readPricesByProductMask(String mask) {
+		return null;
+	}
+
+	@Override
 	public void savePrice(Price price) {
 	}
 

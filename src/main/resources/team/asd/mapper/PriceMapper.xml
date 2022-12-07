@@ -51,6 +51,24 @@
 		and (to_date <![CDATA[<=]]> #{toDate} and to_date <![CDATA[>]]> #{fromDate})
 	</select>
 
+	<select id="readPricesWithProductMask" parameterType="string" resultMap="priceMap">
+		select p1.id,
+			   p1.entity_type,
+			   p1.entity_id,
+			   p1.name,
+			   p1.state,
+			   p1.from_date,
+			   p1.to_date,
+			   p1.value,
+			   p1.currency,
+			   p1.version
+		from price p1
+				 inner join product p2 on p1.entity_id = p2.id
+		where (p2.state = 'Created' or p2.state = 'Incomplete')
+		  and (p2.name like '%${mask}%')
+		  and (p1.state = 'Created')
+	</select>
+
 	<insert id="insertPrice" parameterType="team.asd.entity.Price" useGeneratedKeys="true" keyProperty="id">
 		insert into price(entity_type, entity_id, name,
 		<if test="state != null">state,</if>

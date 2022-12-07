@@ -38,6 +38,11 @@ public class FeeDaoImpl implements FeeDao {
 	}
 
 	@Override
+	public List<Fee> readFeesByValueProductSupplierId(Integer minValue, Integer supplierId) {
+		return feeMapper.readFeesByValueProductSupplierId(minValue, supplierId);
+	}
+
+	@Override
 	@Transactional
 	public void saveFee(Fee fee) {
 		feeMapper.insertFee(fee);

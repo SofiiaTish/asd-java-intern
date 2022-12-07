@@ -37,6 +37,11 @@ public class PriceDaoImpl implements PriceDao {
 	}
 
 	@Override
+	public List<Price> readPricesByProductMask(String mask) {
+		return priceMapper.readPricesWithProductMask(mask);
+	}
+
+	@Override
 	@Transactional
 	public void savePrice(Price price) {
 		priceMapper.insertPrice(price);
