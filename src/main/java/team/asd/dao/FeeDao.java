@@ -13,6 +13,8 @@ public interface FeeDao {
 
 	List<Fee> readFeesByDateRange(Date fromDate, Date toDate);
 
+	List<Fee> readFeesByValueProductSupplierId(Integer minValue, Integer supplierId);
+
 	void saveFee(Fee fee);
 
 	void saveFees(List<Fee> fees);

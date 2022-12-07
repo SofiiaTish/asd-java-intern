@@ -16,6 +16,8 @@ public interface FeeMapper {
 
 	List<Fee> readFeesByDateRange(@Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
 
+	List<Fee> readFeesByValueProductSupplierId(@Param("minValue") Integer minValue, @Param("supplierId") Integer supplierId);
+
 	void insertFee(Fee fee);
 
 	void insertFees(List<Fee> fees);

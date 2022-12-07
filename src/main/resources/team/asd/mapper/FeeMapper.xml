@@ -58,6 +58,28 @@
 		and (to_date <![CDATA[<=]]> #{toDate} and to_date <![CDATA[>]]> #{fromDate})
 	</select>
 
+	<select id="readFeesByValueProductSupplierId" parameterType="map" resultMap="feeMap">
+		select f.id,
+			   f.fee_type,
+			   f.product_id,
+			   f.name,
+			   f.state,
+			   f.from_date,
+			   f.to_date,
+			   f.tax_type,
+			   f.unit,
+			   f.value,
+			   f.value_type,
+			   f.currency,
+			   f.version
+		from fee f
+				 inner join product p on f.product_id = p.id
+		where p.state = 'Created'
+		  and p.supplier_id = #{supplierId}
+		  and f.state = 'Created'
+		  and f.value <![CDATA[>=]]> #{minValue}
+	</select>
+
 	<insert id="insertFee" parameterType="team.asd.entity.Fee" useGeneratedKeys="true" keyProperty="id">
 		insert into fee(fee_type, product_id, name,
 						state, from_date, to_date, tax_type,

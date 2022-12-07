@@ -39,6 +39,9 @@ public class PriceService {
 	}
 
 	public List<Price> readPricesByProductMask(String mask) {
+		if (mask == null) {
+			throw new ValidationException("Null product name mask");
+		}
 		return priceDao.readPricesByProductMask(mask);
 	}
 

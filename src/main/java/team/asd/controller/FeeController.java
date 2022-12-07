@@ -69,6 +69,11 @@ public class FeeController {
 				.stream().map(ConverterUtil::convertFeeToDto).collect(Collectors.toList());
 	}
 
+	@GetMapping(path = {"/fees/min-value"})
+	public List<FeeDto> getFeesByMinValueSupplierId(@RequestParam Integer minValue, @RequestParam Integer supplierId) {
+		return feeService.readByMinValueSupplierId(minValue, supplierId).stream().map(ConverterUtil::convertFeeToDto).collect(Collectors.toList());
+	}
+
 	@ApiOperation(value = "Add new fee to table", notes = "Require JSON object with Fee fields. Return created fee as JSON object")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Successful creation"),

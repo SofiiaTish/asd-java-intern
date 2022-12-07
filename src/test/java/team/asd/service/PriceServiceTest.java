@@ -34,7 +34,6 @@ class PriceServiceTest {
 	@Mock
 	private PriceDao mockPriceDao;
 
-
 	private static Price price;
 	private static Price mockPrice;
 	private AutoCloseable mockClosable;

@@ -37,6 +37,13 @@ public class FeeService {
 		return feeDao.readFeesByDateRange(fromDate, toDate);
 	}
 
+	public List<Fee> readByMinValueSupplierId(Integer minValue, Integer supplierId) {
+		if (minValue == null || supplierId == null || supplierId < 1) {
+			throw new ValidationException("Incorrect integer value: null or negative");
+		}
+		return feeDao.readFeesByValueProductSupplierId(minValue, supplierId);
+	}
+
 	public Fee createFee(Fee fee) {
 		validFee(fee, false);
 		feeDao.saveFee(fee);
