@@ -28,10 +28,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @RunWith(MockitoJUnitRunner.class)
 class PriceServiceTest {
 	private static PriceService priceService;
+
 	private PriceService mockPriceService;
 
 	@Mock
 	private PriceDao mockPriceDao;
+
+
 	private static Price price;
 	private static Price mockPrice;
 	private AutoCloseable mockClosable;

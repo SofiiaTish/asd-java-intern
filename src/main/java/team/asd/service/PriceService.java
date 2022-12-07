@@ -38,6 +38,10 @@ public class PriceService {
 		return priceDao.readPricesByDateRange(fromDate, toDate);
 	}
 
+	public List<Price> readPricesByProductMask(String mask) {
+		return priceDao.readPricesByProductMask(mask);
+	}
+
 	public Price createPrice(Price price) {
 		validPrice(price, false);
 		priceDao.savePrice(price);
