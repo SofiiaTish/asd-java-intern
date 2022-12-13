@@ -4,6 +4,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.asd.dao.ProductDao;
+import team.asd.dto.ProductReport;
 import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
 import team.asd.util.ValidationUtil;
@@ -30,6 +31,11 @@ public class ProductService {
 			throw new ValidationException("Incorrect Id: not positive");
 		}
 		return productDao.readProductsByParams(supplierId, name, state);
+	}
+
+	public ProductReport readProductReportById(Integer id){
+		ValidationUtil.validId(id);
+		return productDao.readProductReportById(id);
 	}
 
 	public Product createProduct(Product product) {

@@ -18,6 +18,42 @@
 				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
 	</resultMap>
 
+	<resultMap id="productReportMap" type="team.asd.dto.ProductReport">
+		<association property="productDto" javaType="team.asd.dto.ProductDto">
+			<id property="id" column="id" jdbcType="INTEGER"/>
+			<result property="supplierId" column="supplier_id" jdbcType="INTEGER"/>
+			<result property="name" column="name" jdbcType="VARCHAR"/>
+			<result property="state" column="state" jdbcType="VARCHAR"/>
+			<result property="currency" column="currency" jdbcType="VARCHAR"/>
+			<result property="guestsNumber" column="guests" jdbcType="INTEGER"/>
+			<result property="longitude" column="longitude" jdbcType="DOUBLE"/>
+			<result property="latitude" column="latitude" jdbcType="DOUBLE"/>
+			<result property="physicalAddress" column="physical_address" jdbcType="VARCHAR"/>
+		</association>
+		<collection property="halfPrices" ofType="team.asd.entity.HalfPrice">
+			<result property="name" column="name" jdbcType="VARCHAR"/>
+			<result property="fromDate" column="from_date" jdbcType="DATE"
+					typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+			<result property="toDate" column="to_date" jdbcType="DATE"
+					typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+			<result property="value" column="value" jdbcType="DOUBLE"/>
+			<result property="currency" column="currency" jdbcType="VARCHAR"/>
+		</collection>
+		<collection property="halfFees" ofType="team.asd.entity.HalfFee">
+			<result property="name" column="name" jdbcType="VARCHAR"/>
+			<result property="fromDate" column="from_date" jdbcType="DATE"
+					typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+			<result property="toDate" column="to_date" jdbcType="DATE"
+					typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+			<result property="value" column="value" jdbcType="DOUBLE"/>
+			<result property="currency" column="currency" jdbcType="VARCHAR"/>
+			<result property="taxType" column="tax_type" jdbcType="TINYINT"
+					typeHandler="team.asd.handler.TaxTypeEnumTypeHandler"/>
+			<result property="feeType" column="fee_type" jdbcType="TINYINT"
+					typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+		</collection>
+	</resultMap>
+
 	<sql id="columns">
 		id, supplier_id, name, state, currency, guests, longitude, latitude, physical_address, version
 	</sql>
@@ -38,6 +74,36 @@
 			<if test="name != null">and name = #{name}</if>
 			<if test="state != null">and state = #{state}</if>
 		</where>
+	</select>
+
+	<select id="readProductReportById" parameterType="java.lang.Integer" resultType="team.asd.dto.ProductReport">
+		select p.id,
+			   p.supplier_id,
+			   p.name,
+			   p.state,
+			   p.currency,
+			   p.guests,
+			   p.longitude,
+			   p.latitude,
+			   p.physical_address,
+			   p1.name,
+			   p1.from_date,
+			   p1.to_date,
+			   p1.value,
+			   p1.currency,
+			   f.name,
+			   f.from_date,
+			   f.to_date,
+			   f.value,
+			   f.currency
+		from product p
+				 inner join price p1 on p.id = p1.entity_id
+				 inner join fee f on p.id = f.product_id
+		where (p.id = #{id})
+		  and (p1.state = 'Created')
+		  and ((select CURRENT_DATE) <![CDATA[<=]]> p1.to_date)
+		  and (f.state = 'Created')
+		  and ((select CURRENT_DATE) <![CDATA[<=]]> f.to_date)
 	</select>
 
 	<insert id="insertProduct" parameterType="team.asd.entity.Product" useGeneratedKeys="true" keyProperty="id">
