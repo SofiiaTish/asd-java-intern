@@ -15,6 +15,8 @@ import java.util.Date;
 @Builder
 public class HalfFee {
 
+	private Integer id;
+
 	private String name;
 
 	private Date fromDate;

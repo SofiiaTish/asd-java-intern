@@ -13,6 +13,8 @@ import java.util.Date;
 @Builder
 public class HalfPrice {
 
+	private Integer id;
+
 	private String name;
 
 	private Date fromDate;
