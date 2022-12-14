@@ -3,7 +3,7 @@ package team.asd.service;
 import com.antkorwin.xsync.XSync;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team.asd.dao.ThreadUpdateDao;
+import team.asd.dao.ProductDao;
 import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
 import team.asd.util.ValidationUtil;
@@ -15,12 +15,12 @@ import java.util.concurrent.Executors;
 @Service
 public class ThreadUpdateService {
 
-	private final ThreadUpdateDao threadUpdateDao;
+	private final ProductDao threadUpdateDao;
 	private ExecutorService executorService;
 
 	private final XSync<Integer> xSync;
 
-	public ThreadUpdateService(@Autowired ThreadUpdateDao threadUpdateDao, XSync<Integer> xSync) {
+	public ThreadUpdateService(@Autowired ProductDao threadUpdateDao, XSync<Integer> xSync) {
 		this.threadUpdateDao = threadUpdateDao;
 		this.xSync = xSync;
 		executorService = Executors.newFixedThreadPool(10);

@@ -7,6 +7,7 @@ import team.asd.entity.Product;
 import team.asd.mapper.ProductMapper;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Repository
 public class ProductDaoImpl implements ProductDao {
@@ -45,6 +46,17 @@ public class ProductDaoImpl implements ProductDao {
 	@Transactional
 	public void updateProduct(Product product) {
 		productMapper.updateProduct(product);
+	}
+
+	@Override
+	@Transactional
+	public void threadUpdateProduct(Product product) {
+		try {
+			TimeUnit.SECONDS.sleep(15);
+			productMapper.updateProduct(product);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

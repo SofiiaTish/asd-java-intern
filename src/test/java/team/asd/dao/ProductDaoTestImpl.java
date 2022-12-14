@@ -31,6 +31,11 @@ public class ProductDaoTestImpl implements ProductDao {
 	}
 
 	@Override
+	public void threadUpdateProduct(Product product) {
+
+	}
+
+	@Override
 	public void deleteProduct(Integer id) {
 	}
 }
