@@ -20,6 +20,7 @@ import team.asd.entity.Fee;
 import team.asd.exception.ValidationException;
 import team.asd.mapper.FeeMapper;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 
@@ -98,7 +99,7 @@ class FeeServiceTest {
 		assertThrows(ValidationException.class, () -> feeService.createFee(fee));
 		fee.setCurrency("usd");
 		fee.setToDate(Date.from(Instant.now()));
-		fee.setFromDate(Date.from(Instant.parse("2022-12-15T10:15:30Z")));
+		fee.setFromDate(Date.from(Instant.now().plus(Duration.ofDays(10))));
 		assertThrows(ValidationException.class, () -> feeService.createFee(fee));
 
 		Exception e = assertThrows(ValidationException.class, () -> Whitebox.invokeMethod(mockFeeService, "validFee", mockFee, false));
