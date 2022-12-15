@@ -3,6 +3,7 @@ package team.asd.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import team.asd.dto.ProductReport;
 import team.asd.entity.Product;
 import team.asd.mapper.ProductMapper;
 
@@ -28,6 +29,13 @@ public class ProductDaoImpl implements ProductDao {
 	@Transactional
 	public List<Product> readProductsByParams(Integer supplierId, String name, String state) {
 		return productMapper.readProductsByParams(supplierId, name, state);
+	}
+
+	@Override
+	@Transactional
+	public ProductReport readProductReportById(Integer id) {
+		ProductReport productReport = productMapper.readProductReportById(id);
+		return productReport == null ? productMapper.readProductReportByIdWithoutLists(id) : productReport;
 	}
 
 	@Override
