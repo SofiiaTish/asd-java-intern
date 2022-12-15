@@ -98,6 +98,11 @@
 		f.fee_type,
 	</sql>
 
+	<sql id="selectCount">
+		(select count(*) from price where entity_id = #{id}) as price_count,
+		(select count(*) from fee where product_id = #{id}) as fee_count
+	</sql>
+
 	<select id="readProductById" parameterType="java.lang.Integer" resultMap="productMap">
 		select
 		<include refid="columns"/>
@@ -119,8 +124,7 @@
 	<select id="readProductReportById" parameterType="java.lang.Integer" resultMap="productReportMap">
 		select
 		<include refid="columnsForLeftJoin"/>
-		(select count(*) from price where entity_id = #{id}) as price_count,
-		(select count(*) from fee where product_id = #{id}) as fee_count
+		<include refid="selectCount"/>
 		from product p
 		left join price p1 on p.id = p1.entity_id
 		left join fee f on p.id = f.product_id
@@ -131,19 +135,17 @@
 		and ((select CURRENT_DATE) <![CDATA[<=]]> f.to_date)
 	</select>
 
-	<select id="readProductReportByIdWithoutLists" parameterType="java.lang.Integer"
-			resultMap="reportWithCountMap">
-		select id                                                   as p_id,
-			   supplier_id,
-			   name                                                 as p_name,
-			   state,
-			   currency                                             as p_currency,
-			   guests,
-			   longitude,
-			   latitude,
-			   physical_address,
-			   (select count(*) from price where entity_id = #{id}) as price_count,
-			   (select count(*) from fee where product_id = #{id})  as fee_count
+	<select id="readProductReportByIdWithoutLists" parameterType="java.lang.Integer" resultMap="reportWithCountMap">
+		select id as p_id,
+		supplier_id,
+		name as p_name,
+		state,
+		currency as p_currency,
+		guests,
+		longitude,
+		latitude,
+		physical_address,
+		<include refid="selectCount"/>
 		from product
 		where id = #{id}
 	</select>
