@@ -15,6 +15,8 @@ public interface ProductMapper {
 
 	ProductReport readProductReportById(Integer id);
 
+	ProductReport readProductReportByIdWithoutLists(Integer id);
+
 	void insertProduct(Product product);
 
 	void insertProducts(List<Product> products);

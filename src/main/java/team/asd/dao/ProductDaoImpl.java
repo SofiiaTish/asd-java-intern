@@ -31,8 +31,10 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	@Override
+	@Transactional
 	public ProductReport readProductReportById(Integer id) {
-		return productMapper.readProductReportById(id);
+		ProductReport productReport = productMapper.readProductReportById(id);
+		return productReport == null ? productMapper.readProductReportByIdWithoutLists(id) : productReport;
 	}
 
 	@Override

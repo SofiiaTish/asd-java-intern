@@ -22,17 +22,7 @@
 		<id property="id" column="p_id" jdbcType="INTEGER"/>
 		<result property="priceCount" column="price_count"/>
 		<result property="feeCount" column="fee_count"/>
-		<association property="productDto" javaType="team.asd.dto.ProductDto">
-			<id property="id" column="p_id" jdbcType="INTEGER"/>
-			<result property="supplierId" column="supplier_id" jdbcType="INTEGER"/>
-			<result property="name" column="p_name" jdbcType="VARCHAR"/>
-			<result property="state" column="state" jdbcType="VARCHAR"/>
-			<result property="currency" column="p_currency" jdbcType="VARCHAR"/>
-			<result property="guestsNumber" column="guests" jdbcType="INTEGER"/>
-			<result property="longitude" column="longitude" jdbcType="DOUBLE"/>
-			<result property="latitude" column="latitude" jdbcType="DOUBLE"/>
-			<result property="physicalAddress" column="physical_address" jdbcType="VARCHAR"/>
-		</association>
+		<association property="productDto" resultMap="productDtoMap"/>
 		<collection property="halfPrices" ofType="team.asd.entity.HalfPrice">
 			<id property="id" column="pr_id" jdbcType="INTEGER"/>
 			<result property="name" column="pr_name" jdbcType="VARCHAR"/>
@@ -57,6 +47,25 @@
 			<result property="feeType" column="fee_type" jdbcType="TINYINT"
 					typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
 		</collection>
+	</resultMap>
+
+	<resultMap id="reportWithCountMap" type="team.asd.dto.ProductReport">
+		<id property="id" column="p_id" jdbcType="INTEGER"/>
+		<result property="priceCount" column="price_count"/>
+		<result property="feeCount" column="fee_count"/>
+		<association property="productDto" resultMap="productDtoMap"/>
+	</resultMap>
+
+	<resultMap id="productDtoMap" type="team.asd.dto.ProductDto">
+		<id property="id" column="p_id" jdbcType="INTEGER"/>
+		<result property="supplierId" column="supplier_id" jdbcType="INTEGER"/>
+		<result property="name" column="p_name" jdbcType="VARCHAR"/>
+		<result property="state" column="state" jdbcType="VARCHAR"/>
+		<result property="currency" column="p_currency" jdbcType="VARCHAR"/>
+		<result property="guestsNumber" column="guests" jdbcType="INTEGER"/>
+		<result property="longitude" column="longitude" jdbcType="DOUBLE"/>
+		<result property="latitude" column="latitude" jdbcType="DOUBLE"/>
+		<result property="physicalAddress" column="physical_address" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="columns">
@@ -120,6 +129,23 @@
 		and ((select CURRENT_DATE) <![CDATA[<=]]> p1.to_date)
 		and (f.state = 'Created')
 		and ((select CURRENT_DATE) <![CDATA[<=]]> f.to_date)
+	</select>
+
+	<select id="readProductReportByIdWithoutLists" parameterType="java.lang.Integer"
+			resultMap="reportWithCountMap">
+		select id                                                   as p_id,
+			   supplier_id,
+			   name                                                 as p_name,
+			   state,
+			   currency                                             as p_currency,
+			   guests,
+			   longitude,
+			   latitude,
+			   physical_address,
+			   (select count(*) from price where entity_id = #{id}) as price_count,
+			   (select count(*) from fee where product_id = #{id})  as fee_count
+		from product
+		where id = #{id}
 	</select>
 
 	<insert id="insertProduct" parameterType="team.asd.entity.Product" useGeneratedKeys="true" keyProperty="id">
