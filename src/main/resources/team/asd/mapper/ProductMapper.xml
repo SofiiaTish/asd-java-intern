@@ -5,11 +5,11 @@
 <mapper namespace="team.asd.mapper.ProductMapper">
 
 	<resultMap id="productMap" type="team.asd.entity.Product">
-		<id property="id" column="id" jdbcType="INTEGER"/>
+		<id property="id" column="p_id" jdbcType="INTEGER"/>
 		<result property="supplierId" column="supplier_id" jdbcType="INTEGER"/>
-		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="name" column="p_name" jdbcType="VARCHAR"/>
 		<result property="state" column="state" jdbcType="VARCHAR" javaType="team.asd.constant.ProductState"/>
-		<result property="currency" column="currency" jdbcType="VARCHAR"/>
+		<result property="currency" column="p_currency" jdbcType="VARCHAR"/>
 		<result property="guestsNumber" column="guests" jdbcType="INTEGER"/>
 		<result property="longitude" column="longitude" jdbcType="DOUBLE"/>
 		<result property="latitude" column="latitude" jdbcType="DOUBLE"/>
@@ -18,11 +18,11 @@
 				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
 	</resultMap>
 
-	<resultMap id="productReportMap" type="team.asd.dto.ProductReport">
+	<resultMap id="productReportMap" type="team.asd.entity.ProductReport">
 		<id property="id" column="p_id" jdbcType="INTEGER"/>
 		<result property="priceCount" column="price_count"/>
 		<result property="feeCount" column="fee_count"/>
-		<association property="productDto" resultMap="productDtoMap"/>
+		<association property="product" resultMap="productMap"/>
 		<collection property="halfPrices" ofType="team.asd.entity.HalfPrice">
 			<id property="id" column="pr_id" jdbcType="INTEGER"/>
 			<result property="name" column="pr_name" jdbcType="VARCHAR"/>
@@ -49,27 +49,17 @@
 		</collection>
 	</resultMap>
 
-	<resultMap id="reportWithCountMap" type="team.asd.dto.ProductReport">
+	<resultMap id="reportWithCountMap" type="team.asd.entity.ProductReport">
 		<id property="id" column="p_id" jdbcType="INTEGER"/>
 		<result property="priceCount" column="price_count"/>
 		<result property="feeCount" column="fee_count"/>
-		<association property="productDto" resultMap="productDtoMap"/>
-	</resultMap>
-
-	<resultMap id="productDtoMap" type="team.asd.dto.ProductDto">
-		<id property="id" column="p_id" jdbcType="INTEGER"/>
-		<result property="supplierId" column="supplier_id" jdbcType="INTEGER"/>
-		<result property="name" column="p_name" jdbcType="VARCHAR"/>
-		<result property="state" column="state" jdbcType="VARCHAR"/>
-		<result property="currency" column="p_currency" jdbcType="VARCHAR"/>
-		<result property="guestsNumber" column="guests" jdbcType="INTEGER"/>
-		<result property="longitude" column="longitude" jdbcType="DOUBLE"/>
-		<result property="latitude" column="latitude" jdbcType="DOUBLE"/>
-		<result property="physicalAddress" column="physical_address" jdbcType="VARCHAR"/>
+		<association property="product" resultMap="productMap"/>
 	</resultMap>
 
 	<sql id="columns">
-		id, supplier_id, name, state, currency, guests, longitude, latitude, physical_address, version
+		id as p_id, supplier_id, name as p_name, state, currency as p_currency, guests, longitude, latitude,
+		physical_address,
+		version
 	</sql>
 
 	<sql id="columnsForLeftJoin">

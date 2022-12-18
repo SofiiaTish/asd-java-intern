@@ -3,7 +3,7 @@ package team.asd.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import team.asd.dto.ProductReport;
+import team.asd.entity.ProductReport;
 import team.asd.entity.Product;
 import team.asd.mapper.ProductMapper;
 
