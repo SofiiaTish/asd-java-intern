@@ -4,7 +4,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.asd.dao.ProductDao;
-import team.asd.dto.ProductReport;
+import team.asd.entity.ProductReport;
 import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
 import team.asd.util.ValidationUtil;

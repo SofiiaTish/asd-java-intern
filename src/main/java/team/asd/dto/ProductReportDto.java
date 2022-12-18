@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductReport {
+public class ProductReportDto {
 
 	@JsonProperty("product_id")
 	private Integer id;

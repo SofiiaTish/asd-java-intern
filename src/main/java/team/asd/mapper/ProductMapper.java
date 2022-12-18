@@ -2,7 +2,7 @@ package team.asd.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import team.asd.dto.ProductReport;
+import team.asd.entity.ProductReport;
 import team.asd.entity.Product;
 
 import java.util.List;

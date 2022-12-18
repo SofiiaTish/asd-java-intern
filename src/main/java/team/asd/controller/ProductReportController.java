@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team.asd.dto.ProductReport;
+import team.asd.dto.ProductReportDto;
 import team.asd.service.ProductService;
+import team.asd.util.ConverterUtil;
 
 @RestController
 @RequestMapping(path = {"/report"})
@@ -28,7 +29,7 @@ public class ProductReportController {
 			@ApiResponse(code = 404, message = "Custom message about error reasons or unknown error")
 	})
 	@GetMapping(path = {"/{id}"})
-	public ProductReport getProductReportById(@PathVariable @ApiParam(value = "Product Id", example = "4") Integer id) {
-		return productService.readProductReportById(id);
+	public ProductReportDto getProductReportById(@PathVariable @ApiParam(value = "Product Id", example = "4") Integer id) {
+		return ConverterUtil.convertProductReportToDto(productService.readProductReportById(id));
 	}
 }

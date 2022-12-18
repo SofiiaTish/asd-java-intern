@@ -5,6 +5,7 @@ import team.asd.dto.*;
 import team.asd.entity.Fee;
 import team.asd.entity.Price;
 import team.asd.entity.Product;
+import team.asd.entity.ProductReport;
 import team.asd.exception.ValidationException;
 
 import java.text.ParseException;
@@ -133,5 +134,16 @@ public class ConverterUtil {
 		} catch (ParseException e) {
 			throw new ValidationException("Invalid date of price");
 		}
+	}
+
+	public static ProductReportDto convertProductReportToDto(ProductReport report) {
+		return ProductReportDto.builder()
+				.id(report.getId())
+				.productDto(convertProductToDto(report.getProduct()))
+				.halfPrices(report.getHalfPrices())
+				.halfFees(report.getHalfFees())
+				.priceCount(report.getPriceCount())
+				.feeCount(report.getFeeCount())
+				.build();
 	}
 }

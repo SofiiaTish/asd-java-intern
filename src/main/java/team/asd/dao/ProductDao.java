@@ -1,6 +1,6 @@
 package team.asd.dao;
 
-import team.asd.dto.ProductReport;
+import team.asd.entity.ProductReport;
 import team.asd.entity.Product;
 
 import java.util.List;
