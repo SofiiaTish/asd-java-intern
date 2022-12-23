@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.asd.mapper.PriceMapper">
+
+	<resultMap id="priceMap" type="team.asd.entity.Price">
+		<id property="id" column="id" jdbcType="INTEGER"/>
+		<result property="entityType" column="entity_type" jdbcType="VARCHAR"/>
+		<result property="entityId" column="entity_id" jdbcType="INTEGER"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="state" column="state" jdbcType="VARCHAR" javaType="team.asd.constant.PriceState"/>
+		<result property="fromDate" column="from_date" jdbcType="DATE"
+				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+		<result property="toDate" column="to_date" jdbcType="DATE"
+				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+		<result property="value" column="value" jdbcType="DOUBLE"/>
+		<result property="currency" column="currency" jdbcType="VARCHAR"/>
+		<result property="version" column="version" jdbcType="TIMESTAMP"
+				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+	</resultMap>
+
+	<sql id="columns">
+		id, entity_type, entity_id, name, state, from_date, to_date, value, currency, version
+	</sql>
+
+	<select id="readPriceById" parameterType="java.lang.Integer" resultMap="priceMap">
+		select
+		<include refid="columns"/>
+		from price
+		where id = #{id}
+	</select>
+
+	<select id="readPricesByParams" parameterType="map" resultMap="priceMap">
+		select
+		<include refid="columns"/>
+		from price
+		<where>
+			<if test="entityType != null">entity_type = #{entityType}</if>
+			<if test="entityId != null">and entity_id = #{entityId}</if>
+			<if test="state != null">and state = #{state}</if>
+		</where>
+	</select>
+
+	<select id="readPricesByDateRange" parameterType="map" resultMap="priceMap">
+		select
+		<include refid="columns"/>
+		from price
+		where
+		(from_date <![CDATA[>=]]> #{fromDate} and from_date <![CDATA[<]]> #{toDate})
+		and (to_date <![CDATA[<=]]> #{toDate} and to_date <![CDATA[>]]> #{fromDate})
+	</select>
+
+	<select id="readPricesWithProductMask" parameterType="string" resultMap="priceMap">
+		select p1.id,
+			   p1.entity_type,
+			   p1.entity_id,
+			   p1.name,
+			   p1.state,
+			   p1.from_date,
+			   p1.to_date,
+			   p1.value,
+			   p1.currency,
+			   p1.version
+		from price p1
+				 inner join product p2 on p1.entity_id = p2.id
+		where (p2.state = 'Created' or p2.state = 'Incomplete')
+		  and (p2.name like '%${mask}%')
+		  and (p1.state = 'Created')
+	</select>
+
+	<insert id="insertPrice" parameterType="team.asd.entity.Price" useGeneratedKeys="true" keyProperty="id">
+		insert into price(entity_type, entity_id, name,
+		<if test="state != null">state,</if>
+		from_date, to_date, value, currency)
+		values(#{entityType}, #{entityId}, #{name},
+		<if test="state != null">#{state},</if>
+		#{fromDate}, #{toDate}, #{value}, #{currency})
+	</insert>
+
+	<insert id="insertPrices" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into price(entity_type, entity_id, name, state, from_date, to_date, value, currency)
+		values
+		<foreach collection="list" item="element" index="index" open="(" separator="),(" close=")">
+			#{element.entityType}, #{element.entityId}, #{element.name},
+			<choose>
+				<when test="element.state != null">
+					#{element.state},
+				</when>
+				<otherwise>
+					'Initial',
+				</otherwise>
+			</choose>
+			#{element.fromDate}, #{element.toDate}, #{element.value}, #{element.currency}
+		</foreach>
+	</insert>
+
+	<update id="updatePrice" parameterType="team.asd.entity.Price" useGeneratedKeys="true" keyProperty="id">
+		update price
+		<set>
+			<if test="entityType != null">entity_type=#{entityType},</if>
+			<if test="entityId != null">entity_id=#{entityId},</if>
+			<if test="name != null">name=#{name},</if>
+			<if test="state != null">state=#{state},</if>
+			<if test="fromDate != null">from_date=#{fromDate},</if>
+			<if test="toDate != null">to_date=#{toDate},</if>
+			<if test="value != null">value=#{value},</if>
+			<if test="currency != null">currency=#{currency}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="deletePrice" parameterType="java.lang.Integer">
+		update price
+		set state='Final'
+		where id = #{id}
+	</delete>
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.asd.mapper.FeeMapper">
+	<resultMap id="feeMap" type="team.asd.entity.Fee">
+		<id property="id" column="id" jdbcType="INTEGER"/>
+		<result property="feeType" column="fee_type" jdbcType="TINYINT"
+				typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+		<result property="productId" column="product_id" jdbcType="INTEGER"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="state" column="state" jdbcType="VARCHAR"
+				typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+		<result property="fromDate" column="from_date" jdbcType="DATE"
+				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+		<result property="toDate" column="to_date" jdbcType="DATE"
+				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+		<result property="taxType" column="tax_type" jdbcType="TINYINT"
+				typeHandler="team.asd.handler.TaxTypeEnumTypeHandler"/>
+		<result property="unit" column="unit" jdbcType="TINYINT"
+				typeHandler="team.asd.handler.UnitEnumTypeHandler"/>
+		<result property="value" column="value" jdbcType="DOUBLE"/>
+		<result property="valueType" column="value_type" jdbcType="TINYINT"
+				typeHandler="team.asd.handler.ValueTypeEnumTypeHandler"/>
+		<result property="currency" column="currency" jdbcType="VARCHAR"/>
+		<result property="version" column="version" jdbcType="TIMESTAMP"
+				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+	</resultMap>
+
+	<sql id="columns">
+		id, fee_type, product_id, name, state, from_date, to_date, tax_type, unit, value, value_type, currency, version
+	</sql>
+
+	<select id="readFeeById" parameterType="java.lang.Integer" resultMap="feeMap">
+		select
+		<include refid="columns"/>
+		from fee
+		where id = #{id}
+	</select>
+
+	<select id="readFeesByParams" parameterType="map" resultMap="feeMap">
+		select
+		<include refid="columns"/>
+		from fee
+		<where>
+			<if test="feeType != null">fee_type = #{feeType}</if>
+			<if test="productId != null">and product_id = #{productId}</if>
+			<if test="state != null">and state = #{state}</if>
+		</where>
+	</select>
+
+	<select id="readFeesByDateRange" parameterType="map" resultMap="feeMap">
+		select
+		<include refid="columns"/>
+		from fee
+		where
+		(from_date <![CDATA[>=]]> #{fromDate} and from_date <![CDATA[<]]> #{toDate})
+		and (to_date <![CDATA[<=]]> #{toDate} and to_date <![CDATA[>]]> #{fromDate})
+	</select>
+
+	<select id="readFeesByValueProductSupplierId" parameterType="map" resultMap="feeMap">
+		select f.id,
+			   f.fee_type,
+			   f.product_id,
+			   f.name,
+			   f.state,
+			   f.from_date,
+			   f.to_date,
+			   f.tax_type,
+			   f.unit,
+			   f.value,
+			   f.value_type,
+			   f.currency,
+			   f.version
+		from fee f
+				 inner join product p on f.product_id = p.id
+		where p.state = 'Created'
+		  and p.supplier_id = #{supplierId}
+		  and f.state = 'Created'
+		  and f.value <![CDATA[>=]]> #{minValue}
+	</select>
+
+	<insert id="insertFee" parameterType="team.asd.entity.Fee" useGeneratedKeys="true" keyProperty="id">
+		insert into fee(fee_type, product_id, name,
+						state, from_date, to_date, tax_type,
+						unit, value, value_type, currency)
+		values (#{feeType, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+				#{productId}, #{name}, #{state}, #{fromDate}, #{toDate},
+				#{taxType, typeHandler=team.asd.handler.TaxTypeEnumTypeHandler},
+				#{unit, typeHandler=team.asd.handler.UnitEnumTypeHandler},
+				#{value},
+				#{valueType, typeHandler=team.asd.handler.ValueTypeEnumTypeHandler},
+				#{currency})
+	</insert>
+
+	<insert id="insertFees" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into fee(fee_type, product_id, name,
+		state, from_date, to_date, tax_type,
+		unit, value, value_type, currency)
+		values
+		<foreach collection="list" item="element" index="index" open="(" separator="),(" close=")">
+			#{element.feeType, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			#{element.productId}, #{element.name}, #{element.state}, #{element.fromDate}, #{element.toDate},
+			#{element.taxType, typeHandler=team.asd.handler.TaxTypeEnumTypeHandler},
+			#{element.unit, typeHandler=team.asd.handler.UnitEnumTypeHandler},
+			#{element.value},
+			#{element.valueType, typeHandler=team.asd.handler.ValueTypeEnumTypeHandler},
+			#{element.currency}
+		</foreach>
+	</insert>
+
+	<update id="updateFee" parameterType="team.asd.entity.Fee" useGeneratedKeys="true" keyProperty="id">
+		update fee
+		<set>
+			<if test="feeType != null">fee_type=#{feeType, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			</if>
+			<if test="productId != null">product_id=#{productId},</if>
+			<if test="name != null">name=#{name},</if>
+			<if test="state != null">state=#{state},</if>
+			<if test="fromDate != null">from_date=#{fromDate},</if>
+			<if test="toDate != null">to_date=#{toDate},</if>
+			<if test="taxType != null">tax_type=#{taxType, typeHandler=team.asd.handler.TaxTypeEnumTypeHandler},</if>
+			<if test="unit != null">unit=#{unit, typeHandler=team.asd.handler.UnitEnumTypeHandler},</if>
+			<if test="value != null">value=#{value},</if>
+			<if test="valueType != null">
+				value_type=#{valueType, typeHandler=team.asd.handler.ValueTypeEnumTypeHandler},
+			</if>
+			<if test="currency != null">currency=#{currency}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteFee" parameterType="java.lang.Integer">
+		update fee
+		set state='Final'
+		where id = #{id}
+	</delete>
+</mapper>

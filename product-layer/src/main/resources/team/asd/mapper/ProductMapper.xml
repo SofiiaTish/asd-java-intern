@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="team.asd.mapper.ProductMapper">
+
+	<resultMap id="productMap" type="team.asd.entity.Product">
+		<id property="id" column="p_id" jdbcType="INTEGER"/>
+		<result property="supplierId" column="supplier_id" jdbcType="INTEGER"/>
+		<result property="name" column="p_name" jdbcType="VARCHAR"/>
+		<result property="state" column="state" jdbcType="VARCHAR" javaType="team.asd.constant.ProductState"/>
+		<result property="currency" column="p_currency" jdbcType="VARCHAR"/>
+		<result property="guestsNumber" column="guests" jdbcType="INTEGER"/>
+		<result property="longitude" column="longitude" jdbcType="DOUBLE"/>
+		<result property="latitude" column="latitude" jdbcType="DOUBLE"/>
+		<result property="physicalAddress" column="physical_address" jdbcType="VARCHAR"/>
+		<result property="version" column="version" jdbcType="TIMESTAMP"
+				typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+	</resultMap>
+
+	<resultMap id="productReportMap" type="team.asd.entity.ProductReport">
+		<id property="id" column="p_id" jdbcType="INTEGER"/>
+		<result property="priceCount" column="price_count"/>
+		<result property="feeCount" column="fee_count"/>
+		<association property="product" resultMap="productMap"/>
+		<collection property="halfPrices" ofType="team.asd.entity.HalfPrice">
+			<id property="id" column="pr_id" jdbcType="INTEGER"/>
+			<result property="name" column="pr_name" jdbcType="VARCHAR"/>
+			<result property="fromDate" column="pr_from_date" jdbcType="DATE"
+					typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+			<result property="toDate" column="pr_to_date" jdbcType="DATE"
+					typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+			<result property="value" column="pr_value" jdbcType="DOUBLE"/>
+			<result property="currency" column="pr_currency" jdbcType="VARCHAR"/>
+		</collection>
+		<collection property="halfFees" ofType="team.asd.entity.HalfFee">
+			<id property="id" column="f_id" jdbcType="INTEGER"/>
+			<result property="name" column="f_name" jdbcType="VARCHAR"/>
+			<result property="fromDate" column="f_from_date" jdbcType="DATE"
+					typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+			<result property="toDate" column="f_to_date" jdbcType="DATE"
+					typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+			<result property="value" column="f_value" jdbcType="DOUBLE"/>
+			<result property="currency" column="f_currency" jdbcType="VARCHAR"/>
+			<result property="taxType" column="tax_type" jdbcType="TINYINT"
+					typeHandler="team.asd.handler.TaxTypeEnumTypeHandler"/>
+			<result property="feeType" column="fee_type" jdbcType="TINYINT"
+					typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+		</collection>
+	</resultMap>
+
+	<resultMap id="reportWithCountMap" type="team.asd.entity.ProductReport">
+		<id property="id" column="p_id" jdbcType="INTEGER"/>
+		<result property="priceCount" column="price_count"/>
+		<result property="feeCount" column="fee_count"/>
+		<association property="product" resultMap="productMap"/>
+	</resultMap>
+
+	<sql id="columns">
+		id as p_id, supplier_id, name as p_name, state, currency as p_currency, guests, longitude, latitude,
+		physical_address,
+		version
+	</sql>
+
+	<sql id="columnsForLeftJoin">
+		p.id as p_id,
+		p.supplier_id,
+		p.name as p_name,
+		p.state,
+		p.currency as p_currency,
+		p.guests,
+		p.longitude,
+		p.latitude,
+		p.physical_address,
+		p1.id as pr_id,
+		p1.name as pr_name,
+		p1.from_date as pr_from_date,
+		p1.to_date as pr_to_date,
+		p1.value as pr_value,
+		p1.currency as pr_currency,
+		f.id as f_id,
+		f.name as f_name,
+		f.from_date as f_from_date,
+		f.to_date as f_to_date,
+		f.value as f_value,
+		f.currency as f_currency,
+		f.tax_type,
+		f.fee_type,
+	</sql>
+
+	<sql id="selectCount">
+		(select count(*) from price where entity_id = #{id}) as price_count,
+		(select count(*) from fee where product_id = #{id}) as fee_count
+	</sql>
+
+	<select id="readProductById" parameterType="java.lang.Integer" resultMap="productMap">
+		select
+		<include refid="columns"/>
+		from product
+		where id = #{id}
+	</select>
+
+	<select id="readProductsByParams" parameterType="map" resultMap="productMap">
+		select
+		<include refid="columns"/>
+		from product
+		<where>
+			<if test="supplierId != null">supplier_id = #{supplierId}</if>
+			<if test="name != null">and name = #{name}</if>
+			<if test="state != null">and state = #{state}</if>
+		</where>
+	</select>
+
+	<select id="readProductReportById" parameterType="java.lang.Integer" resultMap="productReportMap">
+		select
+		<include refid="columnsForLeftJoin"/>
+		<include refid="selectCount"/>
+		from product p
+		left join price p1 on p.id = p1.entity_id
+		left join fee f on p.id = f.product_id
+		where (p.id = #{id})
+		and (p1.state = 'Created')
+		and ((select CURRENT_DATE) <![CDATA[<=]]> p1.to_date)
+		and (f.state = 'Created')
+		and ((select CURRENT_DATE) <![CDATA[<=]]> f.to_date)
+	</select>
+
+	<select id="readProductReportByIdWithoutLists" parameterType="java.lang.Integer" resultMap="reportWithCountMap">
+		select id as p_id,
+		supplier_id,
+		name as p_name,
+		state,
+		currency as p_currency,
+		guests,
+		longitude,
+		latitude,
+		physical_address,
+		<include refid="selectCount"/>
+		from product
+		where id = #{id}
+	</select>
+
+	<insert id="insertProduct" parameterType="team.asd.entity.Product" useGeneratedKeys="true" keyProperty="id">
+		insert into product (supplier_id, name <if test="state != null">, state</if>, currency,
+		<if test="guestsNumber !=null">guests,</if>
+		longitude, latitude, physical_address)
+		values (#{supplierId}, #{name},
+		<if test="state != null">#{state},</if>
+		#{currency}, <if test="guestsNumber !=null">#{guestsNumber},</if> #{longitude},#{latitude}, #{physicalAddress})
+	</insert>
+
+	<insert id="insertProducts" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+		insert into product (supplier_id, name, state, currency,
+		guests, longitude, latitude, physical_address)
+		values
+		<foreach collection="list" item="element" index="index" open="(" separator="),(" close=")">
+			#{element.supplierId}, #{element.name},
+			<choose>
+				<when test="element.state != null">
+					#{element.state},
+				</when>
+				<otherwise>
+					'Created',
+				</otherwise>
+			</choose>
+			#{element.currency},
+			<choose>
+				<when test="element.guestsNumber != null">
+					#{element.guestsNumber},
+				</when>
+				<otherwise>
+					1,
+				</otherwise>
+			</choose>
+			#{element.longitude},#{element.latitude},#{element.physicalAddress}
+		</foreach>
+	</insert>
+
+	<update id="updateProduct" parameterType="team.asd.entity.Product" useGeneratedKeys="true" keyProperty="id">
+		update product
+		<set>
+			<if test="supplierId != null">supplier_id=#{supplierId},</if>
+			<if test="name != null">name=#{name},</if>
+			<if test="state != null">state=#{state},</if>
+			<if test="currency != null">currency=#{currency},</if>
+			<if test="guestsNumber != null">guests=#{guestsNumber},</if>
+			<if test="longitude != null">longitude=#{longitude},</if>
+			<if test="latitude != null">latitude=#{latitude},</if>
+			<if test="physicalAddress != null">physical_address=#{physicalAddress}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="deleteProduct" parameterType="java.lang.Integer">
+		update product
+		set state='Final'
+		where id = #{id}
+	</delete>
+</mapper>
