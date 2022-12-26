@@ -110,9 +110,10 @@
 
 		<dependency>
 			<groupId>team.asd</groupId>
-			<artifactId>party-module</artifactId>
-			<version>1.0-20221212.152636-3</version>
+			<artifactId>party-layer</artifactId>
+			<version>1.0-20221224.091212-3</version>
 		</dependency>
+
 		<dependency>
 			<groupId>team.asd</groupId>
 			<artifactId>reservation-layer</artifactId>
