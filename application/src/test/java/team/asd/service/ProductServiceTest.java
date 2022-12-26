@@ -11,8 +11,10 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.powermock.reflect.Whitebox;
 import team.asd.constant.ProductState;
+import team.asd.dao.PartyDao;
 import team.asd.dao.ProductDao;
 import team.asd.dao.ProductDaoTestImpl;
+import team.asd.dao.ReservationDao;
 import team.asd.data.ProductDataTest;
 import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
@@ -30,13 +32,17 @@ class ProductServiceTest {
 	@Mock
 	private ProductDao mockProductDao;
 
+	private static PartyDao partyDao;
+
+	private static ReservationDao reservationDao;
+
 	private Product product;
 	private static Product mockProduct;
 	private AutoCloseable mockClosable;
 
 	@BeforeAll
 	public static void setUpClass() {
-		productService = new ProductService(new ProductDaoTestImpl());
+		productService = new ProductService(new ProductDaoTestImpl(), partyDao, reservationDao);
 	}
 
 	@BeforeEach
@@ -51,7 +57,7 @@ class ProductServiceTest {
 
 		mockProduct = null;
 		mockClosable = MockitoAnnotations.openMocks(this);
-		mockProductService = new ProductService(mockProductDao);
+		mockProductService = new ProductService(mockProductDao, partyDao, reservationDao);
 	}
 
 	@AfterEach

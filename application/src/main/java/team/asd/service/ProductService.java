@@ -3,7 +3,11 @@ package team.asd.service;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team.asd.dao.PartyDao;
 import team.asd.dao.ProductDao;
+import team.asd.dao.ReservationDao;
+import team.asd.dto.ProductInfoDto;
+import team.asd.entity.Party;
 import team.asd.entity.ProductReport;
 import team.asd.entity.Product;
 import team.asd.exception.ValidationException;
@@ -16,9 +20,13 @@ import java.util.Objects;
 public class ProductService {
 
 	private final ProductDao productDao;
+	private final PartyDao partyDao;
+	private final ReservationDao reservationDao;
 
-	public ProductService(@Autowired ProductDao productDao) {
+	public ProductService(@Autowired ProductDao productDao, @Autowired PartyDao partyDao, ReservationDao reservationDao) {
 		this.productDao = productDao;
+		this.partyDao = partyDao;
+		this.reservationDao = reservationDao;
 	}
 
 	public Product readById(Integer id) {
@@ -33,9 +41,26 @@ public class ProductService {
 		return productDao.readProductsByParams(supplierId, name, state);
 	}
 
-	public ProductReport readProductReportById(Integer id){
+	public ProductReport readProductReportById(Integer id) {
 		ValidationUtil.validId(id);
 		return productDao.readProductReportById(id);
+	}
+
+	public ProductInfoDto readProductInfoById(Integer id) {
+		ValidationUtil.validId(id);
+		Product product = productDao.readById(id);
+		if (product == null) {
+			return null;
+		}
+		Party party = partyDao.readById(product.getSupplierId());
+		return ProductInfoDto.builder()
+				.id(id)
+				.productName(product.getName())
+				.productState(product.getState().toString())
+				.reservationCountByProductId(reservationDao.getListByParameters(id, null, null).size())
+				.supplierName(party.getName())
+				.supplierUserType(party.getUserType().toString())
+				.build();
 	}
 
 	public Product createProduct(Product product) {
