@@ -11,11 +11,4 @@
 			<password>testP@ssword</password>
 		</server>
 	</servers>
-	<mirrors>
-		<mirror>
-			<id>asd-nexus</id>
-			<mirrorOf>external:http:*</mirrorOf>
-			<url>http://51.89.6.109:8081/repository/maven-snapshots</url>
-		</mirror>
-	</mirrors>
 </settings>
