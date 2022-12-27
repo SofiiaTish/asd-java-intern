@@ -24,7 +24,6 @@ dist/
 # Maven
 target/
 dist/
-.mvn/
 mvnw
 mvnw.cmd
 
