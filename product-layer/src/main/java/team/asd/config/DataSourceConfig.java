@@ -19,7 +19,7 @@ public class DataSourceConfig {
 	@Primary
 	@ConfigurationProperties(prefix = "spring.datasource")
 	public DataSource dataSource() {
-		return DataSourceBuilder.create().driverClassName("com.mysql.cj.jdbc.Driver").build();
+		return DataSourceBuilder.create().build();
 	}
 
 }
