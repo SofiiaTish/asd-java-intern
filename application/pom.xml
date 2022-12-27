@@ -111,13 +111,13 @@
 		<dependency>
 			<groupId>team.asd</groupId>
 			<artifactId>party-layer</artifactId>
-			<version>1.0-20221224.091212-3</version>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>team.asd</groupId>
 			<artifactId>reservation-layer</artifactId>
-			<version>1.0-20221223.130203-1</version>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
