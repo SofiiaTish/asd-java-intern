@@ -15,8 +15,7 @@
 			<id>maven-default-http-blocker</id>
 			<mirrorOf>asd-nexus</mirrorOf>
 			<name>Pseudo repository to mirror external repositories initially using HTTP.</name>
-			<url>http://51.89.6.109:8081/repository/maven-snapshots/</url>
-			<blocked>false</blocked>
+			<url>http://0.0.0.0/</url>
 		</mirror>
 	</mirrors>
 </settings>
