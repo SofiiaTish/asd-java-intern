@@ -23,41 +23,42 @@ public class RedisClientImpl implements RedisClient {
 
 	@Override
 	public String saveValueByKey(String key, String value) {
-		return null;
+		return jedisPool.set(key, value);
 	}
 
 	@Override
 	public Long saveList(String keyList, List<String> list) {
-		return null;
+		list.forEach(value -> jedisPool.rpush(keyList, value));
+		return (long) list.size();
 	}
 
 	@Override
 	public Long saveElementIntoList(String keyList, String value) {
-		return null;
+		return jedisPool.rpush(keyList, value);
 	}
 
 	@Override
 	public List<String> retrieveList(String keyList) {
-		return null;
+		return jedisPool.lrange(keyList, 0, -1);
 	}
 
 	@Override
 	public Long saveValueInHashMap(String primaryKey, String secondaryKey, String value) {
-		return null;
+		return jedisPool.hset(primaryKey, secondaryKey, value);
 	}
 
 	@Override
 	public String retrieveValueFromHashMap(String primaryKey, String secondaryKey) {
-		return null;
+		return jedisPool.hget(primaryKey, secondaryKey);
 	}
 
 	@Override
 	public Map<String, String> retrieveValueFromHashMap(String primaryKey) {
-		return null;
+		return jedisPool.hgetAll(primaryKey);
 	}
 
 	@Override
 	public String saveValueWithExpireDate(String key, String value, long expireDate) {
-		return null;
+		return jedisPool.setex(key, expireDate, value);
 	}
 }
