@@ -1,34 +1,52 @@
 package team.asd.config;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConfiguration;
-import org.springframework.data.redis.connection.RedisSentinelConfiguration;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisClientConfiguration.JedisClientConfigurationBuilder;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import redis.clients.jedis.JedisPoolConfig;
+import org.springframework.context.annotation.Primary;
+import redis.clients.jedis.Connection;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPooled;
 
 @Configuration
 @ComponentScan({"team.asd"})
 public class RedisConfig {
 
 	@Bean
-	@ConfigurationProperties(prefix = "spring.redis")
-	JedisConnectionFactory jedisConnectionFactory() {
-		/*JedisClientConfigurationBuilder builder = JedisClientConfiguration.builder();
+	@Primary
+	public RedisProperties redisProperties() {
+		return new RedisProperties();
+	}
+
+	@Bean
+	public JedisPooled jedisPool() {
+		RedisProperties properties = redisProperties();
+		GenericObjectPoolConfig<Connection> poolConfig = new GenericObjectPoolConfig<>();
+		poolConfig.setMaxTotal(10);
+		poolConfig.setMaxIdle(10);
+		poolConfig.setMaxIdle(0);
+		return new JedisPooled(poolConfig, properties.getHost(), properties.getPort());
+	}
+
+	/*@Bean
+	public JedisConnectionFactory jedisConnectionFactory() {
+		JedisClientConfigurationBuilder builder = JedisClientConfiguration.builder();
 		GenericObjectPoolConfig<Object> poolConfig = new GenericObjectPoolConfig<>();
 		poolConfig.setMaxTotal(10);
 		poolConfig.setMaxIdle(10);
-		JedisClientConfiguration jedisClientConfiguration = builder.usePooling().poolConfig(poolConfig).build();*/
-		RedisSentinelConfiguration redisConfiguration = new RedisSentinelConfiguration();
-		JedisPoolConfig jedisPoolConfig = buildPoolConfig();
-		return new JedisConnectionFactory(redisConfiguration, jedisPoolConfig);
+		poolConfig.setMaxIdle(0);
+		JedisClientConfiguration jedisClientConfiguration = builder.usePooling().poolConfig(poolConfig).build();
+
+		RedisStandaloneConfiguration redisConfiguration = new RedisStandaloneConfiguration();
+		RedisProperties properties = redisProperties();
+		redisConfiguration.setDatabase(properties.getDatabase());
+		redisConfiguration.setHostName(properties.getHost());
+		redisConfiguration.setPort(properties.getPort());
+
+		return new JedisConnectionFactory(redisConfiguration, jedisClientConfiguration);
 	}
 
 	@Bean
@@ -36,13 +54,6 @@ public class RedisConfig {
 		RedisTemplate<String, Object> template = new RedisTemplate<>();
 		template.setConnectionFactory(jedisConnectionFactory());
 		return template;
-	}
+	}*/
 
-	private JedisPoolConfig buildPoolConfig() {
-		final JedisPoolConfig poolConfig = new JedisPoolConfig();
-		poolConfig.setMaxTotal(10);
-		poolConfig.setMinIdle(0);
-		poolConfig.setMaxIdle(10);
-		return poolConfig;
-	}
 }
