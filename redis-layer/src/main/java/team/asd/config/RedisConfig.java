@@ -26,7 +26,7 @@ public class RedisConfig {
 		poolConfig.setMaxTotal(10);
 		poolConfig.setMaxIdle(10);
 		poolConfig.setMaxIdle(0);
-		return new JedisPooled(poolConfig, properties.getHost(), properties.getPort());
+		return new JedisPooled(poolConfig, properties.getHost(), properties.getPort(), 2000, properties.getPassword());
 	}
 
 }
