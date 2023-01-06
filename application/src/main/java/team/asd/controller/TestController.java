@@ -22,14 +22,13 @@ public class TestController {
 
 	@GetMapping("/test/message")
 	public Message message() {
-
 		return new Message(LocalDate.now(), message);
 	}
 
 	@PostMapping("/test/message")
-	public Message message(@RequestBody String testMessage) {
+	public Message message(@RequestBody String testMessage1, @RequestBody String testMessage2) {
 		try {
-			return new Message(LocalDate.now().plusDays(Integer.parseInt(testMessage)), message);
+			return new Message(LocalDate.now().plusDays(Integer.parseInt(testMessage1)), testMessage2);
 		} catch (NumberFormatException e) {
 			return new Message(LocalDate.now(), "Error - " + e.getMessage());
 		}

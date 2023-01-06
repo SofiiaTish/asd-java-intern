@@ -40,4 +40,16 @@ public class ValidationUtil {
 			throw new ValidationException("From_date have to be earlier then To_date");
 		}
 	}
+
+	public static void validKey(String key){
+		if (key == null){
+			throw new ValidationException("Incorrect key: null value");
+		}
+	}
+
+	public static void validExpireTime(Long expireTime){
+		if (expireTime == null){
+			throw new ValidationException("Incorrect expire time: null value");
+		}
+	}
 }
