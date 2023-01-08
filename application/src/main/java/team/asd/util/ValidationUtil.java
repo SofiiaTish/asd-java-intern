@@ -48,8 +48,8 @@ public class ValidationUtil {
 	}
 
 	public static void validExpireTime(Long expireTime){
-		if (expireTime == null){
-			throw new ValidationException("Incorrect expire time: null value");
+		if (expireTime == null || expireTime == 0){
+			throw new ValidationException("Incorrect expire time: null or zero value");
 		}
 	}
 }
