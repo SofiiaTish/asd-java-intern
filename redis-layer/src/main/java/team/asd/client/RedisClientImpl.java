@@ -2,63 +2,63 @@ package team.asd.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import redis.clients.jedis.JedisPooled;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.List;
 import java.util.Map;
 
 @Repository
 public class RedisClientImpl implements RedisClient {
+	private final Jedis jedis;
 
-	private final JedisPooled jedisPool;
-
-	public RedisClientImpl(@Autowired JedisPooled jedisPool) {
-		this.jedisPool = jedisPool;
+	public RedisClientImpl(@Autowired JedisPool jedisPool) {
+		this.jedis = jedisPool.getResource();
 	}
 
 	@Override
 	public String readByKey(String key) {
-		return jedisPool.get(key);
+		return jedis.get(key);
 	}
 
 	@Override
 	public String saveValueByKey(String key, String value) {
-		return jedisPool.set(key, value);
+		return jedis.set(key, value);
 	}
 
 	@Override
 	public Long saveList(String keyList, List<String> list) {
-		list.forEach(value -> jedisPool.rpush(keyList, value));
+		list.forEach(value -> jedis.rpush(keyList, value));
 		return (long) list.size();
 	}
 
 	@Override
 	public Long saveElementIntoList(String keyList, String value) {
-		return jedisPool.rpush(keyList, value);
+		return jedis.rpush(keyList, value);
 	}
 
 	@Override
 	public List<String> retrieveList(String keyList) {
-		return jedisPool.lrange(keyList, 0, -1);
+		return jedis.lrange(keyList, 0, -1);
 	}
 
 	@Override
 	public Long saveValueInHashMap(String primaryKey, String secondaryKey, String value) {
-		return jedisPool.hset(primaryKey, secondaryKey, value);
+		return jedis.hset(primaryKey, secondaryKey, value);
 	}
 
 	@Override
 	public String retrieveValueFromHashMap(String primaryKey, String secondaryKey) {
-		return jedisPool.hget(primaryKey, secondaryKey);
+		return jedis.hget(primaryKey, secondaryKey);
 	}
 
 	@Override
 	public Map<String, String> retrieveValueFromHashMap(String primaryKey) {
-		return jedisPool.hgetAll(primaryKey);
+		return jedis.hgetAll(primaryKey);
 	}
 
 	@Override
 	public String saveValueWithExpireDate(String key, String value, long expireDate) {
-		return jedisPool.setex(key, expireDate, value);
+		return jedis.setex(key, expireDate, value);
 	}
 }
