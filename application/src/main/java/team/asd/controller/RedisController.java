@@ -19,11 +19,9 @@ public class RedisController {
 
 	private final RedisService redisService;
 
-
 	public RedisController(@Autowired RedisService redisService) {
 		this.redisService = redisService;
 	}
-
 
 	@GetMapping(path = {"/value/{key}"})
 	public String getValueByKey(@PathVariable String key) {
