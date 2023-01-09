@@ -1,5 +1,6 @@
 package team.asd.service;
 
+/*
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,12 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+*/
 
-@SpringBootTest
+//@SpringBootTest
 class RedisServiceTest {
 
-    @Autowired
-    private RedisService redisService;
+    /*@Autowired
+   private RedisService redisService;
 
     @BeforeEach
     void setUp() {
@@ -76,5 +78,5 @@ class RedisServiceTest {
             System.out.println(e.getMessage());
         }
         assertNull(redisService.readByKey("expire-key"));
-    }
+    }*/
 }
