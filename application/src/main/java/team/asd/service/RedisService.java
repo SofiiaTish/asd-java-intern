@@ -11,59 +11,64 @@ import java.util.Map;
 @Service
 public class RedisService {
 
-	private final RedisClient redisClient;
+    private final RedisClient redisClient;
 
 
-	public RedisService(@Autowired RedisClient redisClient) {
-		this.redisClient = redisClient;
-	}
+    public RedisService(@Autowired RedisClient redisClient) {
+        this.redisClient = redisClient;
+    }
 
-	public String readByKey(String key) {
-		ValidationUtil.validKey(key);
-		return redisClient.readByKey(key);
-	}
+    public String readByKey(String key) {
+        ValidationUtil.validKey(key);
+        return redisClient.readByKey(key);
+    }
 
-	public String saveValueByKey(String key, String value) {
-		ValidationUtil.validKey(key);
-		return redisClient.saveValueByKey(key, value);
-	}
+    public String saveValueByKey(String key, String value) {
+        ValidationUtil.validKey(key);
+        ValidationUtil.validValue(value);
+        return redisClient.saveValueByKey(key, value);
+    }
 
-	public Long saveList(String keyList, List<String> list) {
-		ValidationUtil.validKey(keyList);
-		return redisClient.saveList(keyList, list);
-	}
+    public Long saveList(String keyList, List<String> list) {
+        ValidationUtil.validKey(keyList);
+        ValidationUtil.validList(list);
+        return redisClient.saveList(keyList, list);
+    }
 
-	public Long saveElementIntoList(String keyList, String value) {
-		ValidationUtil.validKey(keyList);
-		return redisClient.saveElementIntoList(keyList, value);
-	}
+    public Long saveElementIntoList(String keyList, String value) {
+        ValidationUtil.validKey(keyList);
+        ValidationUtil.validValue(value);
+        return redisClient.saveElementIntoList(keyList, value);
+    }
 
-	public List<String> retrieveList(String keyList) {
-		ValidationUtil.validKey(keyList);
-		return redisClient.retrieveList(keyList);
-	}
+    public List<String> retrieveList(String keyList) {
+        ValidationUtil.validKey(keyList);
+        return redisClient.retrieveList(keyList);
+    }
 
-	public Long saveValueInHashMap(String primaryKey, String secondaryKey, String value) {
-		ValidationUtil.validKey(primaryKey);
-		ValidationUtil.validKey(secondaryKey);
-		return redisClient.saveValueInHashMap(primaryKey, secondaryKey, value);
-	}
+    public Long saveValueInHashMap(String primaryKey, String secondaryKey, String value) {
+        ValidationUtil.validKey(primaryKey);
+        ValidationUtil.validKey(secondaryKey);
+        ValidationUtil.validValue(value);
+        return redisClient.saveValueInHashMap(primaryKey, secondaryKey, value);
+    }
 
-	public String retrieveValueFromHashMap(String primaryKey, String secondaryKey) {
-		ValidationUtil.validKey(primaryKey);
-		ValidationUtil.validKey(secondaryKey);
-		return redisClient.retrieveValueFromHashMap(primaryKey, secondaryKey);
-	}
+    public String retrieveValueFromHashMap(String primaryKey, String secondaryKey) {
+        ValidationUtil.validKey(primaryKey);
+        ValidationUtil.validKey(secondaryKey);
+        return redisClient.retrieveValueFromHashMap(primaryKey, secondaryKey);
+    }
 
-	public Map<String, String> retrieveValueFromHashMap(String primaryKey) {
-		ValidationUtil.validKey(primaryKey);
-		return redisClient.retrieveValueFromHashMap(primaryKey);
-	}
+    public Map<String, String> retrieveValueFromHashMap(String primaryKey) {
+        ValidationUtil.validKey(primaryKey);
+        return redisClient.retrieveValueFromHashMap(primaryKey);
+    }
 
-	public String saveValueWithExpireDate(String key, String value, Long expireDate) {
-		ValidationUtil.validKey(key);
-		ValidationUtil.validExpireTime(expireDate);
-		return redisClient.saveValueWithExpireDate(key, value, expireDate);
-	}
+    public String saveValueWithExpireDate(String key, String value, Long expireDate) {
+        ValidationUtil.validKey(key);
+        ValidationUtil.validExpireTime(expireDate);
+        ValidationUtil.validValue(value);
+        return redisClient.saveValueWithExpireDate(key, value, expireDate);
+    }
 
 }
