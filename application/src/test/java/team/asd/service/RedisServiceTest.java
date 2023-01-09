@@ -49,7 +49,7 @@ class RedisServiceTest {
         assertThrows(ValidationException.class, () -> redisService.saveList(null, Arrays.asList("first", "second")));
 
         assertThrows(ValidationException.class, () -> redisService.saveList("null-key", null));
-        assertThrows(ValidationException.class, () -> redisService.saveList("null-key", Arrays.asList("first", null,"second")));
+        assertThrows(ValidationException.class, () -> redisService.saveList("null-key", Arrays.asList("first", null, "second")));
     }
 
     @Test

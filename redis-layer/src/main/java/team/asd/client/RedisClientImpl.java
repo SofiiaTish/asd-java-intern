@@ -58,7 +58,7 @@ public class RedisClientImpl implements RedisClient {
     }
 
     @Override
-    public String saveValueWithExpireDate(String key, String value, long expireDate) {
-        return jedis.setex(key, (int) expireDate, value);
+    public String saveValueWithExpireDate(String key, String value, Long expireDate) {
+        return jedis.setex(key, expireDate, value);
     }
 }

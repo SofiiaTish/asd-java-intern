@@ -20,5 +20,5 @@ public interface RedisClient {
 
 	Map<String, String> retrieveValueFromHashMap(String primaryKey);
 
-	String saveValueWithExpireDate(String key, String value, long expireDate);
+	String saveValueWithExpireDate(String key, String value, Long expireDate);
 }
