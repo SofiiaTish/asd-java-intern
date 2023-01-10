@@ -19,7 +19,7 @@ public class PriceDaoTestImpl implements PriceDao {
 	}
 
 	@Override
-	public List<Price> readPricesByDateRange(Date fromDate, Date toDate) {
+	public List<Price> readPricesByDateRange(Integer productId, Date fromDate, Date toDate) {
 		return null;
 	}
 

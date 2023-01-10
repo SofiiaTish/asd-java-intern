@@ -13,20 +13,20 @@ import redis.clients.jedis.JedisPool;
 @ComponentScan({"team.asd"})
 public class RedisConfig {
 
-    @Bean
-    @Primary
-    public RedisProperties redisProperties() {
-        return new RedisProperties();
-    }
+	@Bean
+	@Primary
+	public RedisProperties redisProperties() {
+		return new RedisProperties();
+	}
 
-    @Bean
-    public JedisPool jedisPool() {
-        RedisProperties properties = redisProperties();
-        GenericObjectPoolConfig<Jedis> poolConfig = new GenericObjectPoolConfig<>();
-        poolConfig.setMaxTotal(10);
-        poolConfig.setMaxIdle(10);
-        poolConfig.setMaxIdle(0);
-        return new JedisPool(poolConfig, properties.getHost(), properties.getPort(), 2000, properties.getPassword());
-    }
+	@Bean
+	public JedisPool jedisPool() {
+		RedisProperties properties = redisProperties();
+		GenericObjectPoolConfig<Jedis> poolConfig = new GenericObjectPoolConfig<>();
+		poolConfig.setMaxTotal(10);
+		poolConfig.setMaxIdle(10);
+		poolConfig.setMaxIdle(0);
+		return new JedisPool(poolConfig, properties.getHost(), properties.getPort(), 2000, properties.getPassword());
+	}
 
 }

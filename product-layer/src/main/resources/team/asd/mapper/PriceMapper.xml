@@ -47,7 +47,8 @@
 		<include refid="columns"/>
 		from price
 		where
-		(from_date <![CDATA[>=]]> #{fromDate} and from_date <![CDATA[<]]> #{toDate})
+		(entity_id = #{productId})
+		and(from_date <![CDATA[>=]]> #{fromDate} and from_date <![CDATA[<]]> #{toDate})
 		and (to_date <![CDATA[<=]]> #{toDate} and to_date <![CDATA[>]]> #{fromDate})
 	</select>
 
