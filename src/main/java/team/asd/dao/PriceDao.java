@@ -11,7 +11,7 @@ public interface PriceDao {
 
 	List<Price> readPricesByParams(String entityType, Integer entityId, String state);
 
-	List<Price> readPricesByDateRange(Date fromDate, Date toDate);
+	List<Price> readPricesByDateRange(Integer productId, Date fromDate, Date toDate);
 
 	void savePrice(Price price);
 

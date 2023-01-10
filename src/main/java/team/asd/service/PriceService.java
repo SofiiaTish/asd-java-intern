@@ -33,9 +33,10 @@ public class PriceService {
 		return priceDao.readPricesByParams(entityType, entityId, state);
 	}
 
-	public List<Price> readByDateRange(Date fromDate, Date toDate) {
+	public List<Price> readByDateRange(Integer productId, Date fromDate, Date toDate) {
+		ValidationUtil.validId(productId);
 		ValidationUtil.validDateRange(fromDate, toDate);
-		return priceDao.readPricesByDateRange(fromDate, toDate);
+		return priceDao.readPricesByDateRange(productId, fromDate, toDate);
 	}
 
 	public Price createPrice(Price price) {

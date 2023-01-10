@@ -39,9 +39,10 @@ public class PriceController {
 
 	@GetMapping(path = {"/prices/date-range"})
 	public List<PriceDto> getPricesByDateRange(
+			@RequestParam Integer productId,
 			@RequestParam @Pattern(regexp = "[0-9]{4}-[0-2]{2}-[0-9]{2}", message = "{date.format}") String fromDate,
 			@RequestParam @Pattern(regexp = "[0-9]{4}-[0-2]{2}-[0-9]{2}", message = "{date.format}") String toDate) {
-		return priceService.readByDateRange(ConverterUtil.convertStringToDate(fromDate), ConverterUtil.convertStringToDate(toDate))
+		return priceService.readByDateRange(productId, ConverterUtil.convertStringToDate(fromDate), ConverterUtil.convertStringToDate(toDate))
 				.stream().map(ConverterUtil::convertPriceToDto).collect(Collectors.toList());
 	}
 

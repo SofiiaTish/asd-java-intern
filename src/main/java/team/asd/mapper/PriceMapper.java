@@ -13,7 +13,7 @@ public interface PriceMapper {
 
 	List<Price> readPricesByParams(@Param("entityType") String entityType, @Param("entityId") Integer entityId, @Param("state") String state);
 
-	List<Price> readPricesByDateRange(@Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
+	List<Price> readPricesByDateRange(@Param("productId") Integer productId, @Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
 
 	void insertPrice(Price price);
 
