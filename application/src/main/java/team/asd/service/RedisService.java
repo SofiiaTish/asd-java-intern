@@ -13,7 +13,6 @@ public class RedisService {
 
     private final RedisClient redisClient;
 
-
     public RedisService(@Autowired RedisClient redisClient) {
         this.redisClient = redisClient;
     }
