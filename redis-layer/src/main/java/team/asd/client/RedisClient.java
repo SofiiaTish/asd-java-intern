@@ -21,4 +21,8 @@ public interface RedisClient {
 	Map<String, String> retrieveValueFromHashMap(String primaryKey);
 
 	String saveValueWithExpireDate(String key, String value, Long expireDate);
+
+	void saveProductMigrationWithExpire(Integer productId, String fromDate, String toDate, double result);
+
+	String readProductMigrationResult(Integer productId, String fromDate, String toDate);
 }
