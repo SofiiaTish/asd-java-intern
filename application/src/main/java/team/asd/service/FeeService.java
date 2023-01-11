@@ -32,9 +32,10 @@ public class FeeService {
 		return feeDao.readFeesByParams(feeType, productId, state);
 	}
 
-	public List<Fee> readByDateRange(Date fromDate, Date toDate) {
+	public List<Fee> readByDateRange(Integer productId, Date fromDate, Date toDate) {
+		ValidationUtil.validId(productId);
 		ValidationUtil.validDateRange(fromDate, toDate);
-		return feeDao.readFeesByDateRange(fromDate, toDate);
+		return feeDao.readFeesByDateRange(productId, fromDate, toDate);
 	}
 
 	public List<Fee> readByMinValueSupplierId(Integer minValue, Integer supplierId) {

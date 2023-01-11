@@ -19,7 +19,7 @@ public class FeeDaoTestImpl implements FeeDao {
 	}
 
 	@Override
-	public List<Fee> readFeesByDateRange(Date fromDate, Date toDate) {
+	public List<Fee> readFeesByDateRange(Integer productId, Date fromDate, Date toDate) {
 		return null;
 	}
 
