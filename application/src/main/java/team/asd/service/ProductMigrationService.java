@@ -58,7 +58,7 @@ public class ProductMigrationService {
 		if (product == null || product.getState().toString().equals("Final")) {
 			return String.valueOf(result);
 		}
-		product_part += 2 //supplier_id
+		product_part = 2 //supplier_id
 				+ (StringUtils.isBlank(product.getName()) ? 0 : (product.getName().length() <= 10 ? 3 : 5))
 				+ (product.getState().toString().equals("Created") ? 4
 				: (product.getState().toString().equals("Suspended") || product.getState().toString().equals("Initial") ? 3 : 2))
@@ -75,17 +75,7 @@ public class ProductMigrationService {
 			prices = prices.stream().filter(price -> price.getState() != null && price.getState().toString().equals("Created")).collect(Collectors.toList());
 		}
 		if (CollectionUtils.isNotEmpty(prices)) {
-			for (Price price : prices) {
-				price_part += 3 //entity_type
-						+ 4 //entity_id
-						+ (StringUtils.isNotBlank(price.getName()) ? 0 : (price.getName().length() <= 10 ? 3 : 7))
-						+ 4 //state
-						+ 7 //from_date
-						+ 7 //to_date
-						+ (price.getValue() > 0.0 ? 7 : 0)
-						+ (StringUtils.isNotBlank(price.getCurrency()) ? 6 : 0);
-			}
-			price_part /= prices.size();
+			price_part = prices.stream().mapToInt(this::sumPriceResult).sum() / prices.size();
 		}
 
 		List<Fee> fees = feeDao.readFeesByDateRange(productId, fromDate, toDate);
@@ -93,21 +83,7 @@ public class ProductMigrationService {
 			fees = fees.stream().filter(fee -> fee.getState().toString().equals("Created")).collect(Collectors.toList());
 		}
 		if (CollectionUtils.isNotEmpty(fees)) {
-			//fee_part = fees.stream().mapToInt(this::sumFeeResult).sum() / fees.size();
-			for (Fee fee : fees) {
-				fee_part += 2 //fee_type
-						+ 1 //product_id
-						+ (fee.getName() == null || fee.getName().length() == 0 ? 0 : 1)
-						+ 1 //state
-						+ 3 //from_date
-						+ 3 //to_date
-						+ 2 //tax_type
-						+ 3 //unit
-						+ (fee.getValue() > 0.0 ? 3 : 0)
-						+ 3 //value_type
-						+ (StringUtils.isNotBlank(fee.getCurrency()) ? 3 : 0);
-			}
-			fee_part /= fees.size();
+			fee_part = fees.stream().mapToInt(this::sumFeeResult).sum() / fees.size();
 		}
 
 		result = product_part + price_part + fee_part;
@@ -115,8 +91,13 @@ public class ProductMigrationService {
 		return String.valueOf(result);
 	}
 
+	private int sumPriceResult(Price price) {
+		return 25 + (StringUtils.isBlank(price.getName()) ? 0 : (price.getName().length() <= 10 ? 3 : 7))
+				+ (price.getValue() > 0.0 ? 7 : 0) + (StringUtils.isNotBlank(price.getCurrency()) ? 6 : 0);
+	}
+
 	private int sumFeeResult(Fee fee) {
-		return 18 + (fee.getName() == null || fee.getName().length() == 0 ? 0 : 1)
+		return 18 + (StringUtils.isBlank(fee.getName()) ? 0 : 1)
 				+ (fee.getValue() > 0.0 ? 3 : 0) + (StringUtils.isNotBlank(fee.getCurrency()) ? 3 : 0);
 	}
 
