@@ -53,19 +53,20 @@ public class FeeController {
 		return feeService.readByParams(feeType, productId, state).stream().map(ConverterUtil::convertFeeToDto).collect(Collectors.toList());
 	}
 
-	@ApiOperation(value = "Get fees by date range.",
-			notes = "Require two different dates as request parameters. Return list of fees witch date ranges are inside specified range as JSON objects. Parameters have to be in order 'start date, end date'.")
+	@ApiOperation(value = "Get fees by date range for current product.",
+			notes = "Require two different dates and productId as request parameters. Return list of fees witch date ranges are inside specified range as JSON objects. Parameters have to be in order 'start date, end date'.")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Fees exist in table"),
 			@ApiResponse(code = 404, message = "Custom message about error reasons or unknown error")
 	})
 	@GetMapping(path = {"/fees/date-range"})
 	public List<FeeDto> getFeesByDateRange(
+			@RequestParam @ApiParam(value = "Product id", example = "4") Integer productId,
 			@RequestParam @ApiParam(value = "Start date of range", example = "2022-10-10")
 			@Pattern(regexp = "[0-9]{4}-[0-2]{2}-[0-9]{2}", message = "{date.format}") String fromDate,
 			@RequestParam @ApiParam(value = "End date of range", example = "2022-10-20")
 			@Pattern(regexp = "[0-9]{4}-[0-2]{2}-[0-9]{2}", message = "{date.format}") String toDate) {
-		return feeService.readByDateRange(ConverterUtil.convertStringToDate(fromDate), ConverterUtil.convertStringToDate(toDate))
+		return feeService.readByDateRange(productId, ConverterUtil.convertStringToDate(fromDate), ConverterUtil.convertStringToDate(toDate))
 				.stream().map(ConverterUtil::convertFeeToDto).collect(Collectors.toList());
 	}
 

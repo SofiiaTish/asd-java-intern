@@ -14,7 +14,7 @@ public interface FeeMapper {
 
 	List<Fee> readFeesByParams(@Param("feeType") Integer feeType, @Param("productId") Integer productId, @Param("state") String state);
 
-	List<Fee> readFeesByDateRange(@Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
+	List<Fee> readFeesByDateRange(@Param("productId") Integer productId, @Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
 
 	List<Fee> readFeesByValueProductSupplierId(@Param("minValue") Integer minValue, @Param("supplierId") Integer supplierId);
 

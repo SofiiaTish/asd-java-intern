@@ -11,7 +11,7 @@ public interface FeeDao {
 
 	List<Fee> readFeesByParams(Integer feeType, Integer productId, String state);
 
-	List<Fee> readFeesByDateRange(Date fromDate, Date toDate);
+	List<Fee> readFeesByDateRange(Integer productId, Date fromDate, Date toDate);
 
 	List<Fee> readFeesByValueProductSupplierId(Integer minValue, Integer supplierId);
 

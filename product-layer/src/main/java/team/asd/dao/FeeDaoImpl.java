@@ -33,8 +33,8 @@ public class FeeDaoImpl implements FeeDao {
 
 	@Override
 	@Transactional
-	public List<Fee> readFeesByDateRange(Date fromDate, Date toDate) {
-		return feeMapper.readFeesByDateRange(fromDate, toDate);
+	public List<Fee> readFeesByDateRange(Integer productId, Date fromDate, Date toDate) {
+		return feeMapper.readFeesByDateRange(productId,fromDate, toDate);
 	}
 
 	@Override

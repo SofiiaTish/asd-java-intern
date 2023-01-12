@@ -54,7 +54,8 @@
 		<include refid="columns"/>
 		from fee
 		where
-		(from_date <![CDATA[>=]]> #{fromDate} and from_date <![CDATA[<]]> #{toDate})
+		(product_id = #{productId})
+		and (from_date <![CDATA[>=]]> #{fromDate} and from_date <![CDATA[<]]> #{toDate})
 		and (to_date <![CDATA[<=]]> #{toDate} and to_date <![CDATA[>]]> #{fromDate})
 	</select>
 
