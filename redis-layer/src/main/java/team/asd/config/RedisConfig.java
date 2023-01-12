@@ -2,15 +2,13 @@ package team.asd.config;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 @Configuration
 @ComponentScan({"team.asd"})
+@PropertySource("classpath:redis.properties")
 public class RedisConfig {
 
 	@Bean
