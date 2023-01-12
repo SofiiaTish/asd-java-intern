@@ -50,7 +50,7 @@ public class ProductMigrationService {
 
 	private String calculateProductMigrationResult(Integer productId, Date fromDate, Date toDate) {
 		double result = 0.0;
-		int product_part;
+		int product_part = 0;
 		int price_part = 0;
 		int fee_part = 0;
 
@@ -58,11 +58,11 @@ public class ProductMigrationService {
 		if (product == null || product.getState().toString().equals("Final")) {
 			return String.valueOf(result);
 		}
-		product_part = (product.getSupplierId() != null ? 2 : 0)
+		product_part += 2 //supplier_id
 				+ (StringUtils.isBlank(product.getName()) ? 0 : (product.getName().length() <= 10 ? 3 : 5))
 				+ (product.getState().toString().equals("Created") ? 4
 				: (product.getState().toString().equals("Suspended") || product.getState().toString().equals("Initial") ? 3 : 2))
-				+ (product.getCurrency().length() > 0 ? 4 : 0)
+				+ (StringUtils.isNotBlank(product.getCurrency()) ? 4 : 0)
 				+ (product.getGuestsNumber() > 0 ? 4 : 0)
 				+ (product.getLongitude() != null ? 3 : 0)
 				+ (product.getLatitude() != null ? 3 : 0)
@@ -72,18 +72,18 @@ public class ProductMigrationService {
 
 		List<Price> prices = priceDao.readPricesByDateRange(productId, fromDate, toDate);
 		if (prices != null) {
-			prices = prices.stream().filter(price -> price.getState().toString().equals("Created")).collect(Collectors.toList());
+			prices = prices.stream().filter(price -> price.getState() != null && price.getState().toString().equals("Created")).collect(Collectors.toList());
 		}
 		if (CollectionUtils.isNotEmpty(prices)) {
 			for (Price price : prices) {
-				price_part += (price.getEntityType() != null ? 3 : 0)
-						+ (price.getEntityId() != null ? 4 : 0)
-						+ (price.getName().length() == 0 ? 0 : (price.getName().length() <= 10 ? 3 : 7))
-						+ (price.getState() != null ? 4 : 0)
-						+ (price.getFromDate() != null ? 7 : 0)
-						+ (price.getToDate() != null ? 7 : 0)
+				price_part += 3 //entity_type
+						+ 4 //entity_id
+						+ (StringUtils.isNotBlank(price.getName()) ? 0 : (price.getName().length() <= 10 ? 3 : 7))
+						+ 4 //state
+						+ 7 //from_date
+						+ 7 //to_date
 						+ (price.getValue() > 0.0 ? 7 : 0)
-						+ (price.getCurrency().length() > 0 ? 6 : 0);
+						+ (StringUtils.isNotBlank(price.getCurrency()) ? 6 : 0);
 			}
 			price_part /= prices.size();
 		}
@@ -93,18 +93,19 @@ public class ProductMigrationService {
 			fees = fees.stream().filter(fee -> fee.getState().toString().equals("Created")).collect(Collectors.toList());
 		}
 		if (CollectionUtils.isNotEmpty(fees)) {
+			//fee_part = fees.stream().mapToInt(this::sumFeeResult).sum() / fees.size();
 			for (Fee fee : fees) {
-				fee_part += (fee.getFeeType() != null ? 2 : 0)
-						+ (fee.getProductId() != null ? 1 : 0)
+				fee_part += 2 //fee_type
+						+ 1 //product_id
 						+ (fee.getName() == null || fee.getName().length() == 0 ? 0 : 1)
-						+ (fee.getState() != null ? 1 : 0)
-						+ (fee.getFromDate() != null ? 3 : 0)
-						+ (fee.getToDate() != null ? 3 : 0)
-						+ (fee.getTaxType() != null ? 2 : 0)
-						+ (fee.getUnit() != null ? 3 : 0)
+						+ 1 //state
+						+ 3 //from_date
+						+ 3 //to_date
+						+ 2 //tax_type
+						+ 3 //unit
 						+ (fee.getValue() > 0.0 ? 3 : 0)
-						+ (fee.getValueType() != null ? 3 : 0)
-						+ (fee.getCurrency().length() > 0 ? 3 : 0);
+						+ 3 //value_type
+						+ (StringUtils.isNotBlank(fee.getCurrency()) ? 3 : 0);
 			}
 			fee_part /= fees.size();
 		}
@@ -112,6 +113,11 @@ public class ProductMigrationService {
 		result = product_part + price_part + fee_part;
 		saveProductMigrationResult(productId, fromDate, toDate, result);
 		return String.valueOf(result);
+	}
+
+	private int sumFeeResult(Fee fee) {
+		return 18 + (fee.getName() == null || fee.getName().length() == 0 ? 0 : 1)
+				+ (fee.getValue() > 0.0 ? 3 : 0) + (StringUtils.isNotBlank(fee.getCurrency()) ? 3 : 0);
 	}
 
 	private void saveProductMigrationResult(Integer productId, Date fromDate, Date toDate, double result) {
