@@ -1,7 +1,6 @@
 package team.asd.service;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -14,8 +13,6 @@ import org.powermock.reflect.Whitebox;
 import team.asd.constant.*;
 import team.asd.dao.FeeDao;
 import team.asd.dao.FeeDaoImpl;
-import team.asd.dao.FeeDaoTestImpl;
-import team.asd.data.FeeDataTest;
 import team.asd.entity.Fee;
 import team.asd.exception.ValidationException;
 import team.asd.mapper.FeeMapper;
@@ -31,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(MockitoJUnitRunner.class)
 class FeeServiceTest {
-	private static FeeService feeService;
 	private FeeService mockFeeService;
 
 	private FeeService spiedFeeService;
@@ -46,14 +42,22 @@ class FeeServiceTest {
 	private static Fee mockFee;
 	private AutoCloseable mockClosable;
 
-	@BeforeAll
-	public static void setUpClass() {
-		feeService = new FeeService(new FeeDaoTestImpl());
-	}
-
 	@BeforeEach
 	void setUp() {
-		fee = FeeDataTest.getExpectedFee();
+		fee = Fee.builder()
+				.id(1)
+				.feeType(FeeType.General)
+				.productId(2)
+				.name("Test")
+				.state(FeeState.Initial)
+				.fromDate(Date.from(Instant.parse("2022-12-10T10:15:30Z")))
+				.toDate(Date.from(Instant.parse("2022-12-15T10:15:30Z")))
+				.taxType(TaxType.Taxable)
+				.unit(Unit.Per_Day)
+				.value(34.56)
+				.valueType(ValueType.Flat)
+				.currency("usd")
+				.build();
 		mockFee = null;
 		mockClosable = MockitoAnnotations.openMocks(this);
 		mockFeeService = new FeeService(mockFeeDao);
@@ -71,9 +75,8 @@ class FeeServiceTest {
 
 	@Test
 	void testReadById() {
-		assertEquals(fee.getId(), feeService.readById(1).getId());
-		assertThrows(ValidationException.class, () -> feeService.readById(-1));
-		assertThrows(ValidationException.class, () -> feeService.readById(null));
+		assertThrows(ValidationException.class, () -> mockFeeService.readById(-1));
+		assertThrows(ValidationException.class, () -> mockFeeService.readById(null));
 
 		Mockito.when(mockFeeDao.readById(1))
 				.thenReturn(Fee.builder().id(1).build());
@@ -92,15 +95,14 @@ class FeeServiceTest {
 
 	@Test
 	void testCreateFee() {
-		assertEquals(fee.getId(), feeService.createFee(fee).getId());
-		assertThrows(ValidationException.class, () -> feeService.createFee(null));
-		assertThrows(ValidationException.class, () -> feeService.createFee(new Fee()));
+		assertThrows(ValidationException.class, () -> mockFeeService.createFee(null));
+		assertThrows(ValidationException.class, () -> mockFeeService.createFee(new Fee()));
 		fee.setCurrency(null);
-		assertThrows(ValidationException.class, () -> feeService.createFee(fee));
+		assertThrows(ValidationException.class, () -> mockFeeService.createFee(fee));
 		fee.setCurrency("usd");
 		fee.setToDate(Date.from(Instant.now()));
 		fee.setFromDate(Date.from(Instant.now().plus(Duration.ofDays(10))));
-		assertThrows(ValidationException.class, () -> feeService.createFee(fee));
+		assertThrows(ValidationException.class, () -> mockFeeService.createFee(fee));
 
 		Exception e = assertThrows(ValidationException.class, () -> Whitebox.invokeMethod(mockFeeService, "validFee", mockFee, false));
 		assertEquals("Fee is null", e.getMessage());
@@ -134,11 +136,11 @@ class FeeServiceTest {
 
 	@Test
 	void testUpdateFee() {
-		assertEquals(fee.getId(), feeService.updateFee(fee).getId());
-		assertThrows(ValidationException.class, () -> feeService.updateFee(null));
-		assertThrows(ValidationException.class, () -> feeService.updateFee(new Fee()));
+		//assertEquals(fee.getId(), feeService.updateFee(fee).getId());
+		assertThrows(ValidationException.class, () -> mockFeeService.updateFee(null));
+		assertThrows(ValidationException.class, () -> mockFeeService.updateFee(new Fee()));
 		fee.setId(null);
-		assertThrows(ValidationException.class, () -> feeService.updateFee(fee));
+		assertThrows(ValidationException.class, () -> mockFeeService.updateFee(fee));
 
 		Mockito.doAnswer(invocation -> {
 			mockFee = Fee.builder().id(1).build();
@@ -158,27 +160,27 @@ class FeeServiceTest {
 	void testUpdateFeeWithNullFromDate() {
 		fee.setToDate(Date.from(Instant.parse("2022-10-15T10:15:30Z")));
 		fee.setFromDate(null);
-		assertThrows(ValidationException.class, () -> feeService.updateFee(fee));
+		assertThrows(ValidationException.class, () -> mockFeeService.updateFee(fee));
 	}
 
 	@Test
 	void testUpdateFeeWithNullToDate() {
 		fee.setToDate(null);
 		fee.setFromDate(Date.from(Instant.parse("2022-10-15T10:15:30Z")));
-		assertThrows(ValidationException.class, () -> feeService.updateFee(fee));
+		assertThrows(ValidationException.class, () -> mockFeeService.updateFee(fee));
 	}
 
 	@Test
 	void testUpdateFeeWithReverseDates() {
 		fee.setToDate(Date.from(Instant.now()));
 		fee.setFromDate(Date.from(Instant.now()));
-		assertThrows(ValidationException.class, () -> feeService.updateFee(fee));
+		assertThrows(ValidationException.class, () -> mockFeeService.updateFee(fee));
 	}
 
 	@Test
 	void testDeleteFee() {
-		assertThrows(ValidationException.class, () -> feeService.deleteFee(-1));
-		assertThrows(ValidationException.class, () -> feeService.deleteFee(null));
+		assertThrows(ValidationException.class, () -> mockFeeService.deleteFee(-1));
+		assertThrows(ValidationException.class, () -> mockFeeService.deleteFee(null));
 
 		mockFeeService.deleteFee(1);
 		Mockito.verify(mockFeeDao).deleteFee(Mockito.anyInt());

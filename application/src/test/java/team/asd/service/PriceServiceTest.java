@@ -1,7 +1,6 @@
 package team.asd.service;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -14,8 +13,6 @@ import org.powermock.reflect.Whitebox;
 import team.asd.constant.PriceState;
 import team.asd.dao.PriceDao;
 import team.asd.dao.PriceDaoImpl;
-import team.asd.dao.PriceDaoTestImpl;
-import team.asd.data.PriceDataTest;
 import team.asd.entity.Price;
 import team.asd.exception.ValidationException;
 import team.asd.mapper.PriceMapper;
@@ -31,8 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(MockitoJUnitRunner.class)
 class PriceServiceTest {
-	private static PriceService priceService;
-
 	private PriceService spiedPriceService;
 	private PriceService mockPriceService;
 
@@ -45,11 +40,6 @@ class PriceServiceTest {
 	private static Price price;
 	private static Price mockPrice;
 	private AutoCloseable mockClosable;
-
-	@BeforeAll
-	public static void setUpClass() {
-		priceService = new PriceService(new PriceDaoTestImpl());
-	}
 
 	@BeforeEach
 	void setUp() {
@@ -83,9 +73,8 @@ class PriceServiceTest {
 
 	@Test
 	void testReadById() {
-		assertEquals(PriceDataTest.getExpectedPrice(), priceService.readById(1));
-		assertThrows(ValidationException.class, () -> priceService.readById(-1));
-		assertThrows(ValidationException.class, () -> priceService.readById(null));
+		assertThrows(ValidationException.class, () -> mockPriceService.readById(-1));
+		assertThrows(ValidationException.class, () -> mockPriceService.readById(null));
 
 		Mockito.when(mockPriceDao.readById(1))
 				.thenReturn(Price.builder().id(1).build());
@@ -103,10 +92,10 @@ class PriceServiceTest {
 
 	@Test
 	void testCreatePrice() {
-		assertThrows(ValidationException.class, () -> priceService.createPrice(null));
-		assertThrows(ValidationException.class, () -> priceService.createPrice(new Price()));
+		assertThrows(ValidationException.class, () -> mockPriceService.createPrice(null));
+		assertThrows(ValidationException.class, () -> mockPriceService.createPrice(new Price()));
 		price.setName(null);
-		assertThrows(ValidationException.class, () -> priceService.createPrice(price));
+		assertThrows(ValidationException.class, () -> mockPriceService.createPrice(price));
 
 		Exception e = assertThrows(ValidationException.class, () -> Whitebox.invokeMethod(mockPriceService, "validPrice", mockPrice, false));
 		assertEquals("Price is null", e.getMessage());
@@ -137,11 +126,11 @@ class PriceServiceTest {
 
 	@Test
 	void testUpdatePrice() {
-		assertThrows(ValidationException.class, () -> priceService.updatePrice(null));
-		assertThrows(ValidationException.class, () -> priceService.updatePrice(new Price()));
+		assertThrows(ValidationException.class, () -> mockPriceService.updatePrice(null));
+		assertThrows(ValidationException.class, () -> mockPriceService.updatePrice(new Price()));
 		price.setId(null);
 		price.setCurrency("hrn");
-		assertThrows(ValidationException.class, () -> priceService.updatePrice(price));
+		assertThrows(ValidationException.class, () -> mockPriceService.updatePrice(price));
 
 		Mockito.doAnswer(invocation -> {
 			mockPrice = Price.builder().id(1).fromDate(Date.from(Instant.parse("2022-10-15T10:15:30Z"))).build();
@@ -163,8 +152,8 @@ class PriceServiceTest {
 
 	@Test
 	void testDeletePrice() {
-		assertThrows(ValidationException.class, () -> priceService.deletePrice(-1));
-		assertThrows(ValidationException.class, () -> priceService.deletePrice(null));
+		assertThrows(ValidationException.class, () -> mockPriceService.deletePrice(-1));
+		assertThrows(ValidationException.class, () -> mockPriceService.deletePrice(null));
 
 		mockPriceService.deletePrice(1);
 		Mockito.verify(mockPriceDao).deletePrice(Mockito.anyInt());
