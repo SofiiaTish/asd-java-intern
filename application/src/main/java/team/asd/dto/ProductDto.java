@@ -7,7 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import team.asd.util.validgroup.OnCreate;
+import team.asd.util.validgroup.OnUpdate;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
@@ -19,6 +22,8 @@ import javax.validation.constraints.Size;
 public class ProductDto {
 
 	@ApiModelProperty(value = "The id of product", example = "4")
+	@NotNull(message = "OnUpdate Validation: id not null", groups = {OnUpdate.class})
+	@Positive(message = "{id.positive}", groups = {OnUpdate.class})
 	@Positive(message = "{id.positive}")
 	@JsonProperty("id")
 	private Integer id;

@@ -12,6 +12,7 @@ import team.asd.dto.ProductDto;
 import team.asd.exception.ValidationException;
 import team.asd.service.ProductService;
 import team.asd.util.ConverterUtil;
+import team.asd.util.validgroup.OnUpdate;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -82,7 +83,7 @@ public class ProductController {
 			@ApiResponse(code = 404, message = "Custom message about error reasons or unknown error")
 	})
 	@PutMapping(path = {"/"})
-	public ProductDto updateProduct(@RequestBody @ApiParam(name = "productForUpdate", value = "Product data") @Valid ProductDto productDto) {
+	public ProductDto updateProduct(@RequestBody @ApiParam(name = "productForUpdate", value = "Product data") @Validated(OnUpdate.class) ProductDto productDto) {
 		return ConverterUtil.convertProductToDto(productService.updateProduct(ConverterUtil.convertDtoToProduct(productDto)));
 	}
 
